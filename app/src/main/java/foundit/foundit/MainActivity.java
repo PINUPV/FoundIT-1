@@ -24,5 +24,6 @@ public class MainActivity extends AppCompatActivity {
                 texto.setText("Hola Mundo Cruel de mierda");
             }
         });
+        boton.setText("Biches 2");
     }
 }
