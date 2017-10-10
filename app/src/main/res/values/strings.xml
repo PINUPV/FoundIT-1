@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FoundIT</string>
+    <string name="nombre">Nombre:</string>
 </resources>
