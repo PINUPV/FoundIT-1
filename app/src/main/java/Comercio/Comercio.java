@@ -6,7 +6,7 @@ package Comercio;
 
 public class Comercio
 {
-
+    private String name, address, city, zipcode, tlf;
 
 
 }
