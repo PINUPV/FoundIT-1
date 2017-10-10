@@ -2,6 +2,7 @@ package foundit.foundit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.StringBuilderPrinter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                texto.setText("Hola Mundo Cruel");
+            public void onClick(View view)
+            {
+                String hola = "Hola Mundo Cruel";
+                texto.setText(hola);
             }
         });
         boton.setText("bich");
