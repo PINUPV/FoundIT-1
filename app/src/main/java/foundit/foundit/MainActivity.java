@@ -21,9 +21,8 @@ public class MainActivity extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                texto.setText("Hola Mundo Cruel de mierda");
+                texto.setText("Hola Mundo Cruel");
             }
         });
-
     }
 }
