@@ -1,12 +1,8 @@
-package Comercio;
+package Producto;
 
 /**
  * Created by nathan on 10/10/2017.
  */
 
-public class Comercio
-{
-
-
-
+public class Producto {
 }
