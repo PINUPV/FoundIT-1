@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FoundIT</string>
     <string name="nombre">Nombre:</string>
+    <string name="title_activity_busqueda">Map</string>
 </resources>
