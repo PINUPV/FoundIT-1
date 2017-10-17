@@ -13,9 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+
 public class Busqueda extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
 
 
     @Override
@@ -51,13 +53,11 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback {
 
             } else {
                 // Show rationale and request permission.
-            }
-           LatLng miPosicion = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
-            mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));*/
-            LatLng miPosicion = new LatLng(30,140);
+            }*/
+            LatLng miPosicion = new LatLng(20,60);
             mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));
+
         }
     }
 
