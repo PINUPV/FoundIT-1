@@ -45,15 +45,19 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback {
             mMap = googleMap;
 
             // Add a marker in Sydney and move the camera
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
+
             } else {
                 // Show rationale and request permission.
             }
-           /* LatLng sydney = new LatLng(-34, 151);
-            mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney)); */
+           LatLng miPosicion = new LatLng(mMap.getMyLocation().getLatitude(), mMap.getMyLocation().getLongitude());
+            mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));*/
+            LatLng miPosicion = new LatLng(30,140);
+            mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));
         }
     }
 
