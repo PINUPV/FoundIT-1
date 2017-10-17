@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         boton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                texto.setText("Hola Mundo Mierda de martes");
+                texto.setText("Hola Mundo Mierda de dia");
             }
         });
         boton.setText("Biches to all hoes");
