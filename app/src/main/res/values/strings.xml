@@ -2,4 +2,5 @@
     <string name="app_name">FoundIT</string>
     <string name="nombre">Nombre:</string>
     <string name="title_activity_busqueda">Map</string>
+    <string name="title_activity_registro__comercio">Registro_Comercio</string>
 </resources>

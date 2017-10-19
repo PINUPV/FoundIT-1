@@ -25,9 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity"
-                    android:exported="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +46,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDSCEEzl_dixyo_6mGx3kNNvLtgFxcdmYk" />
 
-
+        <activity
+            android:name=".Registro_Comercio"
+            android:label="@string/title_activity_registro__comercio"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
