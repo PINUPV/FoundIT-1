@@ -1,7 +1,12 @@
 package foundit.foundit;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -11,9 +16,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class Busqueda extends FragmentActivity implements OnMapReadyCallback {
+
+public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMyLocationButtonClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback{
 
     private GoogleMap mMap;
+    private static final float DEFAULT_ZOOM = 14;
 
 
 
@@ -44,18 +53,24 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback {
             mMap = googleMap;
 
             // Add a marker in Sydney and move the camera
-            /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
 
             } else {
                 // Show rationale and request permission.
-            }*/
-            LatLng miPosicion = new LatLng(20,60);
+            }
+            LatLng miPosicion = new LatLng(39.48,-0.34);
             mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
 
         }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this,"MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        return false;
     }
+}
 
 
