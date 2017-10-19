@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        boton = (Button) findViewById(R.id.button2);
+        setContentView(R.layout.login_layout);
+       /** boton = (Button) findViewById(R.id.button2);
         texto = (TextView) findViewById(R.id.eT1);
 
         boton.setOnClickListener(new View.OnClickListener() {
@@ -24,6 +24,6 @@ public class MainActivity extends AppCompatActivity {
                 texto.setText("Hola Mundo Mierda de dia");
             }
         });
-        boton.setText("Biches to all hoes");
+        boton.setText("Biches to all hoes");*/
     }
 }
