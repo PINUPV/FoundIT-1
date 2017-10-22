@@ -1,7 +1,11 @@
 package foundit.foundit;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -12,17 +16,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
 
 public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback{
+        GoogleMap.OnMyLocationButtonClickListener
+{
 
     private GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 14;
+    private static final int LOCATION_REQUES_CODE = 1;
+    private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
 
 
 
@@ -34,6 +40,10 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //PEDIMOS LOS PERMISOS NECESARIOS
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUES_CODE);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},LOCATION_REQUES_CODE);
     }
 
 
@@ -48,29 +58,63 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
      */
 
 
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            mMap = googleMap;
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        mMap = googleMap;
+        UiSettings uiSettings = mMap.getUiSettings();
+        mMap.setOnMyLocationButtonClickListener(this);
+        LocationManager mLocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, locationListener );
 
-            // Add a marker in Sydney and move the camera
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
 
-            } else {
-                // Show rationale and request permission.
-            }
-            LatLng miPosicion = new LatLng(39.48,-0.34);
-            mMap.addMarker(new MarkerOptions().position(miPosicion).title("DondeEstoy"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
 
+        } else {
+
+           // Si no tenemos permiso de localizacion mostrar un mensaje
         }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
+        uiSettings.setMyLocationButtonEnabled(true);
+
+
+    }
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this,"MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"MyLocationButtonCliked",Toast.LENGTH_SHORT).show();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
         return false;
     }
+
+
+    LocationListener locationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
+        }
+
+
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            //Toast.makeText(this,"GPS desactivado",Toast.LENGTH_SHORT);
+
+        }
+    };
+
 }
 
 
