@@ -1,10 +1,7 @@
 package foundit.foundit;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -61,6 +58,7 @@ public class MainFoundit extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //Aqui se configura el menu diseñado en res>menu>main_foundit.xml
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
@@ -78,12 +76,12 @@ public class MainFoundit extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-        if (id == R.id.map) {
+        if (id == R.id.nav_Mapa) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
+        } else if (id == R.id.nav_RegUser) {
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Usuario()).commit();
+        } else if (id == R.id.nav_RegComer) {
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Comercio()).commit();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

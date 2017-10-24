@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +25,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener{
@@ -31,6 +41,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private static final float DEFAULT_ZOOM = 14;
     private static final int LOCATION_REQUES_CODE = 1;
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
+    private Button botonPrueba;
 
 
     @Override
@@ -38,17 +49,26 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_frag_busqueda, null, false);
-
         // Inflate the layout for this fragment
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.fragMap);
         mapFragment.getMapAsync(this);
+
+        botonPrueba = (Button)view.findViewById(R.id.botonPrueba);
+
+        botonPrueba.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Debug","Hola");
+            }
+        });
 
         //PEDIMOS LOS PERMISOS NECESARIOS
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUES_CODE);
         ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},LOCATION_REQUES_CODE);
         return view;
     }
+
 
 
     @Override
@@ -85,6 +105,28 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         @Override
         public void onLocationChanged(Location location) {
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
+
+            try {
+                URL url = new URL("http://185.137.93.170:8080/");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.addRequestProperty("distancia", "500");
+                urlConnection.addRequestProperty("gpslat", Double.toString(location.getLatitude()));
+                urlConnection.addRequestProperty("gpslong", Double.toString(location.getLongitude()));
+                urlConnection.addRequestProperty("busqueda", "");
+                urlConnection.addRequestProperty("filtro", "[]");
+                String received = Util.GetWeb(urlConnection);
+                Toast.makeText(getContext(), received, Toast.LENGTH_LONG);
+                try {
+                    JSONObject obj = new JSONObject(received);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } catch (MalformedURLException ex) {
+
+            } catch (IOException ex) {
+
+            }
         }
 
 
