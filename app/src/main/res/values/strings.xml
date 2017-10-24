@@ -4,4 +4,14 @@
     <string name="title_activity_busqueda">Map</string>
     <string name="title_activity_registro__comercio">Registro_Comercio</string>
     <string name="title_activity_reg_user">reg_user</string>
+    <string name="title_activity_main_foundit">MainFoundit</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="mapa">Mapa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

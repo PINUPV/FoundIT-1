@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.JsonReader;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -87,7 +88,6 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
         uiSettings.setMyLocationButtonEnabled(true);
 
-
     }
 
     @Override
@@ -144,6 +144,11 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
 
         }
     };
+
+    public void ButtonOnClic(View v){
+        Toast.makeText(this, "Boton Pulsado", Toast.LENGTH_SHORT).show();
+
+    }
 
 }
 
