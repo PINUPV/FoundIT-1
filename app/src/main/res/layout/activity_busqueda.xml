@@ -37,29 +37,32 @@
         android:layout_marginLeft="20dp"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="27dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintLeft_toRightOf="@+id/editText"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlHardcoded" />
-
     <ImageButton
         android:id="@+id/boton"
         android:layout_width="30dp"
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:contentDescription=""
         android:src="@drawable/ic_more_vert"
-        app:layout_constraintLeft_toRightOf="@+id/searchView"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription,RtlHardcoded" />
+        tools:ignore="ContentDescription,MissingConstraints,RtlHardcoded"
+        tools:layout_editor_absoluteX="272dp" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="50dp"
+        android:layout_height="46dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparents"
+        android:onClick="ButtonOnClic"
+        android:src="@drawable/ic_search"
+        app:layout_constraintLeft_toRightOf="@+id/editText"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

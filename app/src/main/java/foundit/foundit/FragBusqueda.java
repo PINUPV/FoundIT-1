@@ -6,11 +6,14 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,10 +24,8 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
 
-
-public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener
-{
+public class FragBusqueda extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMyLocationButtonClickListener{
 
     private GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 14;
@@ -32,32 +33,30 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
 
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busqueda);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_frag_busqueda, null, false);
+
+        // Inflate the layout for this fragment
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.fragMap);
         mapFragment.getMapAsync(this);
 
         //PEDIMOS LOS PERMISOS NECESARIOS
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUES_CODE);
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},LOCATION_REQUES_CODE);
+        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUES_CODE);
+        ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},LOCATION_REQUES_CODE);
+        return view;
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(getActivity(),"MyLocationButtonCliked",Toast.LENGTH_SHORT).show();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
+        return false;
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -65,31 +64,23 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         mMap.setOnMyLocationButtonClickListener(this);
-        LocationManager mLocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager mLocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, locationListener );
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
 
 
         } else {
 
-           // Si no tenemos permiso de localizacion mostrar un mensaje
+            // Si no tenemos permiso de localizacion mostrar un mensaje
         }
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
         uiSettings.setMyLocationButtonEnabled(true);
 
+
     }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(this,"MyLocationButtonCliked",Toast.LENGTH_SHORT).show();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
-        return false;
-    }
-
-
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -114,12 +105,4 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
 
         }
     };
-
-    public void ButtonOnClic(View v){
-        Toast.makeText(this, "Boton Pulsado", Toast.LENGTH_SHORT).show();
-
-    }
-
 }
-
-
