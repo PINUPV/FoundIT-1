@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,11 +20,39 @@
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="218dp" />
 
+    <EditText
+        android:id="@+id/eTFragBusquedaeT"
+        android:layout_width="220dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:visibility="visible"
+        tools:background="@android:color/white"
+        tools:ignore="HardcodedText,LabelFor,MissingConstraints,RtlHardcoded" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="67dp"
+        android:layout_height="72dp"
+        android:layout_marginLeft="230dp"
+        android:background="@android:color/transparent"
+        android:contentDescription=""
+        android:onClick="ButtonOnClic"
+        app:srcCompat="@drawable/ic_search"
+        tools:clickable="true"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
     <Button
         android:id="@+id/botonPrueba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
         android:text="hello"
-        android:visibility="invisible" />
+        android:visibility="visible"
+        tools:ignore="HardcodedText" />
+
 
 </FrameLayout>

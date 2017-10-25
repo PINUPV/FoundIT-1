@@ -23,13 +23,13 @@
         tools:layout_editor_absoluteY="218dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/eTFragBusquedaeT"
         android:layout_width="220dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text=""
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@android:color/white"
@@ -61,7 +61,7 @@
         android:background="@android:color/transparent"
         android:onClick="ButtonOnClic"
         android:src="@drawable/ic_search"
-        app:layout_constraintLeft_toRightOf="@+id/editText"
+        app:layout_constraintLeft_toRightOf="@+id/eTFragBusquedaeT"
         app:layout_constraintTop_toTopOf="parent" />
 
 
