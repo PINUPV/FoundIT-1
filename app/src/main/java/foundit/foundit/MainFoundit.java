@@ -1,5 +1,6 @@
 package foundit.foundit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.design.widget.NavigationView;
@@ -79,7 +80,9 @@ public class MainFoundit extends AppCompatActivity
         if (id == R.id.nav_Mapa) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
         } else if (id == R.id.nav_RegUser) {
-            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Usuario()).commit();
+            //fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Usuario()).commit();
+            Intent FragRegistro_Usuario = new Intent(getApplicationContext(), FragRegistro_Usuario.class);
+            startActivity(FragRegistro_Usuario);
         } else if (id == R.id.nav_RegComer) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Comercio()).commit();
         } else if (id == R.id.nav_manage) {

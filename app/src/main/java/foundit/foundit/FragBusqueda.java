@@ -104,7 +104,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
+            /*miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
 
             try {
                 URL url = new URL("http://185.137.93.170:8080/");
@@ -126,7 +126,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
             } catch (IOException ex) {
 
-            }
+            }*/
         }
 
 

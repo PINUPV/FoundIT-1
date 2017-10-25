@@ -41,7 +41,7 @@
                     android:weightSum="1">
 
                     <EditText
-                        android:id="@+id/eTRegUserNombre"
+                        android:id="@+id/text_nombre"
                         android:layout_width="140dp"
                         android:layout_height="wrap_content"
                         android:hint="Nombre"
@@ -51,7 +51,7 @@
                         android:textSize="14sp" />
 
                     <EditText
-                        android:id="@+id/eTRegUserApellidos"
+                        android:id="@+id/text_apellidos"
                         android:layout_width="191dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="35dp"
@@ -84,7 +84,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/eTRegUserNick"
+                        android:id="@+id/text_usuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -113,7 +113,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/eTRegUserPass1"
+                        android:id="@+id/text_contraseña"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -148,7 +148,7 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/eTRegUserPass2"
+                    android:id="@+id/text_confircontra"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -176,7 +176,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/eTRegUserEmail"
+                        android:id="@+id/text_correo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -245,6 +245,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/darker_gray"
                         android:elevation="0dp"
+                        android:onClick="darDeAlta"
                         android:orientation="horizontal"
                         android:text="Dar de alta"
                         android:textColor="@android:color/white"
