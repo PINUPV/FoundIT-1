@@ -66,10 +66,6 @@
             android:name=".Registro_Comercio"
             android:label="@string/title_activity_registro__comercio"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".FragRegistro_Usuario"
-            android:label="@string/title_activity_reg_user"
-            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

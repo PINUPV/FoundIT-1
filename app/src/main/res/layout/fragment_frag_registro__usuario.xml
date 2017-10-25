@@ -245,7 +245,6 @@
                         android:layout_weight="1"
                         android:backgroundTint="@android:color/darker_gray"
                         android:elevation="0dp"
-                        android:onClick="darDeAlta"
                         android:orientation="horizontal"
                         android:text="Dar de alta"
                         android:textColor="@android:color/white"
