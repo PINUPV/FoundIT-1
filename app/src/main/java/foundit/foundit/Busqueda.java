@@ -148,7 +148,7 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
 
     public void ButtonOnClic(View v){
         EditText editTex;
-        editTex = (EditText)findViewById(R.id.editText);
+        editTex = (EditText)findViewById(R.id.eTFragBusquedaeT);
         String categoriaBusqueda = editTex.getText().toString();
         Toast.makeText(this, categoriaBusqueda, Toast.LENGTH_SHORT).show();
 

@@ -64,7 +64,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 EditText editTex;
-                editTex = (EditText)v.findViewById(R.id.editText);
+                editTex = (EditText) getActivity().findViewById(R.id.eTFragBusquedaeT);
                 String categoriaBusqueda = editTex.getText().toString();
                 Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
             }
@@ -123,6 +123,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 urlConnection.addRequestProperty("busqueda", "");
                 urlConnection.addRequestProperty("filtro", "[]");
                 String received = Util.GetWeb(urlConnection);
+                Log.v("DEBUG", "Dato a imprimir "+received);
                 Toast.makeText(getContext(), received, Toast.LENGTH_LONG);
                 try {
                     JSONObject obj = new JSONObject(received);
@@ -158,7 +159,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
     public void ButtonOnClic(View v){
         EditText editTex;
-        editTex = (EditText)v.findViewById(R.id.editText);
+        editTex = (EditText)v.findViewById(R.id.eTFragBusquedaeT);
         String categoriaBusqueda = editTex.getText().toString();
         Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
 

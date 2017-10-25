@@ -21,7 +21,7 @@
         tools:layout_editor_absoluteY="218dp" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/eTFragBusquedaeT"
         android:layout_width="220dp"
         android:layout_height="48dp"
         android:layout_marginLeft="20dp"
