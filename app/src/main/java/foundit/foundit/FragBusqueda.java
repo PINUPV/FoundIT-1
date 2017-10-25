@@ -6,10 +6,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.util.LogWriter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,13 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
@@ -85,7 +95,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
-    int contador = 0;
+    boolean esperandoAMapaIdle = true;
+    JSONArray ultimaBusqueda;
 
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -111,34 +122,34 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                /*
-                Toast.makeText(getActivity(),"mapa desplazado",Toast.LENGTH_SHORT).show();
+                esperandoAMapaIdle = true;
+            }
+        });
+        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                if (esperandoAMapaIdle) {
+                    Log.w("STATE", "mapa desplazado terminado");
 
-                try {
-                    URL url = new URL("http://185.137.93.170:8080/");
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.addRequestProperty("distancia", "500");
-                    urlConnection.addRequestProperty("gpslat", Double.toString(mMap.getCameraPosition().target.latitude));
-                    urlConnection.addRequestProperty("gpslong", Double.toString(mMap.getCameraPosition().target.longitude));
-                    urlConnection.addRequestProperty("busqueda", "");
-                    urlConnection.addRequestProperty("filtro", "[]");
-                    String received = Util.GetWeb(urlConnection);
-                    Toast.makeText(getActivity(),"mapa desplazado (" + (contador++) + ")",Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getContext(), received, Toast.LENGTH_LONG);
                     try {
-                        JSONObject obj = new JSONObject(received);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        String lat = Double.toString(mMap.getCameraPosition().target.latitude);
+                        String lon = Double.toString(mMap.getCameraPosition().target.longitude);
+                        Uri uri = new Uri.Builder().scheme("http")
+                                .encodedAuthority("185.137.93.170:8080")
+                                .path("busqueda.php")
+                                .appendQueryParameter("distancia", "1000")
+                                .appendQueryParameter("gpslat", lat)
+                                .appendQueryParameter("gpslong", lon)
+                                .appendQueryParameter("busqueda", "")
+                                .appendQueryParameter("filtro", "[]")
+                                .build();
+                        ActualizaMapa am = new ActualizaMapa();
+                        am.mMap = mMap;
+                        am.execute(uri);
+                    } catch (Exception e) {
+                        Log.e("ERROR1", e.toString());
                     }
-                } catch (MalformedURLException ex) {
-
-                } catch (IOException ex) {
-
-                } catch (Exception e) {
-
                 }
-                */
             }
         });
     }

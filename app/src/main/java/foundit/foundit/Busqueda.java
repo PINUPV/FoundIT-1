@@ -103,28 +103,6 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
         @Override
         public void onLocationChanged(Location location) {
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
-
-            try {
-                URL url = new URL("http://185.137.93.170:8080/");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.addRequestProperty("distancia", "500");
-                urlConnection.addRequestProperty("gpslat", Double.toString(location.getLatitude()));
-                urlConnection.addRequestProperty("gpslong", Double.toString(location.getLongitude()));
-                urlConnection.addRequestProperty("busqueda", "");
-                urlConnection.addRequestProperty("filtro", "[]");
-                String received = Util.GetWeb(urlConnection);
-                Toast.makeText(getApplicationContext(), received, Toast.LENGTH_LONG);
-                try {
-                    JSONObject obj = new JSONObject(received);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (MalformedURLException ex) {
-
-            } catch (IOException ex) {
-
-            }
         }
 
 
