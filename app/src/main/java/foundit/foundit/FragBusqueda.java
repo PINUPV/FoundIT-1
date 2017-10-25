@@ -6,16 +6,16 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,13 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.json.JSONArray;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
@@ -42,6 +36,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private static final int LOCATION_REQUES_CODE = 1;
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
     private Button botonPrueba;
+    private ImageButton botonLupa;
 
 
     @Override
@@ -54,12 +49,24 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 .findFragmentById(R.id.fragMap);
         mapFragment.getMapAsync(this);
 
-        botonPrueba = (Button)view.findViewById(R.id.botonPrueba);
+        /*botonPrueba = (Button)view.findViewById(R.id.botonPrueba);
 
         botonPrueba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v("Debug","Hola");
+            }
+        });*/
+
+        botonLupa = (ImageButton)view.findViewById(R.id.imageButton2);
+
+        botonLupa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editTex;
+                editTex = (EditText) getActivity().findViewById(R.id.eTFragBusquedaeT);
+                String categoriaBusqueda = editTex.getText().toString();
+                Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -142,8 +149,6 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
         }
 
-
-
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -160,4 +165,21 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
         }
     };
+
+
+    public void ButtonOnClic(View v){
+        EditText editTex;
+        editTex = (EditText)v.findViewById(R.id.eTFragBusquedaeT);
+        String categoriaBusqueda = editTex.getText().toString();
+        Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void actualizarComercios(JSONArray info){
+
+        //for(int i = 0, i < info.length(); i++){
+        //  mMap.addMarker(new MarkerOptions().posi)
+
+
+    }
 }
