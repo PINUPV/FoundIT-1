@@ -77,8 +77,11 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 EditText editTex;
                 editTex = (EditText) getActivity().findViewById(R.id.eTFragBusquedaeT);
                 String categoriaBusqueda = editTex.getText().toString();
-                if(categoriaBusqueda.length()< 100 && esAlfaNumerica(categoriaBusqueda))
-                Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
+                if(categoriaBusqueda.length()< 100 && esAlfaNumerica(categoriaBusqueda)){
+                    Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
+                    busquedaActual = categoriaBusqueda;
+                    Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                }
                 else
                     Toast.makeText(getActivity(), "la palabra clave introducida no es valida", Toast.LENGTH_SHORT).show();
             }
@@ -173,8 +176,6 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         EditText editTex;
         editTex = (EditText)v.findViewById(R.id.eTFragBusquedaeT);
         String categoriaBusqueda = editTex.getText().toString();
-        busquedaActual = categoriaBusqueda;
-        Util.CargarComerciosEnMapa(mMap, busquedaActual);
     }
 
     public boolean esAlfaNumerica(final String cadena) {

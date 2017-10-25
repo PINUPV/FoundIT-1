@@ -127,14 +127,15 @@ class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {
                             oldMarker.check = true;
                         }
                     }
-
-                    for (int i = 0; i < oldMarkers.size(); i++){
-                        if (!oldMarkers.get(i).check)
-                            oldMarkers.get(i).marker.remove();
-                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+
+            for (int i = 0; i < oldMarkers.size(); i++){
+                if (!oldMarkers.get(i).check) {
+                    oldMarkers.get(i).marker.remove();
+                }
             }
             oldMarkers.clear();
             oldMarkers.addAll(newMarkers);
