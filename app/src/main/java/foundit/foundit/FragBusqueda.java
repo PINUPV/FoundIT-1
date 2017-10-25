@@ -49,6 +49,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private ImageButton botonLupa;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,7 +77,10 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 EditText editTex;
                 editTex = (EditText) getActivity().findViewById(R.id.eTFragBusquedaeT);
                 String categoriaBusqueda = editTex.getText().toString();
+                if(categoriaBusqueda.length()< 100 && esAlfaNumerica(categoriaBusqueda))
                 Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getActivity(), "la palabra clave introducida no es valida", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -184,6 +188,17 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         String categoriaBusqueda = editTex.getText().toString();
         Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
 
+    }
+
+    public boolean esAlfaNumerica(final String cadena) {
+        for(int i = 0; i < cadena.length(); ++i) {
+            char caracter = cadena.charAt(i);
+
+            if(!Character.isLetterOrDigit(caracter)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void actualizarComercios(JSONArray info){

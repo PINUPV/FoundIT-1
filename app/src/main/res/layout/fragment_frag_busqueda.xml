@@ -51,7 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="300dp"
         android:text="hello"
-        android:visibility="visible"
+        android:visibility="invisible"
         tools:ignore="HardcodedText" />
 
 
