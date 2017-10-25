@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:text=""
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@android:color/white"

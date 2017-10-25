@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.util.JsonReader;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -146,7 +147,18 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
     };
 
     public void ButtonOnClic(View v){
-        Toast.makeText(this, "Boton Pulsado", Toast.LENGTH_SHORT).show();
+        EditText editTex;
+        editTex = (EditText)findViewById(R.id.editText);
+        String categoriaBusqueda = editTex.getText().toString();
+        Toast.makeText(this, categoriaBusqueda, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void actualizarComercios(JSONArray info){
+
+        //for(int i = 0, i < info.length(); i++){
+          //  mMap.addMarker(new MarkerOptions().posi)
+
 
     }
 
