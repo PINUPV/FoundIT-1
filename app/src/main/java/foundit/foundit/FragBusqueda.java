@@ -78,6 +78,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         return false;
     }
 
+    int contador = 0;
+
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
@@ -99,34 +101,45 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
         uiSettings.setMyLocationButtonEnabled(true);
 
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                /*
+                Toast.makeText(getActivity(),"mapa desplazado",Toast.LENGTH_SHORT).show();
 
+                try {
+                    URL url = new URL("http://185.137.93.170:8080/");
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.addRequestProperty("distancia", "500");
+                    urlConnection.addRequestProperty("gpslat", Double.toString(mMap.getCameraPosition().target.latitude));
+                    urlConnection.addRequestProperty("gpslong", Double.toString(mMap.getCameraPosition().target.longitude));
+                    urlConnection.addRequestProperty("busqueda", "");
+                    urlConnection.addRequestProperty("filtro", "[]");
+                    String received = Util.GetWeb(urlConnection);
+                    Toast.makeText(getActivity(),"mapa desplazado (" + (contador++) + ")",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), received, Toast.LENGTH_LONG);
+                    try {
+                        JSONObject obj = new JSONObject(received);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } catch (MalformedURLException ex) {
+
+                } catch (IOException ex) {
+
+                } catch (Exception e) {
+
+                }
+                */
+            }
+        });
     }
+
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
-
-            try {
-                URL url = new URL("http://185.137.93.170:8080/");
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.addRequestProperty("distancia", "500");
-                urlConnection.addRequestProperty("gpslat", Double.toString(location.getLatitude()));
-                urlConnection.addRequestProperty("gpslong", Double.toString(location.getLongitude()));
-                urlConnection.addRequestProperty("busqueda", "");
-                urlConnection.addRequestProperty("filtro", "[]");
-                String received = Util.GetWeb(urlConnection);
-                Toast.makeText(getContext(), received, Toast.LENGTH_LONG);
-                try {
-                    JSONObject obj = new JSONObject(received);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            } catch (MalformedURLException ex) {
-
-            } catch (IOException ex) {
-
-            }
         }
 
 
