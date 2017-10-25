@@ -51,6 +51,23 @@ public class Util {
         }
         return "";
     }
+
+    public static void CargarComerciosEnMapa(GoogleMap mMap, String busqueda) {
+        String lat = Double.toString(mMap.getCameraPosition().target.latitude);
+        String lon = Double.toString(mMap.getCameraPosition().target.longitude);
+        Uri uri = new Uri.Builder().scheme("http")
+                .encodedAuthority("185.137.93.170:8080")
+                .path("busqueda.php")
+                .appendQueryParameter("distancia", "1000")
+                .appendQueryParameter("gpslat", lat)
+                .appendQueryParameter("gpslong", lon)
+                .appendQueryParameter("busqueda", busqueda)
+                .appendQueryParameter("filtro", "[]")
+                .build();
+        ActualizaMapa am = new ActualizaMapa();
+        am.mMap = mMap;
+        am.execute(uri);
+    }
 }
 
 class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {

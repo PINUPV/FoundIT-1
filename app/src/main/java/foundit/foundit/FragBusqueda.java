@@ -136,20 +136,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                     Log.w("STATE", "mapa desplazado terminado");
 
                     try {
-                        String lat = Double.toString(mMap.getCameraPosition().target.latitude);
-                        String lon = Double.toString(mMap.getCameraPosition().target.longitude);
-                        Uri uri = new Uri.Builder().scheme("http")
-                                .encodedAuthority("185.137.93.170:8080")
-                                .path("busqueda.php")
-                                .appendQueryParameter("distancia", "1000")
-                                .appendQueryParameter("gpslat", lat)
-                                .appendQueryParameter("gpslong", lon)
-                                .appendQueryParameter("busqueda", "")
-                                .appendQueryParameter("filtro", "[]")
-                                .build();
-                        ActualizaMapa am = new ActualizaMapa();
-                        am.mMap = mMap;
-                        am.execute(uri);
+                        Util.CargarComerciosEnMapa(mMap, busquedaActual);
                     } catch (Exception e) {
                         Log.e("ERROR1", e.toString());
                     }
@@ -181,13 +168,13 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         }
     };
 
-
+    String busquedaActual = "";
     public void ButtonOnClic(View v){
         EditText editTex;
         editTex = (EditText)v.findViewById(R.id.eTFragBusquedaeT);
         String categoriaBusqueda = editTex.getText().toString();
-        Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
-
+        busquedaActual = categoriaBusqueda;
+        Util.CargarComerciosEnMapa(mMap, busquedaActual);
     }
 
     public boolean esAlfaNumerica(final String cadena) {
