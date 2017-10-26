@@ -112,13 +112,13 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
                 urlConnection.addRequestProperty("gpslong", Double.toString(location.getLongitude()));
                 urlConnection.addRequestProperty("busqueda", "");
                 urlConnection.addRequestProperty("filtro", "[]");
-                String received = Util.GetWeb(urlConnection);
-                Toast.makeText(getApplicationContext(), received, Toast.LENGTH_LONG);
-                try {
-                    JSONObject obj = new JSONObject(received);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                //String received = Util.GetWeb(urlConnection);
+                //Toast.makeText(getApplicationContext(), received, Toast.LENGTH_LONG);
+                //try {
+                //    JSONObject obj = new JSONObject(received);
+                //} catch (JSONException e) {
+                //    e.printStackTrace();
+               // }
             } catch (MalformedURLException ex) {
 
             } catch (IOException ex) {

@@ -70,11 +70,11 @@ public class FragRegistro_Usuario extends Fragment {
                         comprobar_correo(correo.getText().toString())) {
                    String x = "http://185.137.93.170:8080/registro-usuario.php?alias=" + usuario.getText() +
                            "&email=" + correo.getText() + "&pass=" + contraseña.getText() + "&poblacion=" + poblacion.getText() +
-                           "&provincia=null&pais=null&cp=null&telefono=null";
+                           "&provincia=Valencia&pais=españistan&cp=45065&telefono=908765433";
 
                     RegisterTask t = new RegisterTask();
                     t.fa = getActivity();
-                    Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
                     t.execute(x);
                     //Intent Main = new Intent(getActivity(), MainFoundit.class);
                    // startActivity(Main);
@@ -140,7 +140,7 @@ class RegisterTask extends AsyncTask<String, String, JSONObject> {
         try {
             return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
         } catch (JSONException e) {
-            return null; // Nunca ocurrira
+            return null; // Nunca ocurrirá
         }
     }
 
