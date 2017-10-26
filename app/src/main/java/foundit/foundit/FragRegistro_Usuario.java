@@ -2,15 +2,34 @@ package foundit.foundit;
 
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static foundit.foundit.ActualizaMapa.oldMarkers;
+import static foundit.foundit.R.id.text_contraseña;
 
 
 public class FragRegistro_Usuario extends Fragment {
@@ -20,7 +39,7 @@ public class FragRegistro_Usuario extends Fragment {
 
     }
 
-    EditText contraseña, nombre, apellidos, usuario, confircontra, correo;
+    EditText contraseña, nombre, apellidos, usuario, confircontra, correo, poblacion;
     Button bTNRegUserAlta;
 
 
@@ -39,17 +58,28 @@ public class FragRegistro_Usuario extends Fragment {
         usuario = (EditText) view.findViewById(R.id.text_usuario);
         confircontra = (EditText) view.findViewById(R.id.text_confircontra);
         correo = (EditText) view.findViewById(R.id.text_correo);
+        poblacion = (EditText) view.findViewById(R.id.text_poblacion);
         bTNRegUserAlta=(Button) view.findViewById(R.id.bTNRegUserAlta);
         bTNRegUserAlta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(comprobar_contraseña(contraseña.getText().toString()) && comprobar_nombre(nombre.getText().toString()) &&
-                        comprobar_apellidos(apellidos.getText().toString()) && comprobar_usuario(usuario.getText().toString()) &&
+                if(comprobar_nombre(nombre.getText().toString()) && comprobar_apellidos(apellidos.getText().toString()) &&
+                        comprobar_usuario(usuario.getText().toString()) &&
+                        comprobar_contraseña(contraseña.getText().toString()) &&
                         comprobar_confircontra(contraseña.getText().toString(), confircontra.getText().toString()) &&
                         comprobar_correo(correo.getText().toString())) {
-                    Intent Main = new Intent(getActivity(), MainFoundit.class);
-                    startActivity(Main);
-                }else{}
+                   String x = "http://185.137.93.170:8080/registro-usuario.php?alias=" + usuario.getText() +
+                           "&email=" + correo.getText() + "&pass=" + contraseña.getText() + "&poblacion=" + poblacion.getText() +
+                           "&provincia=Valencia&pais=españistan&cp=45065&telefono=908765433";
+
+                    RegisterTask t = new RegisterTask();
+                    t.fa = getActivity();
+                    //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    t.execute(x);
+                    //Intent Main = new Intent(getActivity(), MainFoundit.class);
+                   // startActivity(Main);
+
+                }
             }
         });
 
@@ -92,6 +122,34 @@ public class FragRegistro_Usuario extends Fragment {
         } else {
             Toast.makeText(getActivity(), "Introduce una dirección de correo válida", Toast.LENGTH_LONG).show();
             return false;
+        }
+    }
+}
+
+class RegisterTask extends AsyncTask<String, String, JSONObject> {
+
+    FragmentActivity fa;
+    @Override
+    protected JSONObject doInBackground(String... params) {
+        String result = Util.GetWeb(Uri.parse(params[0]));
+        try {
+            return new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
+        } catch (JSONException e) {
+            return null; // Nunca ocurrirá
+        }
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject respuesta) {
+        try {
+            Toast.makeText(fa,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -32,6 +32,7 @@ public class Util {
         InputStream in = null;
         try {
             URL url = new URL(uri.toString());
+            Log.v("debug", url.toString());
             in = url.openConnection().getInputStream();
 
             BufferedReader dis = new BufferedReader(new InputStreamReader(in));
