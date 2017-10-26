@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import static foundit.foundit.ActualizaMapa.oldMarkers;
 import static foundit.foundit.R.id.text_contraseña;
@@ -75,9 +76,18 @@ public class FragRegistro_Usuario extends Fragment {
                     RegisterTask t = new RegisterTask();
                     t.fa = getActivity();
                     //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
-                    t.execute(x);
-                    //Intent Main = new Intent(getActivity(), MainFoundit.class);
-                   // startActivity(Main);
+                    try {
+                        JSONObject respuesta = t.execute(x).get();
+                        if (respuesta.toString().contains("ok")){
+                            Toast.makeText(getActivity(), "Usuario registrado", Toast.LENGTH_LONG).show();
+                            Intent Main = new Intent(getActivity(), MainFoundit.class);
+                            startActivity(Main);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }
