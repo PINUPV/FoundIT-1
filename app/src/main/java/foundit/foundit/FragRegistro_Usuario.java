@@ -4,7 +4,6 @@ package foundit.foundit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.support.v7.app.AppCompatActivity;
-
-import static foundit.foundit.R.id.text_contraseña;
 
 
 public class FragRegistro_Usuario extends Fragment {
@@ -53,7 +49,7 @@ public class FragRegistro_Usuario extends Fragment {
                         comprobar_correo(correo.getText().toString())) {
                     Intent Main = new Intent(getActivity(), MainFoundit.class);
                     startActivity(Main);
-                }
+                }else{}
             }
         });
 
