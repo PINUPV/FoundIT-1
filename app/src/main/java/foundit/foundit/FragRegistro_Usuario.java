@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +18,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.IOException;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static foundit.foundit.ActualizaMapa.oldMarkers;
 import static foundit.foundit.R.id.text_contraseña;
 
 
@@ -59,7 +70,10 @@ public class FragRegistro_Usuario extends Fragment {
                         comprobar_correo(correo.getText().toString())) {
                    String x = "http://185.137.93.170:8080/registro-usuario.php?alias=" + usuario.getText() +
                            "&email=" + correo.getText() + "&pass=" + contraseña.getText() + "&poblacion=" + poblacion.getText() +
-                           "&provincia=null&pais=null&cp=null&telefono=null"));
+                           "&provincia=null&pais=null&cp=null&telefono=null";
+
+                    RegisterTask t = new RegisterTask();
+                    t.fa = getActivity();
                     Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
                     //Intent Main = new Intent(getActivity(), MainFoundit.class);
                    // startActivity(Main);
@@ -111,17 +125,30 @@ public class FragRegistro_Usuario extends Fragment {
     }
 }
 
-    private class RegisterTask extends AsyncTask<String, String, Boolean> {
-        String result;
+class RegisterTask extends AsyncTask<String, String, JSONObject> {
 
-        @Override
-        protected Boolean doInBackground(String... params) {
-
-            result = Util.GetWeb(Uri.parse(params[0]));
-
-            return true;
+    FragmentActivity fa;
+    @Override
+    protected JSONObject doInBackground(String... params) {
+        String result = Util.GetWeb(Uri.parse(params[0]));
+        try {
+            return new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        try {
+            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
+        } catch (JSONException e) {
+            return null; // Nunca ocurrira
+        }
+    }
 
-        @Override
-        protected void onP
+    @Override
+    protected void onPostExecute(JSONObject respuesta) {
+        try {
+            Toast.makeText(fa,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }
