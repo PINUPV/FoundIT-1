@@ -75,6 +75,7 @@ public class FragRegistro_Usuario extends Fragment {
                     RegisterTask t = new RegisterTask();
                     t.fa = getActivity();
                     Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    t.execute(x);
                     //Intent Main = new Intent(getActivity(), MainFoundit.class);
                    // startActivity(Main);
 
