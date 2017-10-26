@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -112,13 +113,13 @@ public class Busqueda extends FragmentActivity implements OnMapReadyCallback,
                 urlConnection.addRequestProperty("gpslong", Double.toString(location.getLongitude()));
                 urlConnection.addRequestProperty("busqueda", "");
                 urlConnection.addRequestProperty("filtro", "[]");
-                //String received = Util.GetWeb(urlConnection);
-                //Toast.makeText(getApplicationContext(), received, Toast.LENGTH_LONG);
-                //try {
-                //    JSONObject obj = new JSONObject(received);
-                //} catch (JSONException e) {
-                //    e.printStackTrace();
-               // }
+                String received = Util.GetWeb(Uri.parse(urlConnection.toString()));
+                Toast.makeText(getApplicationContext(), received, Toast.LENGTH_LONG);
+                try {
+                    JSONObject obj = new JSONObject(received);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } catch (MalformedURLException ex) {
 
             } catch (IOException ex) {
