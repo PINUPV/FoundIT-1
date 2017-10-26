@@ -35,7 +35,7 @@
                 android:layout_marginTop="13dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Nombre"
+                android:hint="Nombre"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_marginTop="15dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Calle las monas, 33"
+                android:hint="Calle las monas, 33"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <TextView
@@ -106,7 +106,7 @@
                 android:layout_marginTop="12dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Valencia"
+                android:hint="Valencia"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <TextView
@@ -128,7 +128,7 @@
                 android:layout_toEndOf="@+id/plainTextNombre"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="46111"
+                android:hint="46111"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
@@ -149,7 +149,7 @@
                 android:layout_marginTop="11dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="619444555"
+                android:hint="619444555"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <TextView
@@ -188,7 +188,7 @@
                 android:layout_marginTop="9dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="correo@correo.com"
+                android:hint="correo@correo.com"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <TextView
@@ -209,7 +209,7 @@
                 android:layout_marginTop="9dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="www.casamanolo.com"
+                android:hint="www.casamanolo.com"
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <Button
