@@ -28,24 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Busqueda"
-            android:label="@string/title_activity_busqueda">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -57,17 +40,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDSCEEzl_dixyo_6mGx3kNNvLtgFxcdmYk" />
-
-        <activity
-            android:name=".Registro_Comercio"
-            android:label="@string/title_activity_registro__comercio"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <!--
-        <activity
-            android:name=".FragRegistro_Usuario"
-            android:label="@string/title_activity_reg_user"
-            android:theme="@style/AppTheme.NoActionBar" />
-            -->
 
     </application>
 
