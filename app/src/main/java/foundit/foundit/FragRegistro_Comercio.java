@@ -1,12 +1,15 @@
 package foundit.foundit;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentContainer;
+import android.support.v4.app.FragmentController;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +21,16 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FragRegistro_Comercio extends Fragment {
 
-    EditText nombreDelComercioText,direccionText,codPostalText,telfText,emailText,webText, ciudaText;
-    Spinner pais,categoria;
+    EditText nombreDelComercio,direccionComercio,codPostalComercio,telfComercio,emailcomercio,webComercio, ciudadComercio;
+    Spinner paisComercio,categoriaComercio;
     Button bRegistraCom, bCancelar;
     String p, cat;
 
@@ -40,16 +45,16 @@ public class FragRegistro_Comercio extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_frag_registro_comercio, container, false);
 
-        nombreDelComercioText = (EditText) view.findViewById(R.id.nombreDelComercioText);
-        direccionText = (EditText) view.findViewById(R.id.direccionText);
-        codPostalText = (EditText) view.findViewById(R.id.codPostalText);
-        telfText = (EditText) view.findViewById(R.id.telfText);
-        emailText = (EditText) view.findViewById(R.id.emailText);
-        webText = (EditText) view.findViewById(R.id.webText);
-        pais = (Spinner)  view.findViewById(R.id.PaisSpinner);
-        ciudaText = (EditText) view.findViewById(R.id.ciudadText);
+        nombreDelComercio = (EditText) view.findViewById(R.id.nombreDelComercioText);
+        direccionComercio = (EditText) view.findViewById(R.id.direccionText);
+        codPostalComercio = (EditText) view.findViewById(R.id.codPostalText);
+        telfComercio = (EditText) view.findViewById(R.id.telfText);
+        emailcomercio = (EditText) view.findViewById(R.id.emailText);
+        webComercio = (EditText) view.findViewById(R.id.webText);
+        paisComercio = (Spinner)  view.findViewById(R.id.PaisSpinner);
+        ciudadComercio = (EditText) view.findViewById(R.id.ciudadText);
 
-        categoria = (Spinner) view.findViewById(R.id.categoriaSpinner);
+        categoriaComercio = (Spinner) view.findViewById(R.id.categoriaSpinner);
         bCancelar = (Button) view.findViewById(R.id.cancelar);
         bCancelar.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -64,15 +69,13 @@ public class FragRegistro_Comercio extends Fragment {
         bRegistraCom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                p = pais.getSelectedItem().toString();
-                cat = categoria.getSelectedItem().toString();
-                if(comprobar_nombre(nombreDelComercioText.getText().toString())
+                p = paisComercio.getSelectedItem().toString();
+                cat = categoriaComercio.getSelectedItem().toString();
+                if(comprobar_nombre(nombreDelComercio.getText().toString())
                         &&comprobar_categoria(cat)
-                        &&comprobar_direccion(direccionText.getText().toString())&&comprobar_pais(p)
-                        &&comprobar_telefono(telfText.getText().toString())) {
+                        &&comprobar_direccion(direccionComercio.getText().toString())&&comprobar_pais(p)
+                        &&comprobar_telefono(telfComercio.getText().toString())) {
                     registrarComercio();
-                    Intent Main = new Intent(getActivity(), MainFoundit.class);
-                    startActivity(Main);
                 }
 
         }});
@@ -114,23 +117,31 @@ public class FragRegistro_Comercio extends Fragment {
     public void registrarComercio(){
         //Comprobar si la insercción del comercio ha funcionado correctamente
         //Toast.makeText(getActivity(), "No ha sido posible registrar el comercio", Toast.LENGTH_LONG).show();
-        String x = "http://185.137.93.170:8080/comercio.php?Nombre=" + nombreDelComercioText.getText() +
-                "&Poblacion=" + ciudaText.getText() + "&Pais=" + p + "&IDCategoria1=" + cat +
-                "&provincia=Valencia &Calle="+direccionText.getText()+"&Latitud=39.4657952&Longitud=-0.3315638";
+        String x = "http://185.137.93.170:8080/registro-comercio.php?Nombre=" + nombreDelComercio.getText() +
+                "&Poblacion=" + ciudadComercio.getText() + "&Pais=" + p + "&IDCategoria1=" + 2 +
+                "&Provincia=Valencia &Calle="+direccionComercio.getText()+"&Latitud=39.4657952&Longitud=-0.3315638";
 
-        RegisterTask t = new RegisterTask();
-        t.fa = getActivity();
-        //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
-        t.execute(x);
-        //Intent Main = new Intent(getActivity(), MainFoundit.class);
-        // startActivity(Main);
-        Toast.makeText(getActivity(), "Comercio registrado correctamente", Toast.LENGTH_LONG).show();
+        RegisterTaskComercio t = new RegisterTaskComercio();
+        t.faC = getActivity();
+        //t.execute(x);
+        try {
+            JSONObject resp = t.execute(x).get();
+            if (resp.toString().contains("ok")){
+                Toast.makeText(getActivity(), "Comercio registrado", Toast.LENGTH_LONG).show();
+                Intent Main = new Intent(getActivity(), MainFoundit.class);
+                startActivity(Main);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
         }
 }
 
 class RegisterTaskComercio extends AsyncTask<String, String, JSONObject> {
 
-    FragmentActivity fa;
+    FragmentActivity faC;
     @Override
     protected JSONObject doInBackground(String... params) {
         String result = Util.GetWeb(Uri.parse(params[0]));
@@ -149,7 +160,7 @@ class RegisterTaskComercio extends AsyncTask<String, String, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject respuesta) {
         try {
-            Toast.makeText(fa,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
+            Toast.makeText(faC,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
