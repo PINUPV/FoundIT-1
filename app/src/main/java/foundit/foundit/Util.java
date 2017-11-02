@@ -18,8 +18,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by Yop-Portatil on 25/10/2017.
@@ -49,7 +52,38 @@ public class Util {
         }
         return "";
     }
-static double radius = 0;
+
+    private static ArrayList<String> tmp;
+    private static Lock lock = new ReentrantLock();
+    public static ArrayList<String> GetListadoCategorias() {
+        Uri uri = new Uri.Builder().scheme("http")
+                .encodedAuthority("185.137.93.170:8080")
+                .path("sql.php")
+                .appendQueryParameter("sql", "SELECT nombre FROM Categoria_comercio")
+                .build();
+        (new AsyncTask<Uri, String, ArrayList<String>>(){
+            protected ArrayList<String> doInBackground(Uri... urls) {
+                String received = Util.GetWeb(urls[0]);
+                ArrayList<String> arr = new ArrayList<String>();
+                try {
+                    JSONArray obj = new JSONArray(received);
+                    for (int i = 0; i < obj.length(); i++) {
+                        arr.add(obj.getJSONObject(i).getString("nombre"));
+                    }
+                } catch (Exception e) {
+                    Log.e("ERROR general", e.toString());
+                } finally{
+                    lock.unlock();
+                    tmp = arr;
+                }
+                return arr;
+            }
+        }).execute(uri);
+        lock.lock();
+        return new ArrayList<>(tmp);
+    }
+
+    static double radius = 0;
     public static void CargarComerciosEnMapa(GoogleMap mMap, String busqueda) {
         String lat = Double.toString(mMap.getCameraPosition().target.latitude);
         String lon = Double.toString(mMap.getCameraPosition().target.longitude);
