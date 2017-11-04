@@ -53,34 +53,34 @@ public class Util {
         return "";
     }
 
-    private static ArrayList<String> tmp;
-    private static Lock lock = new ReentrantLock();
-    public static ArrayList<String> GetListadoCategorias() {
+    public static void OnAppStarted() {
         Uri uri = new Uri.Builder().scheme("http")
                 .encodedAuthority("185.137.93.170:8080")
                 .path("sql.php")
                 .appendQueryParameter("sql", "SELECT nombre FROM Categoria_comercio")
                 .build();
-        (new AsyncTask<Uri, String, ArrayList<String>>(){
-            protected ArrayList<String> doInBackground(Uri... urls) {
-                String received = Util.GetWeb(urls[0]);
-                ArrayList<String> arr = new ArrayList<String>();
-                try {
-                    JSONArray obj = new JSONArray(received);
-                    for (int i = 0; i < obj.length(); i++) {
-                        arr.add(obj.getJSONObject(i).getString("nombre"));
-                    }
-                } catch (Exception e) {
-                    Log.e("ERROR general", e.toString());
-                } finally{
-                    lock.unlock();
-                    tmp = arr;
+        new PrecargarCagetorias().execute(uri);
+    }
+
+    private static class PrecargarCagetorias extends AsyncTask<Uri, String, Void> {
+        protected Void doInBackground(Uri... urls) {
+            String received = Util.GetWeb(urls[0]);
+            listadoCategoriasCacheadas.clear();
+            try {
+                JSONArray obj = new JSONArray(received);
+                for (int i = 0; i < obj.length(); i++) {
+                    listadoCategoriasCacheadas.add(obj.getJSONObject(i).getString("nombre"));
                 }
-                return arr;
+            } catch (Exception e) {
+                Log.e("ERROR general", e.toString());
             }
-        }).execute(uri);
-        lock.lock();
-        return new ArrayList<>(tmp);
+            return null;
+        }
+    }
+
+    private static ArrayList<String> listadoCategoriasCacheadas;
+    public static ArrayList<String> GetListadoCategorias() {
+        return listadoCategoriasCacheadas;
     }
 
     static double radius = 0;
