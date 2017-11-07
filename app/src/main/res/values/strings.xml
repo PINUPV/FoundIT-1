@@ -19,32 +19,33 @@
 
     <string-array name="paises">
         <item>España</item>
-    </string-array><string-array name="Categorias">
-    <item>storage</item>
-    <item>bus_station</item>
-    <item>transit_station</item>
-    <item>store</item>
-    <item>shopping_mall</item>
-    <item>florist</item>
-    <item>park</item>
-    <item>parking</item>
-    <item>clothing_store</item>
-    <item>food</item>
-    <item>lodging</item>
-    <item>health</item>
-    <item>doctor</item>
-    <item>accounting</item>
-    <item>finance</item>
-    <item>lawyer</item>
-    <item>cafe</item>
-    <item>restaurant</item>
-    <item>night_club</item>
-    <item>school</item>
-    <item>home_goods_store</item>
-    <item>gym</item>
-    <item>locksmith</item>
-    <item>furniture_store</item>
-    <item>hair_care</item>
-</string-array>
+    </string-array>
+    <string-array name="Categorias">
+        <item>storage</item>
+        <item>bus_station</item>
+        <item>transit_station</item>
+        <item>store</item>
+        <item>shopping_mall</item>
+        <item>florist</item>
+        <item>park</item>
+        <item>parking</item>
+        <item>clothing_store</item>
+        <item>food</item>
+        <item>lodging</item>
+        <item>health</item>
+        <item>doctor</item>
+        <item>accounting</item>
+        <item>finance</item>
+        <item>lawyer</item>
+        <item>cafe</item>
+        <item>restaurant</item>
+        <item>night_club</item>
+        <item>school</item>
+        <item>home_goods_store</item>
+        <item>gym</item>
+        <item>locksmith</item>
+        <item>furniture_store</item>
+        <item>hair_care</item>
+    </string-array>
 
 </resources>

@@ -1,6 +1,7 @@
 package foundit.foundit;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -10,8 +11,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.util.LogWriter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +42,7 @@ import java.net.URL;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener{
+        GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 14;
@@ -105,12 +108,14 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     boolean esperandoAMapaIdle = true;
     JSONArray ultimaBusqueda;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMarkerClickListener(this);
         LocationManager mLocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, locationListener );
 
@@ -194,6 +199,21 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         //for(int i = 0, i < info.length(); i++){
         //  mMap.addMarker(new MarkerOptions().posi)
 
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.showInfoWindow();
+        mMap.setOnInfoWindowClickListener(this);
+        return false;
+
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio()).commit();
 
     }
 }
