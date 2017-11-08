@@ -117,13 +117,15 @@ public class FragRegistro_Comercio extends Fragment {
     public void registrarComercio(){
         //Comprobar si la insercción del comercio ha funcionado correctamente
         //Toast.makeText(getActivity(), "No ha sido posible registrar el comercio", Toast.LENGTH_LONG).show();
-        String x = "http://185.137.93.170:8080/registro-comercio.php?Nombre=" + nombreDelComercio.getText() +
-                "&Poblacion=" + ciudadComercio.getText() + "&Pais=" + p + "&IDCategoria1=" + 2 +
-                "&Provincia=Valencia &Calle="+direccionComercio.getText()+"&Latitud=39.4657952&Longitud=-0.3315638";
+        String x = "http://185.137.93.170:8080/registro-negocio.php?nombre=" + nombreDelComercio.getText() +
+                "&poblacion=" + ciudadComercio.getText() + "&pais=" + p + "&categoria=" + 2 +
+                "&provincia=Valencia&calle="+direccionComercio.getText()+"&latitud=39.4657952&longitud=-0.3315638" +
+                "&telefono="+telfComercio.getText()+"&web"+webComercio.getText()+"&email="+emailcomercio.getText() +
+                "&usuarioregistrador=0";
+        // Categoría mal
 
         RegisterTaskComercio t = new RegisterTaskComercio();
         t.faC = getActivity();
-        //t.execute(x);
         try {
             JSONObject resp = t.execute(x).get();
             if (resp.toString().contains("ok")){
@@ -136,8 +138,9 @@ public class FragRegistro_Comercio extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        }
+    }
 }
+
 
 class RegisterTaskComercio extends AsyncTask<String, String, JSONObject> {
 
