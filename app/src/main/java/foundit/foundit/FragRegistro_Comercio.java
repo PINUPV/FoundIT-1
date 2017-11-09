@@ -154,7 +154,7 @@ class RegisterTaskComercio extends AsyncTask<String, String, JSONObject> {
             e.printStackTrace();
         }
         try {
-            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
+            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la accion\"}");
         } catch (JSONException e) {
             return null; // Nunca ocurrirá
         }

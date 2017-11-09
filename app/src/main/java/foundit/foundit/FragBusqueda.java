@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,6 +40,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
@@ -48,8 +52,9 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private static final float DEFAULT_ZOOM = 14;
     private static final int LOCATION_REQUES_CODE = 1;
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
-    private Button botonPrueba;
+    private ImageButton botonFiltros;
     private ImageButton botonLupa;
+    private ArrayList<String> listaActividades;
 
 
 
@@ -63,14 +68,18 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 .findFragmentById(R.id.fragMap);
         mapFragment.getMapAsync(this);
 
-        /*botonPrueba = (Button)view.findViewById(R.id.botonPrueba);
+        botonFiltros = (ImageButton)view.findViewById(R.id.busquedaFiltros);
 
-        botonPrueba.setOnClickListener(new View.OnClickListener() {
+        botonFiltros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Debug","Hola");
+                ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
+                actual.setVisibility(View.VISIBLE);
+
             }
-        });*/
+        });
 
         botonLupa = (ImageButton)view.findViewById(R.id.imageButton2);
 
@@ -112,22 +121,23 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
+
         mMap = googleMap;
         UiSettings uiSettings = mMap.getUiSettings();
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMarkerClickListener(this);
         LocationManager mLocManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0, locationListener );
-
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            mLocManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
-
-
-        } else {
-
-            // Si no tenemos permiso de localizacion mostrar un mensaje
         }
+
+         else {
+
+            Toast.makeText(getActivity(), "No tienes los permisos necesarios para ejecutar la aplicación", Toast.LENGTH_LONG);
+        }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(miPosicion,DEFAULT_ZOOM));
         uiSettings.setMyLocationButtonEnabled(true);
 
@@ -151,6 +161,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 }
             }
         });
+        //recuperarListaActividades();
     }
 
     LocationListener locationListener = new LocationListener() {
@@ -183,6 +194,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         String categoriaBusqueda = editTex.getText().toString();
     }
 
+
     public boolean esAlfaNumerica(final String cadena) {
         for(int i = 0; i < cadena.length(); ++i) {
             char caracter = cadena.charAt(i);
@@ -194,11 +206,20 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         return true;
     }
 
-    public void actualizarComercios(JSONArray info){
+    public void recuperarListaActividades(){
+        try {
+            Util.GetListadoCategorias();
+        } catch (Exception e) {
+            Log.e("ERROR2", e.toString());
+        }
+        Collections.sort(listaActividades, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
 
-        //for(int i = 0, i < info.length(); i++){
-        //  mMap.addMarker(new MarkerOptions().posi)
-
+    Toast.makeText(getActivity(),listaActividades.get(0),Toast.LENGTH_SHORT).show();
 
     }
 
