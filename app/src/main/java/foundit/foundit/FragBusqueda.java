@@ -7,21 +7,17 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,13 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -73,10 +63,11 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         botonFiltros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
+                recuperarListaActividades();
+               /* ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
-                actual.setVisibility(View.VISIBLE);
+                actual.setVisibility(View.VISIBLE);*/
 
             }
         });
