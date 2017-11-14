@@ -33,6 +33,8 @@ public class MainFoundit extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+
+        Util.OnAppStarted();
     }
 
     @Override
