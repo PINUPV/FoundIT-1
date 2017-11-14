@@ -2,7 +2,9 @@ package foundit.foundit;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -64,10 +66,23 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             @Override
             public void onClick(View v) {
                 recuperarListaActividades();
-               /* ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
-                actual.setVisibility(View.VISIBLE);*/
+                Log.v("DEBUG","Entre en el botonFiltro");
+                AlertDialog dialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                //ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
+                //LayoutInflater inflater = LayoutInflater.from(getContext());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                //View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
+                //actual.setVisibility(View.VISIBLE);
+                builder.setView(inflater.inflate(R.layout.layout_filtros, null));
+                builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                dialog=builder.create();
+                dialog.show();
 
             }
         });
