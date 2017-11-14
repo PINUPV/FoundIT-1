@@ -214,7 +214,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
     public void recuperarListaActividades(){
         try {
-            Util.GetListadoCategorias();
+            listaActividades = Util.GetListadoCategorias();
         } catch (Exception e) {
             Log.e("ERROR2", e.toString());
         }
