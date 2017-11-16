@@ -86,12 +86,12 @@
                 app:layout_constraintTop_toBottomOf="@+id/rating_comercio" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="99dp"
+                android:id="@+id/bt_like"
+                android:layout_width="87dp"
+                android:layout_height="86dp"
                 android:background="@android:color/transparent"
-                android:src="@mipmap/like_vacio"
-                tools:layout_editor_absoluteX="133dp"
+                android:src="@drawable/likevacio"
+                tools:layout_editor_absoluteX="78dp"
                 tools:layout_editor_absoluteY="97dp" />
         </android.support.constraint.ConstraintLayout>
 
