@@ -78,7 +78,7 @@ public class Util {
         }
     }
 
-    private static ArrayList<String> listadoCategoriasCacheadas;
+    private static ArrayList<String> listadoCategoriasCacheadas = new ArrayList<String>();
     public static ArrayList<String> GetListadoCategorias() {
         return listadoCategoriasCacheadas;
     }

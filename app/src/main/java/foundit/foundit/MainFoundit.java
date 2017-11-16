@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import layout.frag_ofertas;
+
 public class MainFoundit extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -33,6 +35,8 @@ public class MainFoundit extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+
+        Util.OnAppStarted();
     }
 
     @Override
@@ -83,6 +87,10 @@ public class MainFoundit extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Usuario()).commit();
         } else if (id == R.id.nav_RegComer) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Comercio()).commit();
+        } else if (id == R.id.nav_fav) {
+                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_favoritos()).commit();
+        } else if (id == R.id.nav_ofertas) {
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_ofertas()).commit();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

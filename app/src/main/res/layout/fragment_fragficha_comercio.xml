@@ -52,6 +52,7 @@
         </LinearLayout>
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/button_like"
             android:layout_width="403dp"
             android:layout_height="257dp"
             android:layout_weight="1">
@@ -83,6 +84,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating_comercio" />
+
+            <ImageButton
+                android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="99dp"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/like_vacio"
+                tools:layout_editor_absoluteX="133dp"
+                tools:layout_editor_absoluteY="97dp" />
         </android.support.constraint.ConstraintLayout>
 
     </LinearLayout>

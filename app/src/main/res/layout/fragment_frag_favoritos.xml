@@ -2,36 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="layout.frag_ofertas">
+    tools:context="foundit.foundit.frag_favoritos">
 
     <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerOfer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/botonesOfertaContainer"
+                android:id="@+id/layout_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="200dp"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/ofertaBotonBase"
+                <Spinner
+                    android:id="@+id/FavSpinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
+
             </LinearLayout>
+
+
+
         </ScrollView>
     </LinearLayout>
-
 </FrameLayout>
