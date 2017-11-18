@@ -18,8 +18,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,6 +38,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
@@ -46,7 +50,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
     private ImageButton botonFiltros;
     private ImageButton botonLupa;
-    private ArrayList<String> listaActividades;
+    private List<String> listaActividades;
 
 
 
@@ -72,15 +76,55 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 //ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
                 //LayoutInflater inflater = LayoutInflater.from(getContext());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                //View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
+                View actual = inflater.inflate(R.layout.layout_filtros,null);
                 //actual.setVisibility(View.VISIBLE);
-                builder.setView(inflater.inflate(R.layout.layout_filtros, null));
+
+                //Cargar en el linear layout n CheckBox
+                final List<String> Filtros=new ArrayList<>();
+
+                LinearLayout layout_Filtros = (LinearLayout) actual.findViewById(R.id.linear_layout_filtros);
+                recuperarListaActividades();
+                for(String atributo:listaActividades){
+                    CheckBox cB = new CheckBox(getActivity());
+                    cB.setText(atributo);
+                    cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            String mostrar="";
+                            if(isChecked){
+                                Filtros.add(buttonView.getText().toString());
+                            }else{
+                                Filtros.remove(buttonView.getText().toString());
+                            }
+                            for(String filtro:Filtros){
+                                mostrar+=filtro+" ";
+                            }
+                            Toast.makeText(getActivity(), mostrar, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    layout_Filtros.addView(cB);
+                }
+
+
+
+                builder.setView(actual);
                 builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
+                })
+                .setPositiveButton(R.string.Aceptar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        busquedaActual="";
+                        for(String filtro:Filtros){
+                            busquedaActual+=filtro+" ";
+                        }
+                        Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                    }
                 });
+
                 dialog=builder.create();
                 dialog.show();
 

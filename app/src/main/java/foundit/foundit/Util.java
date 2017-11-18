@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -78,8 +79,8 @@ public class Util {
         }
     }
 
-    private static ArrayList<String> listadoCategoriasCacheadas = new ArrayList<String>();
-    public static ArrayList<String> GetListadoCategorias() {
+    private static List<String> listadoCategoriasCacheadas = new ArrayList<String>();
+    public static List<String> GetListadoCategorias() {
         return listadoCategoriasCacheadas;
     }
 
