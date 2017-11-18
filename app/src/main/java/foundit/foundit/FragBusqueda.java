@@ -284,7 +284,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     @Override
     public void onInfoWindowClick(Marker marker) {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio()).commit();
+        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(marker)).commit();
 
     }
 }

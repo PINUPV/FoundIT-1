@@ -1,6 +1,7 @@
 package foundit.foundit;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,6 +15,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,9 +38,14 @@ public class Fragficha_comercio extends Fragment {
     int IDComercio = 2204;
     String comentario = "";
     Boolean yaValorado = false;
+    private Marker marker;
 
-    public Fragficha_comercio() {
+    public Fragficha_comercio(){}
+
+    @SuppressLint("ValidFragment")
+    public Fragficha_comercio(Marker marker) {
         // Required empty public constructor
+        this.marker = marker;
     }
 
 
@@ -80,6 +89,7 @@ public class Fragficha_comercio extends Fragment {
     }
 
     private void onFichaOpen() {
+        IDComercio = Integer.parseInt(marker.getId());
         String x = "http://185.137.93.170:8080/sql.php?sql=185.137.93.170:8080/sql.php?sql=SELECT * FROM Comentarios WHERE IDUsuario = "+IDUsuario+"AND IDComercio = "+IDComercio;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
