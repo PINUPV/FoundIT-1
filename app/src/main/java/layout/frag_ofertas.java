@@ -2,6 +2,8 @@ package layout;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ScrollView;
@@ -43,6 +47,7 @@ import foundit.foundit.MainFoundit;
 import foundit.foundit.R;
 import foundit.foundit.Util;
 
+import static android.util.Base64.DEFAULT;
 import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 
 /**
@@ -183,6 +188,7 @@ public class frag_ofertas extends Fragment {
                     } catch (Exception e) {
                         o.score = 0;
                     }
+                    o.SetImage(obj.getString("imagenOferta"));
 
                     ofertas.add(o);
 
@@ -225,6 +231,9 @@ public class frag_ofertas extends Fragment {
             ((TextView) layout.findViewById(R.id.oferta_nombre_negocio)).setText(o.nombreNegocio);
             ((TextView) layout.findViewById(R.id.oferta_fecha)).setText(o.GetHasta());
             ((TextView) layout.findViewById(R.id.oferta_distancia)).setText(String.format ("%.3f", o.distancia / 1000) + " km");
+            if (o.imagen != null) {
+                ((ImageView) layout.findViewById(R.id.ofera_popup_imagen)).setImageBitmap(o.imagen);
+            }
             ((Button) layout.findViewById(R.id.oferta_popup_cerrar)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -258,9 +267,17 @@ public class frag_ofertas extends Fragment {
         public double distancia;
         public double score;
         public Button boton;
+        public Bitmap imagen = null;
 
         public String GetHasta() {
             return dateFormatSet.format(hasta);
+        }
+
+        public void SetImage(String b64Imagen) {
+            if (b64Imagen != null && b64Imagen != "") {
+                byte[] data = Base64.decode(b64Imagen, DEFAULT);
+                imagen = BitmapFactory.decodeByteArray(data, 0, data.length);
+            }
         }
     }
 }
