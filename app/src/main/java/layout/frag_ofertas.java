@@ -222,7 +222,7 @@ public class frag_ofertas extends Fragment {
             // create a 300px width and 470px height PopupWindow
             final PopupWindow pw = new PopupWindow(layout,
                     (int) (view.getWidth() * 0.8),
-                    750,
+                    1200,
                     true);
             // display the popup in the center
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
