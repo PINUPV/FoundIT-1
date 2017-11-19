@@ -93,7 +93,7 @@ public class frag_ofertas extends Fragment {
             Uri uri = new Uri.Builder().scheme("http")
                     .encodedAuthority("185.137.93.170:8080")
                     .path("sql.php")
-                    .appendQueryParameter("sql", "SELECT * FROM Ofertas " +
+                    .appendQueryParameter("sql", "SELECT Ofertas.Nombre as oferta_nombre, Ofertas.*, ComercPremium.*, Comercio.*, User_Rates.* FROM Ofertas " +
                             "LEFT JOIN ComercPremium ON Ofertas.Comercio = ComercPremium.IDComer " +
                             "LEFT JOIN Comercio ON Ofertas.Comercio = Comercio.ID " +
                             "LEFT JOIN (SELECT IDComercio, AVG(Rate) FROM Comentarios GROUP BY IDComercio) AS User_Rates ON Ofertas.Comercio = User_Rates.IDComercio ")
@@ -174,6 +174,7 @@ public class frag_ofertas extends Fragment {
                     if (new Date().after(o.hasta)) continue;
 
                     o.nombreNegocio = obj.getString("Nombre");
+                    o.nombreOferta = obj.getString("oferta_nombre");
                     o.posicion = new LatLng(obj.getDouble("Latitud"), obj.getDouble("Longitud"));
                     o.distancia = Util.distance(o.posicion.latitude, o.posicion.longitude,
                             FragBusqueda.lastMapPosition.latitude, FragBusqueda.lastMapPosition.longitude);
@@ -220,7 +221,8 @@ public class frag_ofertas extends Fragment {
             // display the popup in the center
             pw.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-            ((TextView) layout.findViewById(R.id.oferta_nombre_comercio)).setText(o.nombreNegocio);
+            ((TextView) layout.findViewById(R.id.oferta_nombre)).setText(o.nombreOferta);
+            ((TextView) layout.findViewById(R.id.oferta_nombre_negocio)).setText(o.nombreNegocio);
             ((TextView) layout.findViewById(R.id.oferta_fecha)).setText(o.GetHasta());
             ((TextView) layout.findViewById(R.id.oferta_distancia)).setText(String.format ("%.3f", o.distancia / 1000) + " km");
             ((Button) layout.findViewById(R.id.oferta_popup_cerrar)).setOnClickListener(new View.OnClickListener() {
@@ -251,6 +253,7 @@ public class frag_ofertas extends Fragment {
 
         public Date hasta;
         public String nombreNegocio;
+        public String nombreOferta;
         public LatLng posicion;
         public double distancia;
         public double score;
