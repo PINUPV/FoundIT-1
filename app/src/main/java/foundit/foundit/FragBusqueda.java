@@ -283,8 +283,12 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
+        try {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(marker)).commit();
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(marker)).commit();
+        }catch (Exception ne){
+            Toast.makeText(getActivity(),"Ficha de comercio no disponible",Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

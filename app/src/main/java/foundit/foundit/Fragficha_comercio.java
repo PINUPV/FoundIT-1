@@ -67,7 +67,7 @@ public class Fragficha_comercio extends Fragment {
             }
         });
 
-        rbarComercio = (RatingBar) view.findViewById(R.layout.fragment_fragficha_comercio);
+        rbarComercio = (RatingBar) view.findViewById(R.id.rating_comercio);
         rbarComercio.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -89,8 +89,8 @@ public class Fragficha_comercio extends Fragment {
     }
 
     private void onFichaOpen() {
-        IDComercio = Integer.parseInt(marker.getId());
-        String x = "http://185.137.93.170:8080/sql.php?sql=185.137.93.170:8080/sql.php?sql=SELECT * FROM Comentarios WHERE IDUsuario = "+IDUsuario+"AND IDComercio = "+IDComercio;
+        //IDComercio = Integer.parseInt(marker.getId().replaceAll("[^0-9]", ""));
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDUsuario%20=%2022%20AND%20IDComercio%20=%202204";
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
@@ -106,7 +106,7 @@ public class Fragficha_comercio extends Fragment {
        }
 
     private void puntuar(float val ) {
-        String x = "http://185.137.93.170:8080/sql.php?sql=185.137.93.170:8080/sql.php?sql=INSERT INTO Comentarios(ID, IDUsuario, IDComercio, IDComentResponse, ComentText, Rate) " +
+        String x = "http://185.137.93.170:8080/sql.php?sql=INSERT INTO Comentarios(ID, IDUsuario, IDComercio, IDComentResponse, ComentText, Rate) " +
                 "VALUES (0,"+IDUsuario+","+IDComercio+",null,"+comentario+","+val+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
