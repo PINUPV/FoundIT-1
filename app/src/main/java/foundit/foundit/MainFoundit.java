@@ -72,13 +72,15 @@ public class MainFoundit extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public static FragmentManager fragmentManager;
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
 
         if (id == R.id.nav_Mapa) {

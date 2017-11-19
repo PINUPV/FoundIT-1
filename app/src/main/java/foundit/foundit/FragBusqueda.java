@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -39,12 +40,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Queue;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener {
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 14;
     private static final int LOCATION_REQUES_CODE = 1;
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
@@ -167,6 +169,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     boolean esperandoAMapaIdle = true;
     JSONArray ultimaBusqueda;
 
+    public LatLng QueuedMarkerTarget = null;
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -211,6 +215,17 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 }
             }
         });
+
+        if (QueuedMarkerTarget != null) {
+            final CameraUpdate center = CameraUpdateFactory.newLatLng(QueuedMarkerTarget);
+            final CameraUpdate zoom = CameraUpdateFactory.zoomTo(20);
+
+            mMap.moveCamera(center);
+            mMap.moveCamera(zoom);
+
+            QueuedMarkerTarget = null;
+        };
+
         //recuperarListaActividades();
     }
 
