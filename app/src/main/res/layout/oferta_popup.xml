@@ -21,6 +21,13 @@
         android:layout_gravity="center_vertical"
         android:text="Hasta el ..." />
 
+    <TextView
+        android:id="@+id/oferta_distancia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="km" />
+
     <Button
         android:id="@+id/oferta_popup_cerrar"
         android:layout_width="match_parent"

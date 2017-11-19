@@ -54,6 +54,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private ImageButton botonLupa;
     private List<String> listaActividades;
 
+    public static LatLng lastMapPosition;
+
 
 
     @Override
@@ -209,6 +211,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
                     try {
                         Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                        UpdateLastMapPosition();
                     } catch (Exception e) {
                         Log.e("ERROR1", e.toString());
                     }
@@ -226,13 +229,19 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             QueuedMarkerTarget = null;
         };
 
+        UpdateLastMapPosition();
         //recuperarListaActividades();
+    }
+
+    void UpdateLastMapPosition() {
+        lastMapPosition = mMap.getCameraPosition().target;
     }
 
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
+            UpdateLastMapPosition();
         }
 
         @Override
