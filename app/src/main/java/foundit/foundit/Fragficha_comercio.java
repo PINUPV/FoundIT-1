@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,19 +33,21 @@ import java.util.concurrent.ExecutionException;
  */
 public class Fragficha_comercio extends Fragment {
 
-    Button bt_cerrar_ficha;
+    Button bt_cerrar_ficha, bt_u1, bt_u22, bt_u5;
     ImageButton bt_like;
     RatingBar rbarTotal, rbarComercio;
 
+    int idU1 = 1, idU5 = 5, idU22 = 22;
     int IDUsuario = 22;
     int IDComercio = 0;
-    String comentario = "";
+    String comentario = "_";
     Boolean yaValorado = false;
     String nombreComercio, calleComercio;
     ListView listRatings;
     boolean lik;
     ArrayList<comentario> listComent = new ArrayList<comentario>();
     float valoracionTotal = 0;
+    TextView nomComercio;
 
     public Fragficha_comercio(){}
 
@@ -65,7 +68,8 @@ public class Fragficha_comercio extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fragficha_comercio, container, false);
         listRatings = (ListView) view.findViewById(R.id.list_valoraciones);
         onFichaOpen();
-
+        nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
+        nomComercio.setText(nombreComercio);
         bt_cerrar_ficha = (Button) view.findViewById(R.id.bt_cerrar_fichaCom);
         bt_cerrar_ficha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +78,30 @@ public class Fragficha_comercio extends Fragment {
                 startActivity(Main);
             }
         });
-
+        bt_u1 = (Button) view.findViewById(R.id.bt_u1);
+        bt_u1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                IDUsuario = idU1;
+                refreshUsuario();
+            }
+        });
+        bt_u5 = (Button) view.findViewById(R.id.bt_u5);
+        bt_u5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                IDUsuario = idU5;
+                refreshUsuario();
+            }
+        });
+        bt_u22 = (Button) view.findViewById(R.id.bt_u22);
+        bt_u22.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                IDUsuario = idU22;
+                refreshUsuario();
+            }
+        });
         rbarTotal = (RatingBar) view.findViewById(R.id.rating_total);
         rbarTotal.setRating(valoracionTotal);
         rbarComercio = (RatingBar) view.findViewById(R.id.rating_comercio);
@@ -122,32 +149,62 @@ public class Fragficha_comercio extends Fragment {
         return view;
     }
 
-    private void onFichaOpen() {
-
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
+    private void refreshUsuario() {
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
             JSONArray respuesta = t.execute(x).get();
-            if (respuesta.length() > 0){
-            mostrarValoraciones(respuesta);
-            }
-            if (respuesta.toString().contains(String.valueOf(IDUsuario))){
-            yaValorado = true;
-            }else{yaValorado = false;}
+                if (respuesta.length() > 0) {
+                    yaValorado = true;
+                } else {
+                    yaValorado = false;
+                }
+            }catch (ExecutionException e){
+            e.printStackTrace();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    private void onFichaOpen() {
+
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
+        String z = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+        RegisterTaskFicha t = new RegisterTaskFicha();
+        t.faF = getActivity();
+        try {
+            JSONArray respuesta = t.execute(x).get();
+            if (respuesta.length() > 0) {
+                mostrarValoraciones(respuesta);
+            }
+            RegisterTaskFicha p = new RegisterTaskFicha();
+            p.faF = getActivity();
+            try {
+                JSONArray respUsuario = p.execute(z).get();
+
+                if (respUsuario.length() > 0) {
+                    yaValorado = true;
+                } else {
+                    yaValorado = false;
+                }
+            }catch (ExecutionException e){
+
+            }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+
+            }
+        }
+
     private void mostrarValoraciones(JSONArray respuesta) throws JSONException {
         int idUsuario, idComercio;
         float rating;
-
+        listComent.clear();
     for (int i = 0; i < respuesta.length(); i++ ){
         JSONObject obj = respuesta.getJSONObject(i);
           idUsuario = obj.getInt("IDUsuario");
@@ -161,6 +218,7 @@ public class Fragficha_comercio extends Fragment {
         String[] ratings = new String[listComent.size()];
 
         int j = 0;
+        valoracionTotal = 0;
         for(comentario com : listComent){
             valoracionTotal = valoracionTotal + com.rating;
          String username = recuperarUsuario(com.idUsuario);
@@ -170,6 +228,7 @@ public class Fragficha_comercio extends Fragment {
         }
             valoracionTotal = valoracionTotal/listComent.size();
             ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
+            listRatings.setAdapter(null);
             listRatings.setAdapter(adapter);
         }
     }
@@ -195,19 +254,18 @@ public class Fragficha_comercio extends Fragment {
         return username;
     }
 
-    private void puntuar(float val ) {
+    private void puntuar(float val) {
         String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+comentario+","+val+")";
+                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',"+val+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
-        //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
         try {
 
             JSONArray respuesta = t.execute(x).get();
 
                 Toast.makeText(getActivity(), "Comercio puntuado con un: "+val, Toast.LENGTH_SHORT).show();
-              // refreshRating();
+                refreshRating();
 
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -220,7 +278,8 @@ public class Fragficha_comercio extends Fragment {
     }
 
     private void refreshRating() {
-
+        onFichaOpen();
+        rbarTotal.setRating(valoracionTotal);
     }
 }
 class RegisterTaskFicha extends AsyncTask<String, String, JSONArray> {

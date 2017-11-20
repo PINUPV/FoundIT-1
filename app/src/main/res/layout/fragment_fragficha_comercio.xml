@@ -23,7 +23,7 @@
                 android:id="@+id/rating_total"
                 style="?android:attr/ratingBarStyleSmall"
                 android:layout_width="wrap_content"
-                android:layout_height="133dp"
+                android:layout_height="126dp"
                 android:layout_weight="1"
                 android:numStars="5"
                 android:rating="1"
@@ -32,7 +32,7 @@
             <ImageView
                 android:id="@+id/img_comercio"
                 android:layout_width="wrap_content"
-                android:layout_height="292dp"
+                android:layout_height="275dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="14dp"
@@ -44,6 +44,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar2"
+                    android:layout_width="399dp"
+                    android:layout_height="58dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/colorPrimary"
+                    android:minHeight="?attr/actionBarSize"
+                    android:theme="?attr/actionBarTheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
                     android:id="@+id/bt_like"
@@ -61,6 +75,22 @@
                     app:layout_constraintHorizontal_bias="0.882"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_nombre_comercio"
+                    android:layout_width="234dp"
+                    android:layout_height="21dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="500dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.52"
+                    app:layout_constraintStart_toEndOf="@+id/toolbar2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>
@@ -70,6 +100,31 @@
             android:layout_width="403dp"
             android:layout_height="257dp"
             android:layout_weight="1">
+
+            <Button
+                android:id="@+id/bt_u5"
+                android:layout_width="78dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Usuario_5"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bt_u22"
+                app:layout_constraintHorizontal_bias="0.421"
+                app:layout_constraintStart_toEndOf="@+id/bt_u1" />
+
+            <Button
+                android:id="@+id/bt_u22"
+                android:layout_width="78dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="24dp"
+                android:text="Usuario_22"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/bt_cerrar_fichaCom" />
 
             <RatingBar
                 android:id="@+id/rating_comercio"
@@ -91,14 +146,11 @@
                 android:id="@+id/bt_cerrar_fichaCom"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginEnd="168dp"
-                android:layout_marginStart="147dp"
+                android:layout_marginEnd="36dp"
                 android:layout_marginTop="184dp"
                 android:text="Cerrar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rating_comercio"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -116,6 +168,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.495" />
+
+            <Button
+                android:id="@+id/bt_u1"
+                android:layout_width="78dp"
+                android:layout_height="34dp"
+                android:layout_marginBottom="16dp"
+                android:text="Usuario_1"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 
