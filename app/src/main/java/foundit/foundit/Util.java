@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -145,6 +146,8 @@ class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {
         return obj;
     }
 
+    public static HashMap<Marker, Comercio.Comercio> MarkersInfo = new HashMap<>();
+
     class MarkerCache {
         Marker marker;
         String ID;
@@ -171,11 +174,18 @@ class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {
                         MarkerCache oldMarker = idEnAnteriores(obj.getString("ID"));
                         if (oldMarker == null) {
                             LatLng latlong = new LatLng(Double.parseDouble(obj.getString("Latitud")), Double.parseDouble(obj.getString("Longitud")));
-                            newMarkers.add(new MarkerCache(obj.getString("ID"), mMap.addMarker(
+                            Marker m = mMap.addMarker(
                                     new MarkerOptions()
                                     .position(latlong)
                                     .title(obj.getString("Nombre"))
-                                    .snippet(obj.getString("Calle")))));
+                                    .snippet(obj.getString("Calle")));
+                            newMarkers.add(new MarkerCache(obj.getString("ID"), m));
+                            Comercio.Comercio comInfo = new Comercio.Comercio();
+                            comInfo.setAddress(obj.getString("Calle"));
+                            comInfo.setCountry(obj.getString("Pais"));
+                            comInfo.setCity(obj.getString("Provincia"));
+                            comInfo.setName(obj.getString("Nombre"));
+                            MarkersInfo.put(m, new Comercio.Comercio());
                             nuevos++;
                         } else {
                             newMarkers.add(oldMarker);
