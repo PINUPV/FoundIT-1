@@ -123,7 +123,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                     public void onClick(DialogInterface dialog, int which) {
                         busquedaActual="";
                         for(String filtro:Filtros){
-                            busquedaActual+=filtro+" ";
+                            busquedaActual+=filtro;
                         }
                         Util.CargarComerciosEnMapa(mMap, busquedaActual);
                     }
