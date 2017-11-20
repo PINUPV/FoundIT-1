@@ -1,38 +1,38 @@
 package foundit.foundit;
 
 
-import android.annotation.SuppressLint;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.support.design.widget.NavigationView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.math.BigDecimal;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-import Comentario.Comentario;
+import Usuario.Usuario;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,21 +43,17 @@ public class Fragficha_comercio extends Fragment {
     Button bt_cerrar_ficha;
     ImageButton bt_like;
     RatingBar rbarTotal, rbarComercio;
-
+    Float valoracion;
     int IDUsuario = 22;
     int IDComercio = 2204;
     String comentario = "";
     Boolean yaValorado = false;
-    private Marker marker;
-    ListView listRatings;
-    ArrayList<comentario> listComent = new ArrayList<comentario>();
+    boolean lik = false;
+    //private Usuario usu;
 
-    public Fragficha_comercio(){}
 
-    @SuppressLint("ValidFragment")
-    public Fragficha_comercio(Marker marker) {
+    public Fragficha_comercio() {
         // Required empty public constructor
-        this.marker = marker;
     }
 
 
@@ -67,26 +63,27 @@ public class Fragficha_comercio extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragficha_comercio, container, false);
-        listRatings = (ListView) view.findViewById(R.id.list_valoraciones);
+
         onFichaOpen();
 
         bt_cerrar_ficha = (Button) view.findViewById(R.id.bt_cerrar_fichaCom);
         bt_cerrar_ficha.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent Main = new Intent(getActivity(), MainFoundit.class);
                 startActivity(Main);
             }
         });
+        (ngBar ratingBar, float rating, boolean fromUser) {
+            if(!yaValorado){
 
-        rbarComercio = (RatingBar) view.findViewById(R.id.rating_comercio);
+        rbarComercio = (RatingBar) view.findViewById(R.layout.fragment_fragficha_comercio);
         rbarComercio.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                if(!yaValorado){
+            public void onRatingChanged(Rati
                 puntuar(rating);}
                 else{
-                    Toast.makeText(getActivity(), "Ya has valorado este comercio", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Ya has valorado este comercio", Toast.LENGTH_LONG);
                 }
             }
         });
@@ -94,104 +91,72 @@ public class Fragficha_comercio extends Fragment {
         bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                if(lik == false){
+                    bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                    lik = true;
+                    String x = "http://185.137.93.170:8080/lista-fav.php?iduser=" + IDUsuario +
+                            "&idcomer=" + IDComercio;
+                    RegisterTask t = new RegisterTask();
+                    t.fa = getActivity();
+                    //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject respuesta = t.execute(x).get();
+                        if (respuesta.toString().contains("ok")){
+                            Toast.makeText(getActivity(), "Usuario registrado", Toast.LENGTH_LONG).show();
+                            Intent Main = new Intent(getActivity(), MainFoundit.class);
+                            startActivity(Main);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                } else{
+                    bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
+                    lik = false;
+                }
             }
         });
         return view;
     }
 
     private void onFichaOpen() {
-        //IDComercio = Integer.parseInt(marker.getId().replaceAll("[^0-9]", ""));
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
+        String x = "http://185.137.93.170:8080/sql.php?sql=185.137.93.170:8080/sql.php?sql=SELECT * FROM Comentarios WHERE IDUsuario = "+IDUsuario+"AND IDComercio = "+IDComercio;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
-            JSONArray respuesta = t.execute(x).get();
-            if (respuesta.length() > 0){
-            mostrarValoraciones(respuesta);
-            }
-            if (respuesta.toString().contains(String.valueOf(IDUsuario))){
+            JSONObject respuesta = t.execute(x).get();
+            if (respuesta.toString().contains("ok")){
             yaValorado = true;
             }else{yaValorado = false;}
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
-    }
-
-    private void mostrarValoraciones(JSONArray respuesta) throws JSONException {
-        int idUsuario, idComercio;
-        float rating;
-
-    for (int i = 0; i < respuesta.length(); i++ ){
-        JSONObject obj = respuesta.getJSONObject(i);
-          idUsuario = obj.getInt("IDUsuario");
-        idComercio = obj.getInt("IDComercio");
-        rating = BigDecimal.valueOf(obj.getDouble("Rate")).floatValue();
-        comentario c = new comentario(idUsuario,idComercio,"",rating);
-
-        listComent.add(c);
-        }
-        if (!listComent.isEmpty()){
-        String[] ratings = new String[listComent.size()];
-
-        int j = 0;
-        for(comentario com : listComent){
-         String username = recuperarUsuario(com.idUsuario);
-        ratings[j] = String.valueOf(com.rating)+" - "+username;
-                j++;
-
-        }
-            ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
-            listRatings.setAdapter(adapter);
-        }
-    }
-
-    private String recuperarUsuario(int id) {
-        String username = "";
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Alias%20FROM%20Usuario%20WHERE%20ID%20=%20"+id;
-        RegisterTaskFicha t = new RegisterTaskFicha();
-        t.faF = getActivity();
-        try {
-            JSONArray respuesta = t.execute(x).get();
-            if (respuesta.length() > 0){
-                username = (respuesta.getJSONObject(0)).getString("Alias");
-            }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return username;
-    }
+       }
 
     private void puntuar(float val ) {
-        String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+comentario+","+val+")";
+        String x = "http://185.137.93.170:8080/sql.php?sql=185.137.93.170:8080/sql.php?sql=INSERT INTO Comentarios(ID, IDUsuario, IDComercio, IDComentResponse, ComentText, Rate) " +
+                "VALUES (0,"+IDUsuario+","+IDComercio+",null,"+comentario+","+val+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
         try {
-
-            JSONArray respuesta = t.execute(x).get();
-
-                Toast.makeText(getActivity(), "Comercio puntuado con un: "+val, Toast.LENGTH_SHORT).show();
+            JSONObject respuesta = t.execute(x).get();
+            if (respuesta.toString().contains("ok")){
+                Toast.makeText(getActivity(), "Comercio puntuado con un: "+val, Toast.LENGTH_LONG).show();
               // refreshRating();
-
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-        
+
 
     }
 
@@ -199,46 +164,30 @@ public class Fragficha_comercio extends Fragment {
 
     }
 }
-class RegisterTaskFicha extends AsyncTask<String, String, JSONArray> {
+class RegisterTaskFicha extends AsyncTask<String, String, JSONObject> {
 
     FragmentActivity faF;
     @Override
-    protected JSONArray doInBackground(String... params) {
+    protected JSONObject doInBackground(String... params) {
         String result = Util.GetWeb(Uri.parse(params[0]));
-
         try {
-           return new JSONArray(result);
+            return new JSONObject(result);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            return new JSONArray("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la accion\"}");
+            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la accion\"}");
         } catch (JSONException e) {
             return null; // Nunca ocurrirá
         }
     }
 
     @Override
-    protected void onPostExecute(JSONArray respuesta) {
-       // try {
-          //  Toast.makeText(faF,respuesta.get(0).toString(),Toast.LENGTH_SHORT).show();
-       // } catch (JSONException e) {
-       //     e.printStackTrace();
-       // }
+    protected void onPostExecute(JSONObject respuesta) {
+        try {
+            Toast.makeText(faF,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
- class comentario {
-     int idUsuario;
-     int idComercio;
-     String text;
-     float rating;
-
-     public comentario(int idUsu, int idCom, String text, float rating)
-     {
-         this.idUsuario = idUsu;
-         this.idComercio = idCom;
-         this.text = text;
-         this.rating = rating;
-     }
-
- }
