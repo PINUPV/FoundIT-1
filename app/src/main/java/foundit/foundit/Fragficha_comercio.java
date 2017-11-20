@@ -42,6 +42,7 @@ public class Fragficha_comercio extends Fragment {
     Boolean yaValorado = false;
     String nombreComercio, calleComercio;
     ListView listRatings;
+    boolean lik;
     ArrayList<comentario> listComent = new ArrayList<comentario>();
     float valoracionTotal = 0;
 
@@ -91,7 +92,31 @@ public class Fragficha_comercio extends Fragment {
         bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                if(lik == false){
+                    bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                    lik = true;
+                    String x = "http://185.137.93.170:8080/lista-fav.php?iduser=" + IDUsuario +
+                            "&idcomer=" + IDComercio;
+                    RegisterTask t = new RegisterTask();
+                    t.fa = getActivity();
+                    //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject respuesta = t.execute(x).get();
+                        if (respuesta.toString().contains("ok")){
+                            Toast.makeText(getActivity(), "Favorito agregado", Toast.LENGTH_LONG).show();
+                            Intent Main = new Intent(getActivity(), MainFoundit.class);
+                            startActivity(Main);
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+
+                } else{
+                    bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
+                    lik = false;
+                }
             }
         });
         return view;
