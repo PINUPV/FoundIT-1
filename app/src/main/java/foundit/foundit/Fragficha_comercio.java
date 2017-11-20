@@ -2,7 +2,6 @@ package foundit.foundit;
 
 
 import android.annotation.SuppressLint;
-import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,20 +18,13 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import Comentario.Comentario;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,19 +37,22 @@ public class Fragficha_comercio extends Fragment {
     RatingBar rbarTotal, rbarComercio;
 
     int IDUsuario = 22;
-    int IDComercio = 2204;
+    int IDComercio = 0;
     String comentario = "";
     Boolean yaValorado = false;
-    private Marker marker;
+    String nombreComercio, calleComercio;
     ListView listRatings;
     ArrayList<comentario> listComent = new ArrayList<comentario>();
+    float valoracionTotal = 0;
 
     public Fragficha_comercio(){}
 
     @SuppressLint("ValidFragment")
-    public Fragficha_comercio(Marker marker) {
-        // Required empty public constructor
-        this.marker = marker;
+    public Fragficha_comercio(int idCom, String nombre, String calle) {
+        this.IDComercio = idCom;
+       this.nombreComercio = nombre;
+       this.calleComercio = calle;
+
     }
 
 
@@ -79,6 +74,8 @@ public class Fragficha_comercio extends Fragment {
             }
         });
 
+        rbarTotal = (RatingBar) view.findViewById(R.id.rating_total);
+        rbarTotal.setRating(valoracionTotal);
         rbarComercio = (RatingBar) view.findViewById(R.id.rating_comercio);
         rbarComercio.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
             @Override
@@ -101,7 +98,7 @@ public class Fragficha_comercio extends Fragment {
     }
 
     private void onFichaOpen() {
-        //IDComercio = Integer.parseInt(marker.getId().replaceAll("[^0-9]", ""));
+
         String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
@@ -140,11 +137,13 @@ public class Fragficha_comercio extends Fragment {
 
         int j = 0;
         for(comentario com : listComent){
+            valoracionTotal = valoracionTotal + com.rating;
          String username = recuperarUsuario(com.idUsuario);
-        ratings[j] = String.valueOf(com.rating)+" - "+username;
+        ratings[j] = "Valoración: "+String.valueOf(com.rating)+" - Usuario: "+username;
                 j++;
 
         }
+            valoracionTotal = valoracionTotal/listComent.size();
             ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
             listRatings.setAdapter(adapter);
         }

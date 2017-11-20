@@ -317,10 +317,10 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         try {
             String nombre = ActualizaMapa.MarkersInfo.get(marker).getName(); // Nombre del negocio
             String calle = ActualizaMapa.MarkersInfo.get(marker).getAddress(); // Calle del negocio
-            // etc...
+            int idCom = ActualizaMapa.MarkersInfo.get(marker).getId();
             
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(marker)).commit();
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(idCom,nombre,calle)).commit();
         }catch (Exception ne){
             Toast.makeText(getActivity(),"Ficha de comercio no disponible",Toast.LENGTH_SHORT).show();
         }
