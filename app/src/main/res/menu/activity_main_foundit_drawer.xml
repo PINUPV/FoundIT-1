@@ -7,13 +7,20 @@
             android:icon="@android:drawable/ic_dialog_map"
             android:title="@string/mapa" />
         <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/common_full_open_on_phone"
+            android:title="@string/login"
+            android:visible="true" />
+        <item
             android:id="@+id/nav_RegUser"
             android:icon="@drawable/common_full_open_on_phone"
-            android:title="@string/regUser" />
+            android:title="@string/regUser"
+            android:visible="false" />
         <item
             android:id="@+id/nav_RegComer"
             android:icon="@android:drawable/ic_menu_myplaces"
-            android:title="@string/RegComer" />
+            android:title="@string/RegComer"
+            android:visible="false" />
         <item
             android:id="@+id/nav_fav"
             android:icon="@android:drawable/btn_star"
@@ -22,11 +29,6 @@
             android:id="@+id/nav_ofertas"
             android:icon="@android:drawable/ic_menu_info_details"
             android:title="Ofertas" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"
-            android:visible="false" />
     </group>
 
     <item

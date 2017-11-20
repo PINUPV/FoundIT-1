@@ -1,0 +1,83 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|center_horizontal"
+    tools:context="foundit.foundit.Frag_LoginUsuario">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tVFragLoginUsuarioBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/login"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/eTFragLoginUsuarioUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/usuario"
+            android:inputType="textPersonName" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <EditText
+            android:id="@+id/eTFragmentLoginUsuarioPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/bTNFragmentLoginUsuarioLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingEnd="5px">
+
+        <TextView
+            android:id="@+id/tVFragmentLoginUsuarioRegistrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="5dp"
+            android:text="@string/textReg"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/colorPrimary" />
+    </TableRow>
+</TableLayout>

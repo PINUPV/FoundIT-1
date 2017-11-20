@@ -18,6 +18,11 @@
     <string name="RegComer">Reg. Comercio</string>
     <string name="Aceptar">Aceptar</string>
     <string name="Cancel">Cancelar</string>
+    <string name="login">Login</string>
+    <string name="usuario">Usuario</string>
+    <string name="password">Password</string>
+    <string name="textReg"><u>No tienes cuenta? ¡REGISTRATE!</u></string>
+    <string name="email">Mail</string>
 
     <string-array name="paises">
         <item>España</item>
