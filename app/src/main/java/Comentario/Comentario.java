@@ -12,12 +12,14 @@ public class Comentario {
     Usuario usuario;
     Comercio comercio;
     String text;
+    float rating;
 
-    public Comentario(Usuario usuario, Comercio comercio, String text)
+    public Comentario(Usuario usuario, Comercio comercio, String text, float rating)
     {
         this.usuario = usuario;
         this.comercio = comercio;
         this.text = text;
+        this.rating = rating;
     }
 
     public Usuario getUsuario() {
@@ -43,4 +45,9 @@ public class Comentario {
     public void setText(String text) {
         this.text = text;
     }
+
+    public float getRating(){
+        return rating;
+     }
+     public void setRating(float rating){this.rating = rating;}
 }

@@ -18,10 +18,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,18 +39,22 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Queue;
 
 
 public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener {
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
     private static final float DEFAULT_ZOOM = 14;
     private static final int LOCATION_REQUES_CODE = 1;
     private LatLng miPosicion = new LatLng(39.48,-0.34); // Posicion del politecnico
     private ImageButton botonFiltros;
     private ImageButton botonLupa;
-    private ArrayList<String> listaActividades;
+    private List<String> listaActividades;
+
+    public static LatLng lastMapPosition;
 
 
 
@@ -72,15 +80,55 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 //ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
                 //LayoutInflater inflater = LayoutInflater.from(getContext());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
-                //View actual = inflater.inflate(R.layout.layout_filtros, ventanaFiltros,true);
+                View actual = inflater.inflate(R.layout.layout_filtros,null);
                 //actual.setVisibility(View.VISIBLE);
-                builder.setView(inflater.inflate(R.layout.layout_filtros, null));
+
+                //Cargar en el linear layout n CheckBox
+                final List<String> Filtros=new ArrayList<>();
+
+                LinearLayout layout_Filtros = (LinearLayout) actual.findViewById(R.id.linear_layout_filtros);
+                recuperarListaActividades();
+                for(String atributo:listaActividades){
+                    CheckBox cB = new CheckBox(getActivity());
+                    cB.setText(atributo);
+                    cB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            String mostrar="";
+                            if(isChecked){
+                                Filtros.add(buttonView.getText().toString());
+                            }else{
+                                Filtros.remove(buttonView.getText().toString());
+                            }
+                            for(String filtro:Filtros){
+                                mostrar+=filtro+" ";
+                            }
+                            Toast.makeText(getActivity(), mostrar, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    layout_Filtros.addView(cB);
+                }
+
+
+
+                builder.setView(actual);
                 builder.setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
+                })
+                .setPositiveButton(R.string.Aceptar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        busquedaActual="";
+                        for(String filtro:Filtros){
+                            busquedaActual+=filtro;
+                        }
+                        Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                    }
                 });
+
                 dialog=builder.create();
                 dialog.show();
 
@@ -123,6 +171,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     boolean esperandoAMapaIdle = true;
     JSONArray ultimaBusqueda;
 
+    public LatLng QueuedMarkerTarget = null;
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap)
@@ -161,19 +211,37 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
                     try {
                         Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                        UpdateLastMapPosition();
                     } catch (Exception e) {
                         Log.e("ERROR1", e.toString());
                     }
                 }
             }
         });
+
+        if (QueuedMarkerTarget != null) {
+            final CameraUpdate center = CameraUpdateFactory.newLatLng(QueuedMarkerTarget);
+            final CameraUpdate zoom = CameraUpdateFactory.zoomTo(20);
+
+            mMap.moveCamera(center);
+            mMap.moveCamera(zoom);
+
+            QueuedMarkerTarget = null;
+        };
+
+        UpdateLastMapPosition();
         //recuperarListaActividades();
+    }
+
+    void UpdateLastMapPosition() {
+        lastMapPosition = mMap.getCameraPosition().target;
     }
 
     LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             miPosicion = new LatLng(location.getLatitude(),location.getLongitude());
+            UpdateLastMapPosition();
         }
 
         @Override
@@ -239,8 +307,12 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
+        try {
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio()).commit();
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Fragficha_comercio(marker)).commit();
+        }catch (Exception ne){
+            Toast.makeText(getActivity(),"Ficha de comercio no disponible",Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

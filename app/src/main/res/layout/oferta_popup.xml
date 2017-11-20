@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_element"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#eee"
+    android:padding="10px"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/oferta_nombre"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Nombre oferta" />
+
+    <TextView
+        android:id="@+id/oferta_nombre_negocio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Nombre comercio" />
+
+    <TextView
+        android:id="@+id/oferta_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="Hasta el ..." />
+
+    <TextView
+        android:id="@+id/oferta_distancia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="km" />
+
+    <ImageView
+        android:id="@+id/ofera_popup_imagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <Button
+        android:id="@+id/oferta_popup_cerrar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cerrar" />
+
+    <Button
+        android:id="@+id/oferta_popup_irMapa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ver Mapa" />
+
+</LinearLayout>

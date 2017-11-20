@@ -9,14 +9,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import Usuario.Usuario;
 import layout.frag_ofertas;
 
 public class MainFoundit extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static Usuario userActivo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +75,15 @@ public class MainFoundit extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public static FragmentManager fragmentManager;
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
 
         if (id == R.id.nav_Mapa) {
@@ -88,11 +93,11 @@ public class MainFoundit extends AppCompatActivity
         } else if (id == R.id.nav_RegComer) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragRegistro_Comercio()).commit();
         } else if (id == R.id.nav_fav) {
-                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_favoritos()).commit();
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_favoritos()).commit();
         } else if (id == R.id.nav_ofertas) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_ofertas()).commit();
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_login) {
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Frag_LoginUsuario()).commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -102,5 +107,13 @@ public class MainFoundit extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static Usuario getUsuario(){
+        return userActivo;
+    }
+    public static void setUsuario(Usuario user){
+        userActivo=user;
+        Log.v("DEBUG","Username: "+userActivo.getName());
     }
 }

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -78,8 +79,8 @@ public class Util {
         }
     }
 
-    private static ArrayList<String> listadoCategoriasCacheadas = new ArrayList<String>();
-    public static ArrayList<String> GetListadoCategorias() {
+    private static List<String> listadoCategoriasCacheadas = new ArrayList<String>();
+    public static List<String> GetListadoCategorias() {
         return listadoCategoriasCacheadas;
     }
 
@@ -103,6 +104,23 @@ public class Util {
         ActualizaMapa am = new ActualizaMapa();
         am.mMap = mMap;
         am.execute(uri);
+    }
+
+    // https://stackoverflow.com/questions/8832071/how-can-i-get-the-distance-between-two-point-by-latlng
+    public static float distance (double lat_a, double lng_a, double lat_b, double lng_b )
+    {
+        double earthRadius = 3958.75;
+        double latDiff = Math.toRadians(lat_b-lat_a);
+        double lngDiff = Math.toRadians(lng_b-lng_a);
+        double a = Math.sin(latDiff /2) * Math.sin(latDiff /2) +
+                Math.cos(Math.toRadians(lat_a)) * Math.cos(Math.toRadians(lat_b)) *
+                        Math.sin(lngDiff /2) * Math.sin(lngDiff /2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double distance = earthRadius * c;
+
+        int meterConversion = 1609;
+
+        return new Float(distance * meterConversion).floatValue();
     }
 }
 
