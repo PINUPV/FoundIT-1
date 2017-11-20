@@ -6,9 +6,10 @@ package Usuario;
 
 public class Usuario {
 
-    String name, lastname,username, passwd, email, population;
+    private String name, lastname,username, passwd, email, population, id;
 
-    public Usuario(String name, String lastname, String username, String passwd, String email, String population) {
+    public Usuario(String id, String name, String lastname, String username, String passwd, String email, String population) {
+        this.id = id;
         this.name = name;
         this.lastname = lastname;
         this.username = username;

@@ -23,6 +23,12 @@
     <string name="password">Password</string>
     <string name="textReg"><u>No tienes cuenta? ¡REGISTRATE!</u></string>
     <string name="email">Mail</string>
+    <string name="infoPersonal">Información Personal</string>
+    <string name="nombreComer">Nombre</string>
+    <string name="EmailComer">Correo Electronico</string>
+    <string name="PoblacionComer">Poblacion</string>
+    <string name="ofertas">Ofertas</string>
+    <string name="infoComer">Mi Comercio</string>
 
     <string-array name="paises">
         <item>España</item>

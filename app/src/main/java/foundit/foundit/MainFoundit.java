@@ -98,8 +98,8 @@ public class MainFoundit extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_ofertas()).commit();
         } else if (id == R.id.nav_login) {
             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new Frag_LoginUsuario()).commit();
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_InfoComer) {
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragGestion_Comercio()).commit();
         } else if (id == R.id.nav_send) {
 
         }

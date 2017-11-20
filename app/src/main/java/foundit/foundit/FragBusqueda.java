@@ -9,9 +9,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -35,6 +38,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -125,6 +130,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                         for(String filtro:Filtros){
                             busquedaActual+=filtro;
                         }
+                        RegisterTaskFiltros consult = new RegisterTaskFiltros();
+
                         Util.CargarComerciosEnMapa(mMap, busquedaActual);
                     }
                 });
@@ -318,5 +325,33 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             Toast.makeText(getActivity(),"Ficha de comercio no disponible",Toast.LENGTH_SHORT).show();
         }
 
+    }
+}
+
+class RegisterTaskFiltros extends AsyncTask<String, String, JSONObject> {
+
+    FragmentActivity fa;
+    @Override
+    protected JSONObject doInBackground(String... params) {
+        String result = Util.GetWeb(Uri.parse(params[0]));
+        try {
+            return new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
+        } catch (JSONException e) {
+            return null; // Nunca ocurrirá
+        }
+    }
+
+    @Override
+    protected void onPostExecute(JSONObject respuesta) {
+        try {
+            Toast.makeText(fa,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="nuevo">#55303f9f</color>
     <color name="HintError">#ed3841</color>
+    <color name="black">#000000</color>
 </resources>

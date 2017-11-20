@@ -54,7 +54,8 @@ public class Frag_LoginUsuario extends Fragment {
                     Password.setHintTextColor(getResources().getColor(R.color.HintError));
                 }else{
                     Log.v(DEBUG,"Usuario: "+user+" Password: "+pass);
-                    Usuario objUsuario = new Usuario(user,"last1",user,pass,user+"@gmail.com","");
+                    //falta realizar la consulta a la base de datos
+                    Usuario objUsuario = new Usuario("22",user,"last1",user,pass,user+"@gmail.com","Valencia");
                     MainFoundit.setUsuario(objUsuario);
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
