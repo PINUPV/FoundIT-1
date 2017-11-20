@@ -1,0 +1,104 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="foundit.foundit.registro_oferta">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="foundit.foundit.registro_oferta">
+        <!-- TODO: Update blank fragment layout -->
+
+        <TextView
+            android:id="@+id/plain_text_oferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="14dp"
+            android:text="Oferta"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/nombre_oferta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/plain_text_oferta"
+            android:layout_below="@+id/plain_text_oferta"
+            android:layout_marginTop="29dp"
+            android:ems="10"
+            android:hint="Nombre de la oferta"
+            android:inputType="textPersonName" />
+
+        <ImageView
+            android:id="@+id/oferta_image"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignEnd="@+id/nombre_oferta"
+            android:layout_below="@+id/nombre_oferta"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/common_google_signin_btn_icon_light_normal_background" />
+
+        <Button
+            android:id="@+id/subir_imagen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/oferta_image"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="26dp"
+            android:layout_marginEnd="14dp"
+            android:text="Subir Imagen" />
+
+        <EditText
+            android:id="@+id/fecha"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/oferta_image"
+            android:layout_below="@+id/oferta_image"
+            android:layout_marginTop="24dp"
+            android:clickable="true"
+            android:editable="false"
+            android:hint="Fecha" />
+
+        <Button
+            android:id="@+id/publicar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/fecha"
+            android:layout_marginBottom="15dp"
+            android:layout_marginStart="20dp"
+            android:text="Publicar" />
+
+        <Button
+            android:id="@+id/Eliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/publicar"
+            android:layout_alignBottom="@+id/publicar"
+            android:layout_alignStart="@+id/subir_imagen"
+            android:text="Eliminar" />
+
+        <EditText
+            android:id="@+id/editText2"
+            style="@android:style/Widget.AutoCompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/fecha"
+            android:layout_marginTop="18dp"
+            android:ems="10"
+            android:hint="Descripcion"
+            android:inputType="textMultiLine"
+            android:lines="3" />
+
+    </RelativeLayout>
+
+</FrameLayout>
