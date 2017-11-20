@@ -15,10 +15,11 @@ public class Comercio {
 
 
     private String name, address, city, country, email, webAdress;
-    private int zipcode, tlf;
+    private int zipcode, tlf, id;
     private List<String> Categorias;
 
     public Comercio() {
+        id = 0;
         name = "";
         address = "";
         city = "";
@@ -28,6 +29,15 @@ public class Comercio {
         zipcode = 0;
         tlf = 0;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }

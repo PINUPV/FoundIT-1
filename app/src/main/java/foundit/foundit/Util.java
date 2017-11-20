@@ -185,7 +185,9 @@ class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {
                             comInfo.setCountry(obj.getString("Pais"));
                             comInfo.setCity(obj.getString("Provincia"));
                             comInfo.setName(obj.getString("Nombre"));
-                            MarkersInfo.put(m, new Comercio.Comercio());
+                            comInfo.setId(obj.getInt("ID"));
+                           // MarkersInfo.put(m, new Comercio.Comercio());
+                            MarkersInfo.put(m, comInfo);
                             nuevos++;
                         } else {
                             newMarkers.add(oldMarker);
