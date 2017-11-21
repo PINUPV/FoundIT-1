@@ -115,6 +115,25 @@ public class Fragficha_comercio extends Fragment {
                 }
             }
         });
+
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20FavList%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+        RegisterTaskFicha t = new RegisterTaskFicha();
+        t.faF = getActivity();
+
+        try {
+
+            JSONArray respuesta = t.execute(x).get();
+
+            if(respuesta == null) lik = false;
+            else lik = true;
+            //refreshRating();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         bt_like = (ImageButton) view.findViewById(R.id.bt_like);
         bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +142,7 @@ public class Fragficha_comercio extends Fragment {
                     bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
                     lik = true;
                     String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20FavList(ID,%20IDUser,%20IdentificadorExterno,%20FechaHoraCreacion,%20Nombre,%20FechaHoraUpdate,%20Estrellas)" +
-                            "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',null,'')";
+                            "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',null, 0)";
                     RegisterTaskFicha t = new RegisterTaskFicha();
                     t.faF = getActivity();
 
@@ -146,6 +165,22 @@ public class Fragficha_comercio extends Fragment {
                     bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
                     lik = false;
                     //DELETE
+                    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20FavList%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+                    RegisterTaskFicha t = new RegisterTaskFicha();
+                    t.faF = getActivity();
+
+                    try {
+
+                        JSONArray respuesta = t.execute(x).get();
+
+                        Toast.makeText(getActivity(), "Favorito eliminado", Toast.LENGTH_LONG).show();
+                        //refreshRating();
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

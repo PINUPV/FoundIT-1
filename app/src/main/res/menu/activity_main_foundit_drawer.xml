@@ -22,10 +22,6 @@
             android:title="@string/RegComer"
             android:visible="false" />
         <item
-            android:id="@+id/nav_fav"
-            android:icon="@android:drawable/btn_star"
-            android:title="Favoritos" />
-        <item
             android:id="@+id/nav_ofertas"
             android:icon="@android:drawable/ic_menu_info_details"
             android:title="Ofertas" />

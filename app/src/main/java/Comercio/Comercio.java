@@ -29,6 +29,17 @@ public class Comercio {
         zipcode = 0;
         tlf = 0;
     }
+    public Comercio(int id, String nombre){
+        this.id = id;
+        this.name = nombre;
+        address = "";
+        city = "";
+        country = "";
+        email = "";
+        webAdress = "";
+        zipcode = 0;
+        tlf = 0;
+    }
 
     public void setId(int id) {
         this.id = id;
