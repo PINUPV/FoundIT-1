@@ -180,7 +180,7 @@ public class registro_oferta extends Fragment {
     }
 
     private void eliminarOferta(String id) {
-    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20Ofertas%20WHERE%ID%20=%20"+ID;
+    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20Ofertas%20WHERE%20ID%20=%20"+ID;
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
