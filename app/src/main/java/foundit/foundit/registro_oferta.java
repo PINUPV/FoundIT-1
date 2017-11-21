@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -122,6 +123,8 @@ public class registro_oferta extends Fragment {
                         }
                         String descr = descripcion.getText().toString();
                         publicarenDB(nombre, fechaOf, image_str, descr);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragGestion_Comercio()).commit();
                     }
 
                 }
@@ -145,7 +148,8 @@ public class registro_oferta extends Fragment {
                                              }else{
                                                  Toast.makeText(getActivity(),"Oferta no creada, no se puede eliminar",Toast.LENGTH_LONG);
                                              }
-
+                                                FragmentManager fragmentManager = getFragmentManager();
+                                                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragGestion_Comercio()).commit();
                                             }
                                         });
 
