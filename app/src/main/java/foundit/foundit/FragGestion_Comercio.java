@@ -13,15 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.text.ParseException;
 
 
 /**
@@ -42,6 +40,20 @@ public class FragGestion_Comercio extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_frag_gestion__comercio, container, false);
+        LoadMyComercio c = new LoadMyComercio();
+        c.myFragGestComer=myFrag;
+        try{
+            Uri uri = new Uri.Builder().scheme("http")
+                    .encodedAuthority("185.137.93.170:8080")
+                    .path("sql.php")
+                    .appendQueryParameter("sql", "SELECT Nombre, Poblacion FROM Comercio WHERE ID = 22")
+                    .build();
+            Log.v(DEBUG,uri.toString());
+            c.execute(uri);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         bTNOfertas=(Button) view.findViewById(R.id.bTNGestion_Comercio_VerOfertas);
         bTNOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +80,39 @@ public class FragGestion_Comercio extends Fragment {
 
 
         return view;
+    }
+
+    class LoadMyComercio extends AsyncTask<Uri, String, JSONArray> {
+        FragGestion_Comercio myFragGestComer;
+
+        @Override
+        protected JSONArray doInBackground(Uri... params) {
+            String result = Util.GetWeb(params[0]);
+            try {
+                return new JSONArray(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                return new JSONArray("[]");
+            } catch (JSONException e) {
+                return null; // Nunca ocurrirá
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray Respuesta) {
+            EditText NombreComer=(EditText) myFragGestComer.getView().findViewById(R.id.eTGestion_Comercio_NombreComer);
+            EditText PoblacionComer=(EditText) myFragGestComer.getView().findViewById(R.id.eTGestion_Comercio_PoblacionComer);
+            try {
+                JSONObject RespComer = Respuesta.getJSONObject(0);
+                NombreComer.setText(RespComer.getString("Nombre"));
+                PoblacionComer.setText(RespComer.getString("Poblacion"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.v(DEBUG,Respuesta.toString());
+        }
     }
     class LoadMyOfertas extends AsyncTask<Uri, String, JSONArray> {
         FragGestion_Comercio myFragGestComer;

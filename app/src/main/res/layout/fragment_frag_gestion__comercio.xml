@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:padding="5dp"
-            android:text="@string/infoPersonal"
+            android:text="@string/infoComer"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="30sp"
@@ -38,12 +38,12 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/eTGestion_Comercio_EmailComer"
+                android:id="@+id/eTGestion_Comercio_NombreComer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/EmailComer"
-                android:inputType="textEmailAddress" />
+                android:hint="@string/nombreComer"
+                android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/eTGestion_Comercio_PoblacionComer"
@@ -54,12 +54,12 @@
                 android:inputType="textPersonName" />
 
             <EditText
-                android:id="@+id/eTGestion_Comercio_NombreComer"
+                android:id="@+id/eTGestion_Comercio_EmailComer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/nombreComer"
-                android:inputType="textPersonName" />
+                android:hint="@string/EmailComer"
+                android:inputType="textEmailAddress" />
 
         </LinearLayout>
     </TableRow>
