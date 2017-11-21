@@ -106,6 +106,26 @@ public class Util {
         am.mMap = mMap;
         am.execute(uri);
     }
+    public static void CargarComerciosConFiltroEnMapa(GoogleMap mMap, String filtro) {
+        String lat = Double.toString(mMap.getCameraPosition().target.latitude);
+        String lon = Double.toString(mMap.getCameraPosition().target.longitude);
+        int maxZoomLevel = 21;
+        radius = (10 * Math.pow(2, maxZoomLevel - mMap.getCameraPosition().zoom)/*"500"*/);
+        Log.e("Zoom", ""+mMap.getCameraPosition().zoom);
+        Log.e("Radius", ""+radius);
+        String filt="["+filtro+"]";
+        Uri uri = new Uri.Builder().scheme("http")
+                .encodedAuthority("185.137.93.170:8080")
+                .path("busqueda.php")
+                .appendQueryParameter("distancia", "" + radius)
+                .appendQueryParameter("gpslat", lat)
+                .appendQueryParameter("gpslong", lon)
+                .appendQueryParameter("filtro", filt)
+                .build();
+        ActualizaMapa am = new ActualizaMapa();
+        am.mMap = mMap;
+        am.execute(uri);
+    }
 
     // https://stackoverflow.com/questions/8832071/how-can-i-get-the-distance-between-two-point-by-latlng
     public static float distance (double lat_a, double lng_a, double lat_b, double lng_b )

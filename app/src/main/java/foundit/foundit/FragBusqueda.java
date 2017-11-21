@@ -78,8 +78,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         botonFiltros.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recuperarListaActividades();
-                Log.v("DEBUG","Entre en el botonFiltro");
+                //recuperarListaActividades();
                 AlertDialog dialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 //ScrollView ventanaFiltros = (ScrollView) v.findViewById(R.id.ventanaFiltros);
@@ -108,7 +107,8 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                             for(String filtro:Filtros){
                                 mostrar+=filtro+" ";
                             }
-                            Toast.makeText(getActivity(), mostrar, Toast.LENGTH_SHORT).show();
+
+                            //Toast.makeText(getActivity(), mostrar, Toast.LENGTH_SHORT).show();
                         }
                     });
                     layout_Filtros.addView(cB);
@@ -127,12 +127,17 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         busquedaActual="";
+                        int cantFiltros = Filtros.size()-1;
                         for(String filtro:Filtros){
+                            /*busquedaActual+="%22"+filtro+"%22";
+                            if(cantFiltros>0){
+                                busquedaActual+=",";
+                            }*/
                             busquedaActual+=filtro;
                         }
-                        RegisterTaskFiltros consult = new RegisterTaskFiltros();
-
-                        Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                        //Log.v("Prueba filtros",busquedaActual);
+                        Util.CargarComerciosEnMapa(mMap,busquedaActual);
+                        //Util.CargarComerciosConFiltroEnMapa(mMap, busquedaActual);
                     }
                 });
 
@@ -325,33 +330,5 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
             Toast.makeText(getActivity(),"Ficha de comercio no disponible",Toast.LENGTH_SHORT).show();
         }
 
-    }
-}
-
-class RegisterTaskFiltros extends AsyncTask<String, String, JSONObject> {
-
-    FragmentActivity fa;
-    @Override
-    protected JSONObject doInBackground(String... params) {
-        String result = Util.GetWeb(Uri.parse(params[0]));
-        try {
-            return new JSONObject(result);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            return new JSONObject("{\"resultado\":\"error\",\"mensaje\":\"No se ha podido realizar la acción\"}");
-        } catch (JSONException e) {
-            return null; // Nunca ocurrirá
-        }
-    }
-
-    @Override
-    protected void onPostExecute(JSONObject respuesta) {
-        try {
-            Toast.makeText(fa,respuesta.getString("mensaje"),Toast.LENGTH_SHORT).show();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 }
