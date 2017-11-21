@@ -115,8 +115,8 @@ public class Fragficha_comercio extends Fragment {
                 }
             }
         });
-
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20FavList%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+        bt_like = (ImageButton) view.findViewById(R.id.bt_like);
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20FavList%20WHERE%20IdentificadorExterno%20=%20"+IDComercio+"%20AND%20IDUser%20=%20"+IDUsuario;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
 
@@ -124,8 +124,13 @@ public class Fragficha_comercio extends Fragment {
 
             JSONArray respuesta = t.execute(x).get();
 
-            if(respuesta == null) lik = false;
-            else lik = true;
+            if(respuesta == null) {
+                lik = false;
+                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+            } else {
+                lik = true;
+                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+            }
             //refreshRating();
 
         } catch (InterruptedException e) {
@@ -134,7 +139,7 @@ public class Fragficha_comercio extends Fragment {
             e.printStackTrace();
         }
 
-        bt_like = (ImageButton) view.findViewById(R.id.bt_like);
+
         bt_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,7 +170,7 @@ public class Fragficha_comercio extends Fragment {
                     bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
                     lik = false;
                     //DELETE
-                    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20FavList%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+                    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20FavList%20WHERE%20IdentificadorExterno%20=%20"+IDComercio+"%20AND%20IDUser%20=%20"+IDUsuario;
                     RegisterTaskFicha t = new RegisterTaskFicha();
                     t.faF = getActivity();
 
