@@ -122,27 +122,30 @@ public class Fragficha_comercio extends Fragment {
                 if(lik == false){
                     bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
                     lik = true;
-                    String x = "http://185.137.93.170:8080/lista-fav.php?iduser=" + IDUsuario +
-                            "&idcomer=" + IDComercio;
-                    RegisterTask t = new RegisterTask();
-                    t.fa = getActivity();
-                    //Toast.makeText(getActivity(), x, Toast.LENGTH_LONG).show();
+                    String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20FavList(ID,%20IDUser,%20IdentificadorExterno,%20FechaHoraCreacion,%20Nombre,%20FechaHoraUpdate,%20Estrellas)" +
+                            "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',null,'')";
+                    RegisterTaskFicha t = new RegisterTaskFicha();
+                    t.faF = getActivity();
+
                     try {
-                        JSONObject respuesta = t.execute(x).get();
-                        if (respuesta.toString().contains("ok")){
-                            Toast.makeText(getActivity(), "Favorito agregado", Toast.LENGTH_LONG).show();
-                            Intent Main = new Intent(getActivity(), MainFoundit.class);
-                            startActivity(Main);
-                        }
+
+                        JSONArray respuesta = t.execute(x).get();
+
+                        Toast.makeText(getActivity(), "Favorito agregado", Toast.LENGTH_LONG).show();
+                        //refreshRating();
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
                         e.printStackTrace();
                     }
 
+
+
                 } else{
                     bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
                     lik = false;
+                    //DELETE
                 }
             }
         });
@@ -169,10 +172,31 @@ public class Fragficha_comercio extends Fragment {
 
     private void onFichaOpen() {
 
+        //String y = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20FavList%20WHERE%20IdentificadorExterno%20=%20"+IDComercio+"%20AND%20IDUser%20=%20"+IDUsuario;
         String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
         String z = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
+
+        /*try {
+            JSONArray resp = t.execute(y).get();
+            Toast.makeText(getActivity(), resp.toString(), Toast.LENGTH_LONG).show();
+            if (resp==null){
+
+                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
+                lik = false;
+
+            } else {
+
+                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                lik = true;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }*/
+
         try {
             JSONArray respuesta = t.execute(x).get();
             if (respuesta.length() > 0) {

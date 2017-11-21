@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
 public class frag_favoritos extends Fragment {
 
     ImageButton bt_like2;
-    boolean lik = false;
+    boolean lik = true;
     ListView lista;
     ArrayAdapter<String> adaptador;
     public frag_favoritos() {
@@ -46,15 +46,15 @@ public class frag_favoritos extends Fragment {
         ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filtro));
         spinner.setAdapter(adapter);
 
-        lista = (ListView) view.findViewById(R.id.listviewfav);
+        /*lista = (ListView) view.findViewById(R.id.listviewfav);
         adaptador = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1);
-        lista.setAdapter(adaptador);
+        lista.setAdapter(adaptador);*/
 
         bt_like2 = (ImageButton) view.findViewById(R.id.bt_like2);
         bt_like2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(lik == false){
+                if(lik == true){
                     bt_like2.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
                     lik = true;
 
