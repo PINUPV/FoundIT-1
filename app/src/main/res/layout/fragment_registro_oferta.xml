@@ -65,7 +65,7 @@
             android:layout_marginTop="24dp"
             android:clickable="true"
             android:editable="false"
-            android:hint="Fecha" />
+            android:hint="Fecha vencimiento de oferta" />
 
         <Button
             android:id="@+id/publicar"
@@ -87,7 +87,7 @@
             android:text="Eliminar" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/descripcion"
             style="@android:style/Widget.AutoCompleteTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
