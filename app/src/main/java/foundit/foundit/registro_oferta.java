@@ -67,6 +67,12 @@ public class registro_oferta extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        String IDOferta=getArguments().getString("ID", "0");
+        Log.v("Arguments:",IDOferta);
+
+
         View view = inflater.inflate(R.layout.fragment_registro_oferta, container, false);
 
         nombreOferta = (EditText) view.findViewById(R.id.nombre_oferta);
