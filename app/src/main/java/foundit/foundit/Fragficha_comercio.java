@@ -126,7 +126,7 @@ public class Fragficha_comercio extends Fragment {
 
             if(respuesta == null) {
                 lik = false;
-                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
+                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
             } else {
                 lik = true;
                 bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
@@ -212,30 +212,11 @@ public class Fragficha_comercio extends Fragment {
 
     private void onFichaOpen() {
 
-        //String y = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20FavList%20WHERE%20IdentificadorExterno%20=%20"+IDComercio+"%20AND%20IDUser%20=%20"+IDUsuario;
         String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
         String z = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
 
-        /*try {
-            JSONArray resp = t.execute(y).get();
-            Toast.makeText(getActivity(), resp.toString(), Toast.LENGTH_LONG).show();
-            if (resp==null){
-
-                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
-                lik = false;
-
-            } else {
-
-                bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likelleno));
-                lik = true;
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }*/
 
         try {
             JSONArray respuesta = t.execute(x).get();
