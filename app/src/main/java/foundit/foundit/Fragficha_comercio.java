@@ -24,7 +24,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -40,14 +45,12 @@ public class Fragficha_comercio extends Fragment {
     int idU1 = 1, idU5 = 5, idU22 = 22;
     int IDUsuario = 22;
     int IDComercio = 0;
-    String comentario = "_";
     Boolean yaValorado = false;
     String nombreComercio, calleComercio;
     ListView listRatings;
     boolean lik;
     ArrayList<comentario> listComent = new ArrayList<comentario>();
     float valoracionTotal = 0;
-    TextView nomComercio;
 
     public Fragficha_comercio(){}
 
@@ -68,7 +71,7 @@ public class Fragficha_comercio extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fragficha_comercio, container, false);
         listRatings = (ListView) view.findViewById(R.id.list_valoraciones);
         onFichaOpen();
-        nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
+        TextView nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
         nomComercio.setText(nombreComercio);
         bt_cerrar_ficha = (Button) view.findViewById(R.id.bt_cerrar_fichaCom);
         bt_cerrar_ficha.setOnClickListener(new View.OnClickListener() {
@@ -249,13 +252,22 @@ public class Fragficha_comercio extends Fragment {
     private void mostrarValoraciones(JSONArray respuesta) throws JSONException {
         int idUsuario, idComercio;
         float rating;
+        String comentText;
+        Date fecha = null;
         listComent.clear();
     for (int i = 0; i < respuesta.length(); i++ ){
         JSONObject obj = respuesta.getJSONObject(i);
           idUsuario = obj.getInt("IDUsuario");
         idComercio = obj.getInt("IDComercio");
+        comentText = obj.getString("ComentText");
+        DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.FRANCE);
+        try {
+            fecha = format.parse(obj.getString("FechaModificacion"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         rating = BigDecimal.valueOf(obj.getDouble("Rate")).floatValue();
-        comentario c = new comentario(idUsuario,idComercio,"",rating);
+        comentario c = new comentario(idUsuario,idComercio,comentText,rating,fecha);
 
         listComent.add(c);
         }
@@ -267,7 +279,7 @@ public class Fragficha_comercio extends Fragment {
         for(comentario com : listComent){
             valoracionTotal = valoracionTotal + com.rating;
          String username = recuperarUsuario(com.idUsuario);
-        ratings[j] = "Valoración: "+String.valueOf(com.rating)+" - Usuario: "+username;
+        ratings[j] = "Valoración: "+String.valueOf(com.rating)+" - "+com.text+" - "+com.fechaMod.toString();
                 j++;
 
         }
@@ -360,13 +372,15 @@ class RegisterTaskFicha extends AsyncTask<String, String, JSONArray> {
      int idComercio;
      String text;
      float rating;
+     Date fechaMod;
 
-     public comentario(int idUsu, int idCom, String text, float rating)
+     public comentario(int idUsu, int idCom, String text, float rating, Date fechaMod)
      {
          this.idUsuario = idUsu;
          this.idComercio = idCom;
          this.text = text;
          this.rating = rating;
+         this.fechaMod = fechaMod;
      }
 
  }
