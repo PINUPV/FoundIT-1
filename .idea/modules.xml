@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FoundIT.iml" filepath="$PROJECT_DIR$/FoundIT.iml" />
-      <module fileurl="file://C:\Users\pacto\StudioProjects\FoundIT-1\FoundIT.iml" filepath="C:\Users\pacto\StudioProjects\FoundIT-1\FoundIT.iml" />
       <module fileurl="file://D:\Universitat\4t Curs\PIN\PIN_Project\FoundIT-1\FoundIT.iml" filepath="D:\Universitat\4t Curs\PIN\PIN_Project\FoundIT-1\FoundIT.iml" />
+      <module fileurl="file://C:\Users\pacto\StudioProjects\FoundIT-1\FoundIT.iml" filepath="C:\Users\pacto\StudioProjects\FoundIT-1\FoundIT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FoundIT-1.iml" filepath="$PROJECT_DIR$/FoundIT-1.iml" />
       <module fileurl="file://E:\Documentos\PROYECTO PIN\FoundIT\FoundIT-1.iml" filepath="E:\Documentos\PROYECTO PIN\FoundIT\FoundIT-1.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

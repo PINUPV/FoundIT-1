@@ -29,6 +29,9 @@
     <string name="PoblacionComer">Poblacion</string>
     <string name="ofertas">Ofertas</string>
     <string name="infoComer">Mi Comercio</string>
+    <string name="fechaInicio">Fecha de Inicio</string>
+    <string name="fechaFin">Fecha de finalización</string>
+    <string name="imageOfert">Imagen perteneciente a la oferta.</string>
 
     <string-array name="paises">
         <item>España</item>

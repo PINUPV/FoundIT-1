@@ -54,13 +54,32 @@ public class FragGestion_Comercio extends Fragment {
             e.printStackTrace();
         }
 
+        ///////////////////
+        //cargar las ofertas
+        LoadMyOfertas t = new LoadMyOfertas();
+        t.myFragGestComer=myFrag;
+        t.myFragGestComerView=view;
+        try {
+            Uri uri = new Uri.Builder().scheme("http")
+                    .encodedAuthority("185.137.93.170:8080")
+                    .path("sql.php")
+                    .appendQueryParameter("sql", "SELECT ID, Nombre, fechaValidez FROM Ofertas WHERE Comercio=22")
+                    .build();
+            Log.v(DEBUG,uri.toString());
+            t.execute(uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        ///////////////////
+
         bTNOfertas=(Button) view.findViewById(R.id.bTNGestion_Comercio_VerOfertas);
         bTNOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //cargar las ofertas
                 LoadMyOfertas t = new LoadMyOfertas();
-                t.myFragGestComer=myFrag;
+                //t.myFragGestComer=myFrag;
                 try {
                     Uri uri = new Uri.Builder().scheme("http")
                             .encodedAuthority("185.137.93.170:8080")
@@ -69,7 +88,9 @@ public class FragGestion_Comercio extends Fragment {
                             .build();
                     Log.v(DEBUG,uri.toString());
                     t.execute(uri);
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
@@ -116,6 +137,8 @@ public class FragGestion_Comercio extends Fragment {
     }
     class LoadMyOfertas extends AsyncTask<Uri, String, JSONArray> {
         FragGestion_Comercio myFragGestComer;
+        View myFragGestComerView;
+
         @Override
         protected JSONArray doInBackground(Uri... params) {
             String result = Util.GetWeb(params[0]);
@@ -135,14 +158,14 @@ public class FragGestion_Comercio extends Fragment {
         protected void onPostExecute(JSONArray Respuesta){
             Log.v(DEBUG,Respuesta.toString());
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(myFragGestComer.getActivity());
+            //AlertDialog.Builder builder = new AlertDialog.Builder(myFragGestComer.getActivity());
             LayoutInflater inflater = myFragGestComer.getActivity().getLayoutInflater();
-            View actual = inflater.inflate(R.layout.alertdialog_ofertas_activas,null);
-            LinearLayout lLAlertDialogOfertasActivas = (LinearLayout) actual.findViewById(R.id.lLAlertDialogOfertasActivas);
+            //View actual = inflater.inflate(R.layout.alertdialog_ofertas_activas,null);
+            LinearLayout lLAlertDialogOfertasActivas = (LinearLayout) myFragGestComerView.findViewById(R.id.lLAlertDialogOfertasActivas);
             lLAlertDialogOfertasActivas.removeAllViews();
 
 
-            builder.setView(actual)
+            /*builder.setView(actual)
                     .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -157,7 +180,7 @@ public class FragGestion_Comercio extends Fragment {
                         }
                     });
 
-            final AlertDialog dialog=builder.create();
+            final AlertDialog dialog=builder.create();*/
             try{
                 for(int i = 0; i<Respuesta.length();i++){
                     View viewOfertas = inflater.inflate(R.layout.view_oferta,null);
@@ -180,7 +203,7 @@ public class FragGestion_Comercio extends Fragment {
                             args.putString("ID", ((TextView) v.findViewById(R.id.tVView_Oferta_ID)).getText().toString().split(" ")[1]);
                             view.setArguments(args);
                             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, view).commit();
-                            dialog.cancel();
+                            //dialog.cancel();
                         }
                     });
 
@@ -191,7 +214,7 @@ public class FragGestion_Comercio extends Fragment {
                 e.printStackTrace();
             }
 
-            dialog.show();
+            //dialog.show();
 
         }
     }
