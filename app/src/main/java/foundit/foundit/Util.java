@@ -86,7 +86,7 @@ public class Util {
     }
 
     static double radius = 0;
-    public static void CargarComerciosEnMapa(GoogleMap mMap, String busqueda) {
+    public static void CargarComerciosEnMapa(GoogleMap mMap, String busqueda, String filtros) {
         String lat = Double.toString(mMap.getCameraPosition().target.latitude);
         String lon = Double.toString(mMap.getCameraPosition().target.longitude);
         int maxZoomLevel = 21;
@@ -100,7 +100,7 @@ public class Util {
                 .appendQueryParameter("gpslat", lat)
                 .appendQueryParameter("gpslong", lon)
                 .appendQueryParameter("busqueda", busqueda)
-                .appendQueryParameter("filtro", "[]")
+                .appendQueryParameter("filtro", filtros)
                 .build();
         ActualizaMapa am = new ActualizaMapa();
         am.mMap = mMap;
