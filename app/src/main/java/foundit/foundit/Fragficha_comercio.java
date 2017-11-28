@@ -38,11 +38,10 @@ import java.util.concurrent.ExecutionException;
  */
 public class Fragficha_comercio extends Fragment {
 
-    Button bt_cerrar_ficha, bt_u1, bt_u22, bt_u5;
-    ImageButton bt_like;
+    Button bt_cerrar_ficha;
+    ImageButton bt_like, bt_showComent;
     RatingBar rbarTotal, rbarComercio;
 
-    int idU1 = 1, idU5 = 5, idU22 = 22;
     int IDUsuario = 22;
     int IDComercio = 0;
     Boolean yaValorado = false;
@@ -70,39 +69,28 @@ public class Fragficha_comercio extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragficha_comercio, container, false);
         listRatings = (ListView) view.findViewById(R.id.list_valoraciones);
+        listRatings.setVisibility(View.INVISIBLE);
         onFichaOpen();
         TextView nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
         nomComercio.setText(nombreComercio);
+        bt_showComent =  (ImageButton) view.findViewById(R.id.bt_showComent);
+        bt_showComent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                if (listRatings.isShown()) {
+                    listRatings.setVisibility(View.INVISIBLE);
+                }else{
+                    listRatings.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         bt_cerrar_ficha = (Button) view.findViewById(R.id.bt_cerrar_fichaCom);
         bt_cerrar_ficha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 Intent Main = new Intent(getActivity(), MainFoundit.class);
                 startActivity(Main);
-            }
-        });
-        bt_u1 = (Button) view.findViewById(R.id.bt_u1);
-        bt_u1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                IDUsuario = idU1;
-                refreshUsuario();
-            }
-        });
-        bt_u5 = (Button) view.findViewById(R.id.bt_u5);
-        bt_u5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                IDUsuario = idU5;
-                refreshUsuario();
-            }
-        });
-        bt_u22 = (Button) view.findViewById(R.id.bt_u22);
-        bt_u22.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                IDUsuario = idU22;
-                refreshUsuario();
             }
         });
         rbarTotal = (RatingBar) view.findViewById(R.id.rating_total);
@@ -192,6 +180,7 @@ public class Fragficha_comercio extends Fragment {
                 }
             }
         });
+
         return view;
     }
 
