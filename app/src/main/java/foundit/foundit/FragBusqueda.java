@@ -165,7 +165,11 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         return view;
     }
 
-
+    @Override
+    public void onDestroyView() {
+        ActualizaMapa.ClearOldMarkers();
+        super.onDestroyView();
+    }
 
     @Override
     public boolean onMyLocationButtonClick() {

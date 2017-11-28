@@ -151,6 +151,10 @@ class ActualizaMapa extends AsyncTask<Uri, Void, JSONObject> {
     private Exception exception;
     static ArrayList<MarkerCache> oldMarkers = new ArrayList<MarkerCache>();
 
+    public static void ClearOldMarkers() {
+        oldMarkers.clear();
+    }
+
     protected JSONObject doInBackground(Uri... urls) {
         Uri uri = urls[0];
         String received = Util.GetWeb(uri);
