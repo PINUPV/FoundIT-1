@@ -32,6 +32,7 @@
     <string name="fechaInicio">Fecha de Inicio</string>
     <string name="fechaFin">Fecha de finalización</string>
     <string name="imageOfert">Imagen perteneciente a la oferta.</string>
+    <string name="Favoritos">Favoritos</string>
     <string name="miComercio">Mi Comercio</string>
     <string name="verOfertas">Ver Ofertas</string>
     <string name="addOferta">Añadir Oferta</string>
