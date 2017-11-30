@@ -36,9 +36,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -111,28 +114,32 @@ public class Fragficha_comercio extends Fragment {
             @Override
             public void onClick(View v){
                 if (addComent.getText().length() > 0) {
-                    guardarComentario(addComent.getText().toString());
+                    if (yaComentado){
+                        Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
+                    }else{
+                        guardarComentario(addComent.getText().toString());
+                    }
                 }
             }
         });
         addComent = (EditText) view.findViewById(R.id.addComent_textBox);
         addComent.setVisibility(View.INVISIBLE);
-        addComent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (yaComentado){
-                        Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
-                    }else{
-                    guardarComentario(addComent.getText().toString());
-                    handled = true;
-                    }
-                }
-                return handled;
-            }
-        });
+//        addComent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                boolean handled = false;
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    if (yaComentado){
+//                        Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
+//                    }else{
+//                    guardarComentario(addComent.getText().toString());
+//                    handled = true;
+//                    }
+//                }
+//                return handled;
+//            }
+//        });
 
         bt_showComent =  (ImageButton) view.findViewById(R.id.bt_showComent);
         bt_showComent.setOnClickListener(new View.OnClickListener() {
@@ -254,9 +261,19 @@ public class Fragficha_comercio extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void guardarComentario(String s) {
-
-        String x = "http://185.137.93.170:8080/sql.php?sql=http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+s+",FechaModificacion="+ LocalDate.now() +
-                "%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.now();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+        String dateInString = "7-Jun-2013";
+//
+//        try {
+//
+//            Date date = formatter.parse(localDate);
+//
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+        String x = "http://185.137.93.170:8080/sql.php?sql=http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+s+"%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
