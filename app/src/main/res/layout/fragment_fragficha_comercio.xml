@@ -28,21 +28,22 @@
                     android:id="@+id/text_nombre_comercio"
                     android:layout_width="253dp"
                     android:layout_height="54dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    android:layout_centerHorizontal="true"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toEndOf="@+id/rating_total"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <RatingBar
                     android:id="@+id/rating_total"
                     style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="88dp"
-                    android:layout_height="21dp"
+                    android:layout_width="77dp"
+                    android:layout_height="19dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
@@ -77,7 +78,7 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar2"
                     android:layout_width="399dp"
-                    android:layout_height="58dp"
+                    android:layout_height="46dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:background="?attr/colorPrimary"
@@ -85,8 +86,10 @@
                     android:theme="?attr/actionBarTheme"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.473"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageButton
                     android:id="@+id/bt_like"
@@ -107,8 +110,8 @@
 
                 <ImageButton
                     android:id="@+id/bt_showComent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="47dp"
+                    android:layout_height="41dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
@@ -117,7 +120,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.666" />
+                    app:layout_constraintVertical_bias="1.0" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -135,44 +138,81 @@
                 android:layout_height="44dp"
                 android:layout_marginEnd="90dp"
                 android:layout_marginStart="70dp"
-                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:numStars="5"
                 android:rating="2.5"
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/bt_cerrar_fichaCom"
-                android:layout_width="88dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="156dp"
-                android:layout_marginStart="156dp"
-                android:layout_marginTop="184dp"
-                android:text="Cerrar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rating_comercio"
-                app:layout_constraintVertical_bias="0.965" />
+            <Spinner
+                android:id="@+id/spinner_ordComent"
+                android:layout_width="150dp"
+                android:layout_height="29dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/list_valoraciones"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ListView
                 android:id="@+id/list_valoraciones"
                 android:layout_width="371dp"
-                android:layout_height="138dp"
+                android:layout_height="109dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.115"
+                app:layout_constraintHorizontal_bias="0.2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.495" />
+                app:layout_constraintVertical_bias="0.59" />
+
+            <Button
+                android:id="@+id/bt_cerrar_fichaCom"
+                android:layout_width="83dp"
+                android:layout_height="29dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="48dp"
+                android:text="Cerrar"
+                android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.923"
+                app:layout_constraintStart_toEndOf="@+id/spinner_ordComent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/addComent_textBox"
+                android:layout_width="298dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:imeOptions="actionSend"
+                android:inputType="textMultiLine"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.089"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/list_valoraciones"
+                app:layout_constraintVertical_bias="0.555" />
+
+            <ImageButton
+                android:id="@+id/bt_sendComent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_menu_send"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addComent_textBox" />
 
         </android.support.constraint.ConstraintLayout>
 

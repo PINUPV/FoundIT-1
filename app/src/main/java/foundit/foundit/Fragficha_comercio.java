@@ -5,17 +5,24 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,10 +34,16 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+
+import Comentario.Comentario;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,18 +52,21 @@ import java.util.concurrent.ExecutionException;
 public class Fragficha_comercio extends Fragment {
 
     Button bt_cerrar_ficha;
-    ImageButton bt_like, bt_showComent;
+    ImageButton bt_like, bt_showComent, bt_sendComent;
     RatingBar rbarTotal, rbarComercio;
+    EditText addComent;
 
     int IDUsuario = 22;
     int IDComercio = 0;
     Boolean yaValorado = false;
+    Boolean yaComentado = false;
     String nombreComercio, calleComercio;
     ListView listRatings;
     boolean lik;
     ArrayList<comentario> listComent = new ArrayList<comentario>();
     float valoracionTotal = 0;
-
+    static final String[] filtro = new String[] {"Fecha ↓","Fecha ↑","Valoración ↓","Valoración ↑"};
+    Spinner sp_ordComent;
     public Fragficha_comercio(){}
 
     @SuppressLint("ValidFragment")
@@ -73,14 +89,65 @@ public class Fragficha_comercio extends Fragment {
         onFichaOpen();
         TextView nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
         nomComercio.setText(nombreComercio);
+
+        sp_ordComent = (Spinner) view.findViewById(R.id.spinner_ordComent);
+        ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, filtro));
+        sp_ordComent.setAdapter(adapter);
+        sp_ordComent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+               OrdenaComent(pos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        sp_ordComent.setVisibility(View.INVISIBLE);
+
+        bt_sendComent = (ImageButton) view.findViewById(R.id.bt_sendComent);
+        bt_sendComent.setVisibility(View.INVISIBLE);
+        bt_sendComent.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v){
+                if (addComent.getText().length() > 0) {
+                    guardarComentario(addComent.getText().toString());
+                }
+            }
+        });
+        addComent = (EditText) view.findViewById(R.id.addComent_textBox);
+        addComent.setVisibility(View.INVISIBLE);
+        addComent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (yaComentado){
+                        Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
+                    }else{
+                    guardarComentario(addComent.getText().toString());
+                    handled = true;
+                    }
+                }
+                return handled;
+            }
+        });
+
         bt_showComent =  (ImageButton) view.findViewById(R.id.bt_showComent);
         bt_showComent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 if (listRatings.isShown()) {
                     listRatings.setVisibility(View.INVISIBLE);
+                    sp_ordComent.setVisibility(View.INVISIBLE);
+                    addComent.setVisibility(View.INVISIBLE);
+                    bt_sendComent.setVisibility(View.INVISIBLE);
                 }else{
                     listRatings.setVisibility(View.VISIBLE);
+                    sp_ordComent.setVisibility(View.VISIBLE);
+                    addComent.setVisibility(View.VISIBLE);
+                    bt_sendComent.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -97,6 +164,7 @@ public class Fragficha_comercio extends Fragment {
         rbarTotal.setRating(valoracionTotal);
         rbarComercio = (RatingBar) view.findViewById(R.id.rating_comercio);
         rbarComercio.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener(){
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 if(!yaValorado){
@@ -184,22 +252,50 @@ public class Fragficha_comercio extends Fragment {
         return view;
     }
 
-    private void refreshUsuario() {
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void guardarComentario(String s) {
+
+        String x = "http://185.137.93.170:8080/sql.php?sql=http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+s+",FechaModificacion="+ LocalDate.now() +
+                "%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
+
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
+
             JSONArray respuesta = t.execute(x).get();
-                if (respuesta.length() > 0) {
-                    yaValorado = true;
-                } else {
-                    yaValorado = false;
-                }
-            }catch (ExecutionException e){
-            e.printStackTrace();
+
+            Toast.makeText(getActivity(), "Comentario enviado correctamente", Toast.LENGTH_SHORT).show();
+            refreshRating();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
         }
+
+
+    }
+
+    private void OrdenaComent(final int modo) {
+
+        // Ordenar
+        Collections.sort(listComent, new Comparator<comentario>() {
+            @Override
+            public int compare(comentario c1, comentario c2) {
+                switch (modo) {
+                    case 0:
+                        return Double.compare(c1.fechaMod.getTime(), c2.fechaMod.getTime());
+                    case 1:
+                        return Double.compare(c1.fechaMod.getTime(), c2.fechaMod.getTime());
+                    case 2:
+                        return Double.compare(c1.rating, c2.rating);
+                    case 3:
+                        return Double.compare(c1.rating, c1.rating);
+                }
+                return 0;
+            }
+        });
+        rellenarListView();
     }
 
     private void onFichaOpen() {
@@ -222,6 +318,12 @@ public class Fragficha_comercio extends Fragment {
 
                 if (respUsuario.length() > 0) {
                     yaValorado = true;
+                    if(respUsuario.getString(4).length() > 0){
+                        yaComentado = true;
+                    }
+                        else{yaComentado = false;
+                    }
+
                 } else {
                     yaValorado = false;
                 }
@@ -261,24 +363,27 @@ public class Fragficha_comercio extends Fragment {
         listComent.add(c);
         }
         if (!listComent.isEmpty()){
+            rellenarListView();
+        }
+    }
+    private void rellenarListView(){
         String[] ratings = new String[listComent.size()];
 
         int j = 0;
         valoracionTotal = 0;
         for(comentario com : listComent){
             valoracionTotal = valoracionTotal + com.rating;
-         String username = recuperarUsuario(com.idUsuario);
-        ratings[j] = "Valoración: "+String.valueOf(com.rating)+" - "+com.text+" - "+com.fechaMod.toString();
-                j++;
+            //String username = recuperarUsuario(com.idUsuario);
+            ratings[j] = "Valoración: "+String.valueOf(com.rating)+" - "+com.text;
+            j++;
 
         }
-            valoracionTotal = valoracionTotal/listComent.size();
-            ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
-            listRatings.setAdapter(null);
-            listRatings.setAdapter(adapter);
-        }
+        valoracionTotal = valoracionTotal/listComent.size();
+        ArrayAdapter<String> adapter =(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
+        listRatings.setAdapter(null);
+        listRatings.setAdapter(adapter);
+
     }
-
     private String recuperarUsuario(int id) {
         String username = "";
         String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Alias%20FROM%20Usuario%20WHERE%20ID%20=%20"+id;
@@ -300,9 +405,10 @@ public class Fragficha_comercio extends Fragment {
         return username;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void puntuar(float val) {
-        String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',"+val+")";
+        String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
+                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',"+val+","+LocalDate.now()+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
