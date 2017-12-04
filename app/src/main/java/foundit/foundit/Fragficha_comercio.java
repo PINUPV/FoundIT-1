@@ -251,25 +251,25 @@ public class Fragficha_comercio extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     private void guardarComentario(String s) {
         String x;
 
         Calendar c = Calendar.getInstance();
-        String fecha = c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH);
+        String fecha = "\""+c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH)+"\"";
 
         if (yaValorado) {
-            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText=" + s + ",%20FechaModificacion=" + fecha + "%20WHERE%20IDComercio=" + IDComercio + "%20AND%20IDUsuario=" + IDUsuario;
+            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+"\""+s+"\""+",%20FechaModificacion="+fecha+"%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
         }else{
-       x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+s+",null,"+fecha+")";
+        x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
+                    "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+s+"\""+",0,"+fecha+")";
         }
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
 
             t.execute(x).get();
-
+            yaComentado = true;
             Toast.makeText(getActivity(), "Comentario enviado correctamente", Toast.LENGTH_SHORT).show();
             refreshRating();
 
@@ -411,14 +411,13 @@ public class Fragficha_comercio extends Fragment {
         return username;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void puntuar(float val) {
 
         Calendar c = Calendar.getInstance();
-        String fecha = c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH);
+        String fecha = "\""+c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH)+"\"";
 
         String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',"+val+","+fecha+")";
+                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+""+"\""+","+val+","+fecha+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
