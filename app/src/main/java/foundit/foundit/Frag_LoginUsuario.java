@@ -101,7 +101,7 @@ public class Frag_LoginUsuario extends Fragment {
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
+        //Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage(getActivity(), (GoogleApiClient.OnConnectionFailedListener) getActivity())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, options)
