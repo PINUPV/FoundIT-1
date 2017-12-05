@@ -4,6 +4,7 @@ package foundit.foundit;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.nfc.FormatException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.text.SimpleDateFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,12 +38,15 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -117,29 +121,17 @@ public class Fragficha_comercio extends Fragment {
                     if (yaComentado){
                         Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
                     }else{
-                        guardarComentario(addComent.getText().toString());
+                        try {
+                            guardarComentario(addComent.getText().toString());
+                        }catch (Exception e){
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             }
         });
         addComent = (EditText) view.findViewById(R.id.addComent_textBox);
         addComent.setVisibility(View.INVISIBLE);
-//        addComent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.O)
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                boolean handled = false;
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    if (yaComentado){
-//                        Toast.makeText(getActivity(), "Ya has comentado este comercio", Toast.LENGTH_SHORT).show();
-//                    }else{
-//                    guardarComentario(addComent.getText().toString());
-//                    handled = true;
-//                    }
-//                }
-//                return handled;
-//            }
-//        });
 
         bt_showComent =  (ImageButton) view.findViewById(R.id.bt_showComent);
         bt_showComent.setOnClickListener(new View.OnClickListener() {
@@ -259,28 +251,25 @@ public class Fragficha_comercio extends Fragment {
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void guardarComentario(String s) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.now();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-        String dateInString = "7-Jun-2013";
-//
-//        try {
-//
-//            Date date = formatter.parse(localDate);
-//
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-        String x = "http://185.137.93.170:8080/sql.php?sql=http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+s+"%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
 
+    private void guardarComentario(String s) {
+        String x;
+
+        Calendar c = Calendar.getInstance();
+        String fecha = "\""+c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH)+"\"";
+
+        if (yaValorado) {
+            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20ComentText="+"\""+s+"\""+",%20FechaModificacion="+fecha+"%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
+        }else{
+        x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
+                    "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+s+"\""+",0,"+fecha+")";
+        }
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
         try {
 
-            JSONArray respuesta = t.execute(x).get();
-
+            t.execute(x).get();
+            yaComentado = true;
             Toast.makeText(getActivity(), "Comentario enviado correctamente", Toast.LENGTH_SHORT).show();
             refreshRating();
 
@@ -303,11 +292,11 @@ public class Fragficha_comercio extends Fragment {
                     case 0:
                         return Double.compare(c1.fechaMod.getTime(), c2.fechaMod.getTime());
                     case 1:
-                        return Double.compare(c1.fechaMod.getTime(), c2.fechaMod.getTime());
+                        return Double.compare(c2.fechaMod.getTime(), c1.fechaMod.getTime());
                     case 2:
                         return Double.compare(c1.rating, c2.rating);
                     case 3:
-                        return Double.compare(c1.rating, c1.rating);
+                        return Double.compare(c2.rating, c1.rating);
                 }
                 return 0;
             }
@@ -422,10 +411,13 @@ public class Fragficha_comercio extends Fragment {
         return username;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void puntuar(float val) {
+
+        Calendar c = Calendar.getInstance();
+        String fecha = "\""+c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH)+"\"";
+
         String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,'',"+val+","+LocalDate.now()+")";
+                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+""+"\""+","+val+","+fecha+")";
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();
