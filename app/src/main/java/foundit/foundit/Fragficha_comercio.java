@@ -3,6 +3,8 @@ package foundit.foundit;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.nfc.FormatException;
 import android.os.AsyncTask;
@@ -142,11 +144,13 @@ public class Fragficha_comercio extends Fragment {
                     sp_ordComent.setVisibility(View.INVISIBLE);
                     addComent.setVisibility(View.INVISIBLE);
                     bt_sendComent.setVisibility(View.INVISIBLE);
+                    bt_showComent.setColorFilter(Color.argb(0, 255, 0, 255));
                 }else{
                     listRatings.setVisibility(View.VISIBLE);
                     sp_ordComent.setVisibility(View.VISIBLE);
                     addComent.setVisibility(View.VISIBLE);
                     bt_sendComent.setVisibility(View.VISIBLE);
+                    bt_showComent.setColorFilter(Color.argb(150, 20, 200, 100));
                 }
             }
         });

@@ -116,7 +116,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:src="@android:drawable/stat_notify_chat"
-                    android:tint="@color/showComent_color"
+                    android:tint="@color/hidenComent_Color"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
