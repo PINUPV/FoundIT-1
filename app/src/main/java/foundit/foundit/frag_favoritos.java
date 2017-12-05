@@ -59,7 +59,6 @@ public class frag_favoritos extends Fragment {
         //bt_like2 = (ImageButton) view.findViewById(R.id.bt_like2);
         //bt_like2.setOnClickListener(new View.OnClickListener() {
 
-
         return view;
 
     }

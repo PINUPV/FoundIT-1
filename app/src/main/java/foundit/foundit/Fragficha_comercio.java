@@ -182,7 +182,7 @@ public class Fragficha_comercio extends Fragment {
 
             JSONArray respuesta = t.execute(x).get();
 
-            if(respuesta == null) {
+            if(respuesta.toString().equals("[]")) {
                 lik = false;
                 bt_like.setImageDrawable(getResources().getDrawable(R.drawable.likevacio));
             } else {
