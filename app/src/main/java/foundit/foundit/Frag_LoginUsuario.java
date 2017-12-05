@@ -97,7 +97,7 @@ public class Frag_LoginUsuario extends Fragment {
 }
     GoogleApiClient mGoogleApiClient;
     public void configureSignIn() {
-    // Configure sign-in to request the user’s basic profile like name and email
+    //Configure sign-in to request the user’s basic profile like name and email
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
