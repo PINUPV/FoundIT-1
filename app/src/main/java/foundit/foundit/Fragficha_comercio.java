@@ -323,15 +323,22 @@ public class Fragficha_comercio extends Fragment {
                 JSONArray respUsuario = p.execute(z).get();
 
                 if (respUsuario.length() > 0) {
+                    if (respUsuario.getJSONObject(0).getDouble( "Rate") > 0){
                     yaValorado = true;
-                    if(respUsuario.getString(4).length() > 0){
+                    }else{
+                        yaValorado = false;
+                    }
+
+                    if(respUsuario.getJSONObject(0).getString( "ComentText").length() > 0){
                         yaComentado = true;
                     }
-                        else{yaComentado = false;
+                        else{
+                        yaComentado = false;
                     }
 
                 } else {
                     yaValorado = false;
+                    yaComentado = false;
                 }
             }catch (ExecutionException e){
 
@@ -415,9 +422,13 @@ public class Fragficha_comercio extends Fragment {
 
         Calendar c = Calendar.getInstance();
         String fecha = "\""+c.get(Calendar.YEAR)+"-"+c.get(Calendar.MONTH)+"-"+c.get(Calendar.DAY_OF_MONTH)+"\"";
-
-        String x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
-                "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+""+"\""+","+val+","+fecha+")";
+        String x = "";
+        if (yaComentado) {
+            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20Comentarios%20SET%20Rate="+val+",%20FechaModificacion="+fecha+"%20WHERE%20IDComercio="+IDComercio+"%20AND%20IDUsuario="+IDUsuario;
+        }else{
+            x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Comentarios(ID,%20IDUsuario,%20IDComercio,%20IDComentResponse,%20ComentText,%20Rate,%20FechaModificacion)" +
+                    "%20VALUES(null,"+IDUsuario+","+IDComercio+",null,"+"\""+""+"\""+","+val+","+fecha+")";
+        }
 
         RegisterTaskFicha t = new RegisterTaskFicha();
         t.faF = getActivity();

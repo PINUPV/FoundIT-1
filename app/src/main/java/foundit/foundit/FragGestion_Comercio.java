@@ -51,7 +51,7 @@ public class FragGestion_Comercio extends Fragment {
             Uri uri = new Uri.Builder().scheme("http")
                     .encodedAuthority("185.137.93.170:8080")
                     .path("sql.php")
-                    .appendQueryParameter("sql", "SELECT Nombre, Poblacion FROM Comercio WHERE ID = 22")
+                    .appendQueryParameter("sql", "SELECT Nombre, Poblacion FROM Comercio WHERE ID = 1025")
                     .build();
             Log.v(DEBUG,uri.toString());
             c.execute(uri);
