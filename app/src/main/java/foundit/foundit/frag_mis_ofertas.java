@@ -42,7 +42,8 @@ public class frag_mis_ofertas extends Fragment {
             Uri uri = new Uri.Builder().scheme("http")
                     .encodedAuthority("185.137.93.170:8080")
                     .path("sql.php")
-                    .appendQueryParameter("sql", "SELECT ID, Nombre, fechaValidez FROM Ofertas WHERE Comercio=22")
+                    //Peter's Delicatessan - Comercio indicado en las PAs ID: 1025
+                    .appendQueryParameter("sql", "SELECT ID, Nombre, fechaValidez FROM Ofertas WHERE Comercio=1025")
                     .build();
             Log.v(DEBUG,uri.toString());
             t.execute(uri);
