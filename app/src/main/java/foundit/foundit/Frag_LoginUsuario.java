@@ -3,6 +3,8 @@ package foundit.foundit;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -12,13 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.HashMap;
 
 import Usuario.Usuario;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -32,6 +44,8 @@ public class Frag_LoginUsuario extends Fragment {
     private static TextView CreateUser;
     private static final String DEBUG = "LOG_Frag_LoginUsuario";
     private static final int RC_SIGN_IN = 9001;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     public Frag_LoginUsuario() {
         // Required empty public constructor
     }
@@ -92,6 +106,24 @@ public class Frag_LoginUsuario extends Fragment {
 
         // This method configures Google SignIn
 
+        /*mAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
+        //this is where we start the Auth state Listener to listen for whether the user is signed in or not
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        // Get signedIn user
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+        //if user is signed in, we call a helper method to save the user details to Firebase
+                if (user != null) {
+        // User is signed in
+                    createUserInFirebaseHelper();
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                } else {
+        // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+            }
+        };*/
 
         return view;
 }
@@ -112,6 +144,40 @@ public class Frag_LoginUsuario extends Fragment {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
+    }
+
+    // This IS the method where the result of clicking the signIn button will be handled
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(…);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+// Google Sign In was successful, save Token and a state then authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                String idToken = account.getIdToken();
+                String name = account.getDisplayName();
+                String email = account.getEmail();
+                Object photoUri = account.getPhotoUrl();
+                String photo = photoUri.toString();
+// Save Data to SharedPreference
+                SharedPrefManager sharedPrefManager = new SharedPrefManager(mContext);
+                sharedPrefManager.saveIsLoggedIn(mContext, true);
+                sharedPrefManager.saveEmail(mContext, email);
+                sharedPrefManager.saveName(mContext, name);
+                sharedPrefManager.savePhoto(mContext, photo);
+                sharedPrefManager.saveToken(mContext, idToken);
+//sharedPrefManager.saveIsLoggedIn(mContext, true);
+                AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+                firebaseAuthWithGoogle(credential);
+            } else {
+// Google Sign In failed, update UI appropriately
+                Log.e(TAG, "Login Unsuccessful. ");
+                Toast.makeText(getActivity(), "Login Unsuccessful", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
     }
 
 
