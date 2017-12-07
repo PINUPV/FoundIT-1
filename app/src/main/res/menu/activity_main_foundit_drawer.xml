@@ -22,10 +22,10 @@
             android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/RegComer"
             android:visible="false" />
-        <item
+        <!--<item
             android:id="@+id/nav_fav"
             android:icon="@android:drawable/btn_star_big_off"
-            android:title="@string/Favoritos" />
+            android:title="@string/Favoritos" />-->
         <item
             android:id="@+id/nav_ofertas"
             android:icon="@android:drawable/ic_menu_info_details"

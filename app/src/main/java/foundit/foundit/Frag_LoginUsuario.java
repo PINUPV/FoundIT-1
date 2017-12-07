@@ -25,6 +25,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
@@ -49,6 +50,7 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
     private static EditText Usuario;
     private static EditText Password;
     private static Button Login;
+    private static SignInButton btnLoginGoogle;
     private static TextView CreateUser;
     private static final String DEBUG = "LOG_Frag_LoginUsuario";
     private static final int RC_SIGN_IN = 9001;
@@ -121,10 +123,15 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
         googleLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn();
+                int id = view.getId();
+                if (id == R.id.login_with_google) {
+                    signIn();
+                }
             }
         });
         configureSignIn();
+
+
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
