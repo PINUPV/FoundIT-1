@@ -2,6 +2,8 @@ package foundit.foundit;
 
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
@@ -26,6 +28,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 
 import Usuario.Usuario;
@@ -46,6 +55,7 @@ public class Frag_LoginUsuario extends Fragment {
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private Frag_LoginUsuario myFrag=this;
     public Frag_LoginUsuario() {
         // Required empty public constructor
     }
@@ -60,26 +70,45 @@ public class Frag_LoginUsuario extends Fragment {
         * Fragment que recoge la información de login de usuario, la envia a la db y espera una respuesta. Si devuelve la info del usuario
         * se crea un objeto tipo usuario con toda la información pertinente y se guarda en el la MainClass
         */
-        Usuario = (EditText) view.findViewById(R.id.eTFragLoginUsuarioUserName);
-        Password = (EditText) view.findViewById(R.id.eTFragmentLoginUsuarioPass);
-        CreateUser = (TextView) view.findViewById(R.id.tVFragmentLoginUsuarioRegistrate);
-        Login = (Button) view.findViewById(R.id.bTNFragmentLoginUsuarioLogin);
+        Usuario = view.findViewById(R.id.eTFragLoginUsuarioUserName);
+        Password = view.findViewById(R.id.eTFragmentLoginUsuarioPass);
+        CreateUser = view.findViewById(R.id.tVFragmentLoginUsuarioRegistrate);
+        Login = view.findViewById(R.id.bTNFragmentLoginUsuarioLogin);
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String user = Usuario.getText().toString();
-                String pass = Password.getText().toString();
+                String pass=Password.getText().toString();
+                MessageDigest md = null;
+                try {
+                    md = MessageDigest.getInstance("MD5");
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
+                byte[] messageDigest = md.digest(pass.getBytes());
+                BigInteger number = new BigInteger(1, messageDigest);
+                String passMD5 = number.toString(16);
+
                 if (user.isEmpty()) {
                     Usuario.setHintTextColor(getResources().getColor(R.color.HintError));
                 } else if (pass.isEmpty()) {
                     Password.setHintTextColor(getResources().getColor(R.color.HintError));
                 } else {
-                    Log.v(DEBUG, "Usuario: " + user + " Password: " + pass);
-                    //falta realizar la consulta a la base de datos
-                    Usuario objUsuario = new Usuario("22", user, "last1", user, pass, user + "@gmail.com", "Valencia");
-                    MainFoundit.setUsuario(objUsuario);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+                    //consulta a la db preguntando por la información.
+                    ComprobarUsuario c = new ComprobarUsuario();
+                    c.myFrag_LoginUsuario=myFrag;
+
+                    try{
+                        Uri uri = new Uri.Builder().scheme("http")
+                                .encodedAuthority("185.137.93.170:8080")
+                                .path("sql.php")
+                                .appendQueryParameter("sql", "SELECT ID,Alias,Email, Poblacion FROM `Usuario` WHERE Alias Like '"+user+"' AND passwordMD5 LIKE '"+passMD5+"'")
+                                .build();
+                        Log.v(DEBUG,uri.toString());
+                        c.execute(uri);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -126,7 +155,52 @@ public class Frag_LoginUsuario extends Fragment {
         };*/
 
         return view;
-}
+    }
+    class ComprobarUsuario extends AsyncTask<Uri, String, JSONArray> {
+        Frag_LoginUsuario myFrag_LoginUsuario;
+
+        @Override
+        protected JSONArray doInBackground(Uri... params) {
+            String result = Util.GetWeb(params[0]);
+            try {
+                return new JSONArray(result);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try {
+                return new JSONArray("[]");
+            } catch (JSONException e) {
+                return null; // Nunca ocurrirá
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray Respuesta) {
+            try {
+                JSONObject RespComer = Respuesta.getJSONObject(0);
+                Log.v(DEBUG, RespComer.toString());
+                if(RespComer.length()>1){
+
+
+                    //Usuario objUsuario = new Usuario("22", user, "last1", user, pass, user + "@gmail.com", "Valencia");
+                    //MainFoundit.setUsuario(objUsuario);
+
+
+                    //FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    //fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+
+                }else{
+                    //no existe el usuario o los datos son incorrectos
+                }
+                //NombreComer.setText(RespComer.getString("Nombre"));
+                //PoblacionComer.setText(RespComer.getString("Poblacion"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.v(DEBUG,Respuesta.toString());
+        }
+    }
+
     GoogleApiClient mGoogleApiClient;
     public void configureSignIn() {
     //Configure sign-in to request the user’s basic profile like name and email
