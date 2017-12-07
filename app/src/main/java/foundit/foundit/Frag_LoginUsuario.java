@@ -63,6 +63,16 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if (MainFoundit.getUsuario() != null) {
+            Toast.makeText(getContext(), "Ya has iniciado sesión", Toast.LENGTH_SHORT).show();
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+            return null;
+        }
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_frag__login_usuario, container, false);
         /*
