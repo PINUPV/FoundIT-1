@@ -1,6 +1,8 @@
 package foundit.foundit;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -186,27 +188,37 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
         @Override
         protected void onPostExecute(JSONArray Respuesta) {
             try {
-                JSONObject RespComer = Respuesta.getJSONObject(0);
-                Log.v(DEBUG, RespComer.toString());
-                if(RespComer.length()>1){
+                if(Respuesta.length()>0){
+                    JSONObject RespComer = Respuesta.getJSONObject(0);
+                    Log.v(DEBUG,Respuesta.toString());
+                    String id = RespComer.getString("ID");
+                    String Alias = RespComer.getString("Alias");
+                    String Email = RespComer.getString("Email");
+                    String Poblacion =RespComer.getString("Poblacion");
 
+                    Usuario objUsuario = new Usuario(id, null, null, Alias, null, Email, Poblacion);
+                    MainFoundit.setUsuario(objUsuario);
 
-                    //Usuario objUsuario = new Usuario("22", user, "last1", user, pass, user + "@gmail.com", "Valencia");
-                    //MainFoundit.setUsuario(objUsuario);
-
-
-                    //FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    //fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
 
                 }else{
-                    //no existe el usuario o los datos son incorrectos
+                    //popup que indique que no existe el usuario
+                    AlertDialog dialog;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("El usuario no existe o alguno de los datos no son correctos.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    dialog = builder.create();
+                    dialog.show();
                 }
-                //NombreComer.setText(RespComer.getString("Nombre"));
-                //PoblacionComer.setText(RespComer.getString("Poblacion"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.v(DEBUG,Respuesta.toString());
         }
     }
 
@@ -256,6 +268,11 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
                 AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
                 firebaseAuthWithGoogle(credential);
                 */
+                Usuario objUsuario = new Usuario(idToken, null, null, name, null, email, null);
+                MainFoundit.setUsuario(objUsuario);
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
             } else {
 // Google Sign In failed, update UI appropriately
                 Log.e(TAG, "Login Unsuccessful. ");
