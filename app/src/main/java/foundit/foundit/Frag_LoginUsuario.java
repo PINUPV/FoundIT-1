@@ -23,10 +23,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,8 +49,6 @@ public class Frag_LoginUsuario extends Fragment {
     private static TextView CreateUser;
     private static final String DEBUG = "LOG_Frag_LoginUsuario";
     private static final int RC_SIGN_IN = 9001;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private Frag_LoginUsuario myFrag=this;
     public Frag_LoginUsuario() {
         // Required empty public constructor
@@ -222,7 +216,7 @@ public class Frag_LoginUsuario extends Fragment {
 
     // This IS the method where the result of clicking the signIn button will be handled
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(…);
         if (requestCode == RC_SIGN_IN) {
@@ -235,6 +229,7 @@ public class Frag_LoginUsuario extends Fragment {
                 String email = account.getEmail();
                 Object photoUri = account.getPhotoUrl();
                 String photo = photoUri.toString();
+                /*
 // Save Data to SharedPreference
                 SharedPrefManager sharedPrefManager = new SharedPrefManager(mContext);
                 sharedPrefManager.saveIsLoggedIn(mContext, true);
@@ -245,6 +240,7 @@ public class Frag_LoginUsuario extends Fragment {
 //sharedPrefManager.saveIsLoggedIn(mContext, true);
                 AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
                 firebaseAuthWithGoogle(credential);
+                */
             } else {
 // Google Sign In failed, update UI appropriately
                 Log.e(TAG, "Login Unsuccessful. ");
