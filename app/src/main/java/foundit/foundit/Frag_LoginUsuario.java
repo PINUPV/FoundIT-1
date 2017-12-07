@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
@@ -41,7 +42,7 @@ import static android.content.ContentValues.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Frag_LoginUsuario extends Fragment {
+public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
     private static EditText Usuario;
     private static EditText Password;
@@ -114,6 +115,14 @@ public class Frag_LoginUsuario extends Fragment {
             }
         });
 
+        com.google.android.gms.common.SignInButton googleLogin = view.findViewById(R.id.login_with_google);
+        googleLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
+        configureSignIn();
         // Configure sign-in to request the user's ID, email address, and basic
 // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -150,6 +159,12 @@ public class Frag_LoginUsuario extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     class ComprobarUsuario extends AsyncTask<Uri, String, JSONArray> {
         Frag_LoginUsuario myFrag_LoginUsuario;
 
@@ -203,7 +218,7 @@ public class Frag_LoginUsuario extends Fragment {
                 .build();
         //Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), (GoogleApiClient.OnConnectionFailedListener) getActivity())
+                .enableAutoManage(getActivity(), this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, options)
                 .build();
 
