@@ -81,7 +81,7 @@ public class FragRegistro_Usuario extends Fragment {
             }
         });
 
-        Button btnLoginGoogle = (Button) view.findViewById(R.id.btnLoginGoogle);
+
         
 
         return view;
