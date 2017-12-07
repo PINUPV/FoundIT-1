@@ -125,39 +125,6 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
             }
         });
         configureSignIn();
-        // Configure sign-in to request the user's ID, email address, and basic
-// profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        /*GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-// Build a GoogleSignInClient with the options specified by gso.
-        //Object vmGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
-        // apiClient = new GoogleApiClient.Builder(this)
-       //Object apiClient = new GoogleApiClient.Builder(getActivity())
-                //.enableAutoManage(getActivity(), (GoogleApiClient.OnConnectionFailedListener) getActivity())
-                //.addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                //.build();*/
-
-        // This method configures Google SignIn
-
-        /*mAuth = com.google.firebase.auth.FirebaseAuth.getInstance();
-        //this is where we start the Auth state Listener to listen for whether the user is signed in or not
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-        // Get signedIn user
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-        //if user is signed in, we call a helper method to save the user details to Firebase
-                if (user != null) {
-        // User is signed in
-                    createUserInFirebaseHelper();
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-        // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-            }
-        };*/
 
         return view;
     }
@@ -238,7 +205,6 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
     }
 
     // This IS the method where the result of clicking the signIn button will be handled
@@ -256,23 +222,13 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
                 String email = account.getEmail();
                 Object photoUri = account.getPhotoUrl();
                 String photo = photoUri.toString();
-                /*
-// Save Data to SharedPreference
-                SharedPrefManager sharedPrefManager = new SharedPrefManager(mContext);
-                sharedPrefManager.saveIsLoggedIn(mContext, true);
-                sharedPrefManager.saveEmail(mContext, email);
-                sharedPrefManager.saveName(mContext, name);
-                sharedPrefManager.savePhoto(mContext, photo);
-                sharedPrefManager.saveToken(mContext, idToken);
-//sharedPrefManager.saveIsLoggedIn(mContext, true);
-                AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-                firebaseAuthWithGoogle(credential);
-                */
+                
                 Usuario objUsuario = new Usuario(idToken, null, null, name, null, email, null);
                 MainFoundit.setUsuario(objUsuario);
 
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragBusqueda()).commit();
+
             } else {
 // Google Sign In failed, update UI appropriately
                 Log.e(TAG, "Login Unsuccessful. ");
