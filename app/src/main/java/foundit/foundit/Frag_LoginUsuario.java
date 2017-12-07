@@ -225,8 +225,8 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
                 String idToken = account.getIdToken();
                 String name = account.getDisplayName();
                 String email = account.getEmail();
-                Object photoUri = account.getPhotoUrl();
-                String photo = photoUri.toString();
+                //Object photoUri = account.getPhotoUrl();
+                //String photo = photoUri.toString();
                 
                 Usuario objUsuario = new Usuario(idToken, null, null, name, null, email, null);
                 MainFoundit.setUsuario(objUsuario);
