@@ -204,18 +204,19 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
         }
     }
 
-    GoogleApiClient mGoogleApiClient;
+    static GoogleApiClient mGoogleApiClient = null;
     public void configureSignIn() {
-    //Configure sign-in to request the user’s basic profile like name and email
-        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        //Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, options)
-                .build();
-
+        if (mGoogleApiClient == null) {
+            //Configure sign-in to request the user’s basic profile like name and email
+            GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            //Build a GoogleApiClient with access to GoogleSignIn.API and the options above.
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .enableAutoManage(getActivity(), this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, options)
+                    .build();
+        }
     }
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
