@@ -33,61 +33,17 @@
                     android:layout_height="48dp"
                     android:orientation="vertical">
 
-                    <ListView
-                        android:id="@+id/listaFav"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <ImageView
-                            android:id="@+id/img_comercio2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@+id/textcomer"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="8dp"
-                            android:layout_marginTop="2dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:cropToPadding="false"
-                            android:maxHeight="35dp"
-                            android:maxWidth="74dp"
-                            android:src="@drawable/comercio"
-                            tools:layout_editor_absoluteY="342dp" />
-
-                        <ImageButton
-                            android:id="@+id/bt_like2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="70dp"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/likelleno"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.882"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/textcomer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_marginLeft="20dp"
-                            android:layout_toEndOf="@+id/img_comercio2"
-                            android:layout_toRightOf="@+id/img_comercio2"
-                            android:text="Comercio"
-                            android:textSize="24sp" />
-                    </ListView>
-
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <ListView
+                android:id="@+id/listaFav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+            </ListView>
 
 
         </ScrollView>

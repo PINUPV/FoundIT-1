@@ -19,26 +19,56 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <RatingBar
-                android:id="@+id/rating_total"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="126dp"
-                android:layout_weight="1"
-                android:numStars="5"
-                android:rating="1"
-                android:stepSize="0.5" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="296dp"
+                android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/img_comercio"
-                android:layout_width="wrap_content"
-                android:layout_height="275dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="14dp"
-                android:layout_weight="1"
-                android:src="@drawable/comercio"
-                tools:layout_editor_absoluteY="342dp" />
+                <TextView
+                    android:id="@+id/text_nombre_comercio"
+                    android:layout_width="253dp"
+                    android:layout_height="54dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/rating_total"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RatingBar
+                    android:id="@+id/rating_total"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="77dp"
+                    android:layout_height="19dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:numStars="5"
+                    android:rating="1"
+                    android:stepSize="0.5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_comercio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="141dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="1"
+                    android:src="@drawable/comercio"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -48,7 +78,7 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar2"
                     android:layout_width="399dp"
-                    android:layout_height="58dp"
+                    android:layout_height="46dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:background="?attr/colorPrimary"
@@ -56,8 +86,10 @@
                     android:theme="?attr/actionBarTheme"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.473"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageButton
                     android:id="@+id/bt_like"
@@ -76,20 +108,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/text_nombre_comercio"
-                    android:layout_width="234dp"
-                    android:layout_height="21dp"
+                <ImageButton
+                    android:id="@+id/bt_showComent"
+                    android:layout_width="47dp"
+                    android:layout_height="41dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="500dp"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:textSize="18sp"
+                    android:src="@android:drawable/stat_notify_chat"
+                    android:tint="@color/hidenComent_Color"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.52"
-                    app:layout_constraintStart_toEndOf="@+id/toolbar2"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -101,83 +132,88 @@
             android:layout_height="257dp"
             android:layout_weight="1">
 
-            <Button
-                android:id="@+id/bt_u5"
-                android:layout_width="78dp"
-                android:layout_height="34dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:text="Usuario_5"
-                android:textSize="8sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bt_u22"
-                app:layout_constraintHorizontal_bias="0.421"
-                app:layout_constraintStart_toEndOf="@+id/bt_u1" />
-
-            <Button
-                android:id="@+id/bt_u22"
-                android:layout_width="78dp"
-                android:layout_height="34dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="24dp"
-                android:text="Usuario_22"
-                android:textSize="8sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bt_cerrar_fichaCom" />
-
             <RatingBar
                 android:id="@+id/rating_comercio"
                 android:layout_width="241dp"
                 android:layout_height="44dp"
                 android:layout_marginEnd="90dp"
                 android:layout_marginStart="70dp"
-                android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:numStars="5"
                 android:rating="2.5"
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/bt_cerrar_fichaCom"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginEnd="36dp"
-                android:layout_marginTop="184dp"
-                android:text="Cerrar"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rating_comercio"
-                app:layout_constraintVertical_bias="1.0" />
+            <Spinner
+                android:id="@+id/spinner_ordComent"
+                android:layout_width="150dp"
+                android:layout_height="29dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/list_valoraciones"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ListView
                 android:id="@+id/list_valoraciones"
                 android:layout_width="371dp"
-                android:layout_height="138dp"
+                android:layout_height="109dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.115"
+                app:layout_constraintHorizontal_bias="0.2"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.495" />
+                app:layout_constraintVertical_bias="0.59" />
 
             <Button
-                android:id="@+id/bt_u1"
-                android:layout_width="78dp"
-                android:layout_height="34dp"
-                android:layout_marginBottom="16dp"
-                android:text="Usuario_1"
+                android:id="@+id/bt_cerrar_fichaCom"
+                android:layout_width="83dp"
+                android:layout_height="29dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="48dp"
+                android:text="Cerrar"
                 android:textSize="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.923"
+                app:layout_constraintStart_toEndOf="@+id/spinner_ordComent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/addComent_textBox"
+                android:layout_width="298dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:imeOptions="actionSend"
+                android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.089"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/list_valoraciones"
+                app:layout_constraintVertical_bias="0.555" />
+
+            <ImageButton
+                android:id="@+id/bt_sendComent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_menu_send"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/addComent_textBox" />
 
         </android.support.constraint.ConstraintLayout>
 

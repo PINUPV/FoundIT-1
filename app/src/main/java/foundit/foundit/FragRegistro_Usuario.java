@@ -81,6 +81,9 @@ public class FragRegistro_Usuario extends Fragment {
             }
         });
 
+
+        
+
         return view;
     }
     public boolean comprobar_contraseña(String contra){

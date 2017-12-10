@@ -58,6 +58,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
     private ImageButton botonFiltros;
     private ImageButton botonLupa;
     private List<String> listaActividades;
+    String filtrosStr = "[]";
 
     public static LatLng lastMapPosition;
 
@@ -126,17 +127,10 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 .setPositiveButton(R.string.Aceptar, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        busquedaActual="";
-                        int cantFiltros = Filtros.size()-1;
-                        for(String filtro:Filtros){
-                            /*busquedaActual+="%22"+filtro+"%22";
-                            if(cantFiltros>0){
-                                busquedaActual+=",";
-                            }*/
-                            busquedaActual+=filtro;
-                        }
-                        //Log.v("Prueba filtros",busquedaActual);
-                        Util.CargarComerciosEnMapa(mMap,busquedaActual);
+                        JSONArray filtros = new JSONArray(Filtros);
+                        filtrosStr = filtros.toString();
+                        Log.v("Prueba filtros",filtrosStr);
+                        Util.CargarComerciosEnMapa(mMap,busquedaActual, filtrosStr);
                         //Util.CargarComerciosConFiltroEnMapa(mMap, busquedaActual);
                     }
                 });
@@ -158,7 +152,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                 if(categoriaBusqueda.length()< 100 && esAlfaNumerica(categoriaBusqueda)){
                     Toast.makeText(getActivity(), categoriaBusqueda, Toast.LENGTH_SHORT).show();
                     busquedaActual = categoriaBusqueda;
-                    Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                    Util.CargarComerciosEnMapa(mMap, busquedaActual, filtrosStr);
                 }
                 else
                     Toast.makeText(getActivity(), "la palabra clave introducida no es valida", Toast.LENGTH_SHORT).show();
@@ -171,7 +165,11 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
         return view;
     }
 
-
+    @Override
+    public void onDestroyView() {
+        ActualizaMapa.ClearOldMarkers();
+        super.onDestroyView();
+    }
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -222,7 +220,7 @@ public class FragBusqueda extends Fragment implements OnMapReadyCallback,
                     Log.w("STATE", "mapa desplazado terminado");
 
                     try {
-                        Util.CargarComerciosEnMapa(mMap, busquedaActual);
+                        Util.CargarComerciosEnMapa(mMap, busquedaActual, filtrosStr);
                         UpdateLastMapPosition();
                     } catch (Exception e) {
                         Log.e("ERROR1", e.toString());

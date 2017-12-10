@@ -3,6 +3,7 @@ package foundit.foundit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,9 +18,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.gordonwong.materialsheetfab.MaterialSheetFab;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import foundit.foundit.UtilClasses.Fab;
 
 
 /**
@@ -27,8 +32,8 @@ import org.json.JSONObject;
  */
 public class FragGestion_Comercio extends Fragment {
 
-    private static Button bTNOfertas;
     private static final String DEBUG="LogFragGestion_Comercio";
+    private MaterialSheetFab materialSheetFab;
     private FragGestion_Comercio myFrag=this;
     public FragGestion_Comercio() {
         // Required empty public constructor
@@ -46,7 +51,7 @@ public class FragGestion_Comercio extends Fragment {
             Uri uri = new Uri.Builder().scheme("http")
                     .encodedAuthority("185.137.93.170:8080")
                     .path("sql.php")
-                    .appendQueryParameter("sql", "SELECT Nombre, Poblacion FROM Comercio WHERE ID = 22")
+                    .appendQueryParameter("sql", "SELECT Nombre, Poblacion FROM Comercio WHERE ID = 1025")
                     .build();
             Log.v(DEBUG,uri.toString());
             c.execute(uri);
@@ -54,27 +59,49 @@ public class FragGestion_Comercio extends Fragment {
             e.printStackTrace();
         }
 
-        bTNOfertas=(Button) view.findViewById(R.id.bTNGestion_Comercio_VerOfertas);
-        bTNOfertas.setOnClickListener(new View.OnClickListener() {
+        ///////////////////
+        /*//cargar las ofertas
+        LoadMyOfertas t = new LoadMyOfertas();
+        t.myFragGestComer=myFrag;
+        t.myFragGestComerView=view;
+        try {
+            Uri uri = new Uri.Builder().scheme("http")
+                    .encodedAuthority("185.137.93.170:8080")
+                    .path("sql.php")
+                    .appendQueryParameter("sql", "SELECT ID, Nombre, fechaValidez FROM Ofertas WHERE Comercio=22")
+                    .build();
+            Log.v(DEBUG,uri.toString());
+            t.execute(uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+
+        Fab fab = view.findViewById(R.id.fab);
+        View sheetView = view.findViewById(R.id.fab_sheet);
+        View overlay = view.findViewById(R.id.overlay);
+        int sheetColor = getResources().getColor(R.color.background_card);
+        int fabColor = getResources().getColor(R.color.colorPrimaryDark);
+
+        // Initialize material sheet FAB
+        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay,
+                sheetColor, fabColor);
+
+        TextView tVVerOfertas = view.findViewById(R.id.tVGestion_Comercio_Fav_VerOfertas);
+        tVVerOfertas.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //cargar las ofertas
-                LoadMyOfertas t = new LoadMyOfertas();
-                t.myFragGestComer=myFrag;
-                try {
-                    Uri uri = new Uri.Builder().scheme("http")
-                            .encodedAuthority("185.137.93.170:8080")
-                            .path("sql.php")
-                            .appendQueryParameter("sql", "SELECT ID, Nombre, fechaValidez FROM Ofertas WHERE Comercio=22")
-                            .build();
-                    Log.v(DEBUG,uri.toString());
-                    t.execute(uri);
-                } catch (Exception e) { }
-
-
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new frag_mis_ofertas()).commit();
             }
         });
-
+        TextView tVAddOferta = view.findViewById(R.id.tVGestion_Comercio_Fav_AnyadirOferta);
+        tVAddOferta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new registro_oferta()).commit();
+            }
+        });
 
 
 
@@ -114,8 +141,10 @@ public class FragGestion_Comercio extends Fragment {
             Log.v(DEBUG,Respuesta.toString());
         }
     }
-    class LoadMyOfertas extends AsyncTask<Uri, String, JSONArray> {
+    /*class LoadMyOfertas extends AsyncTask<Uri, String, JSONArray> {
         FragGestion_Comercio myFragGestComer;
+        View myFragGestComerView;
+
         @Override
         protected JSONArray doInBackground(Uri... params) {
             String result = Util.GetWeb(params[0]);
@@ -135,29 +164,13 @@ public class FragGestion_Comercio extends Fragment {
         protected void onPostExecute(JSONArray Respuesta){
             Log.v(DEBUG,Respuesta.toString());
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(myFragGestComer.getActivity());
+            //AlertDialog.Builder builder = new AlertDialog.Builder(myFragGestComer.getActivity());
             LayoutInflater inflater = myFragGestComer.getActivity().getLayoutInflater();
-            View actual = inflater.inflate(R.layout.alertdialog_ofertas_activas,null);
-            LinearLayout lLAlertDialogOfertasActivas = (LinearLayout) actual.findViewById(R.id.lLAlertDialogOfertasActivas);
+            //View actual = inflater.inflate(R.layout.alertdialog_ofertas_activas,null);
+            LinearLayout lLAlertDialogOfertasActivas = (LinearLayout) myFragGestComerView.findViewById(R.id.lLAlertDialogOfertasActivas);
             lLAlertDialogOfertasActivas.removeAllViews();
 
 
-            builder.setView(actual)
-                    .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setPositiveButton("Añadir", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            FragmentManager fragmentManager = myFragGestComer.getActivity().getSupportFragmentManager();
-                            fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new registro_oferta()).commit();
-                        }
-                    });
-
-            final AlertDialog dialog=builder.create();
             try{
                 for(int i = 0; i<Respuesta.length();i++){
                     View viewOfertas = inflater.inflate(R.layout.view_oferta,null);
@@ -180,7 +193,7 @@ public class FragGestion_Comercio extends Fragment {
                             args.putString("ID", ((TextView) v.findViewById(R.id.tVView_Oferta_ID)).getText().toString().split(" ")[1]);
                             view.setArguments(args);
                             fragmentManager.beginTransaction().replace(R.id.ContainFoundit, view).commit();
-                            dialog.cancel();
+                            //dialog.cancel();
                         }
                     });
 
@@ -191,9 +204,9 @@ public class FragGestion_Comercio extends Fragment {
                 e.printStackTrace();
             }
 
-            dialog.show();
+            //dialog.show();
 
         }
-    }
+    }*/
 
 }

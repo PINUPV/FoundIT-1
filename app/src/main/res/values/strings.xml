@@ -29,6 +29,16 @@
     <string name="PoblacionComer">Poblacion</string>
     <string name="ofertas">Ofertas</string>
     <string name="infoComer">Mi Comercio</string>
+    <string name="fechaInicio">Fecha de Inicio</string>
+    <string name="fechaFin">Fecha de finalización</string>
+    <string name="imageOfert">Imagen perteneciente a la oferta.</string>
+    <string name="Favoritos">Favoritos</string>
+    <string name="miComercio">Mi Comercio</string>
+    <string name="verOfertas">Ver Ofertas</string>
+    <string name="addOferta">Añadir Oferta</string>
+    <string name="misOfertas">Mis Ofertas</string>
+	
+	<string name="server_client_id">962136235562-4625tb4l1c0n45c3g7ri5jkvqq5g2d0e.apps.googleusercontent.com</string>
 
     <string-array name="paises">
         <item>España</item>

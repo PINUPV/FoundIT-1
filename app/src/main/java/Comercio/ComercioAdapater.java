@@ -65,11 +65,11 @@ public class ComercioAdapater extends BaseAdapter {
 
         Comercio com = comercio.get(position);
 
-        TextView name = (TextView) v.findViewById(R.id.textcomer);
-        name.setText(com.getName());
+        //TextView name = (TextView) v.findViewById(R.id.textcomer);
+        //name.setText(com.getName());
 
-        ImageButton bt_like2 = (ImageButton) v.findViewById(R.id.bt_like2);
-        bt_like2.setImageDrawable(activity.getResources().getDrawable(R.drawable.likevacio));
+        //ImageButton bt_like2 = (ImageButton) v.findViewById(R.id.bt_like2);
+        //bt_like2.setImageDrawable(activity.getResources().getDrawable(R.drawable.likevacio));
 
         ImageView imagen = (ImageView) v.findViewById(R.id.imageView);
         imagen.setImageDrawable(activity.getResources().getDrawable(R.drawable.comercio));

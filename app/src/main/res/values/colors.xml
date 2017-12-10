@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2f5fc5</color>
-    <color name="colorPrimaryDark">#6d303f9f</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#313af7</color>
+    <color name="colorPrimaryDark">#3039f9</color>
+    <color name="colorAccent">#f40154</color>
     <color name="nuevo">#55303f9f</color>
     <color name="HintError">#ed3841</color>
     <color name="black">#000000</color>
+    <color name="showComent_color">#cc027211</color>
+    <color name="background_card">#fff</color>
+    <color name="theme_accent">#FFEB3B</color>
+    <color name="theme_primary">#00BCD4</color>
+    <color name="theme_primary_dark">#0097A7</color>
+    <color name="theme_primary_dark2">#006064</color>
+
+    <color name="background_snackbar">#323232</color>
+
+    <color name="text_black_87">#de000000</color>
+    <color name="text_white_87">#deFFFFFF</color>
+    <color name="hidenComent_Color">#ffffff</color>
+
+    <array name="note_neutral_colors">
+        <item>#9E9E9E</item>
+        <item>#455A64</item>
+        <item>#607D8B</item>
+    </array>
+
+    <array name="note_accent_colors">
+        <item>#039BE5</item>
+        <item>#3D51B3</item>
+        <item>#689f38</item>
+        <item>#FD7044</item>
+    </array>
 </resources>
