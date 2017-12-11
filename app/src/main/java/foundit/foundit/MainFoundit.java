@@ -1,5 +1,6 @@
 package foundit.foundit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -12,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import Usuario.Usuario;
 import layout.frag_ofertas;
@@ -20,6 +23,7 @@ public class MainFoundit extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static Usuario userActivo;
+    private static NavigationView navigationViewstatic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,7 @@ public class MainFoundit extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationViewstatic = navigationView;
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -114,6 +119,13 @@ public class MainFoundit extends AppCompatActivity
     }
     public static void setUsuario(Usuario user){
         userActivo=user;
+        //Setear el nombre de usuario en el menu
+
+        View headerView = navigationViewstatic.getHeaderView(0);
+        TextView usuario = headerView.findViewById(R.id.tVNavHeaderMainNombre);
+        TextView mail = headerView.findViewById(R.id.tVNabHeaderMainMail);
+        usuario.setText(userActivo.getUsername());
+        mail.setText(userActivo.getEmail());
         Log.v("DEBUG","Username: "+userActivo.getName());
     }
 }

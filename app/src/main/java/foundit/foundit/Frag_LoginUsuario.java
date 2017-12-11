@@ -87,37 +87,55 @@ public class Frag_LoginUsuario extends Fragment implements GoogleApiClient.OnCon
             @Override
             public void onClick(View v) {
                 String user = Usuario.getText().toString();
-                String pass=Password.getText().toString();
-                MessageDigest md = null;
-                try {
-                    md = MessageDigest.getInstance("MD5");
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-                byte[] messageDigest = md.digest(pass.getBytes());
-                BigInteger number = new BigInteger(1, messageDigest);
-                String passMD5 = number.toString(16);
-
-                if (user.isEmpty()) {
-                    Usuario.setHintTextColor(getResources().getColor(R.color.HintError));
-                } else if (pass.isEmpty()) {
-                    Password.setHintTextColor(getResources().getColor(R.color.HintError));
-                } else {
-                    //consulta a la db preguntando por la información.
-                    ComprobarUsuario c = new ComprobarUsuario();
-                    c.myFrag_LoginUsuario=myFrag;
-
-                    try{
-                        Uri uri = new Uri.Builder().scheme("http")
-                                .encodedAuthority("185.137.93.170:8080")
-                                .path("sql.php")
-                                .appendQueryParameter("sql", "SELECT ID,Alias,Email, Poblacion FROM `Usuario` WHERE Alias Like '"+user+"' AND passwordMD5 LIKE '"+passMD5+"'")
-                                .build();
-                        Log.v(DEBUG,uri.toString());
-                        c.execute(uri);
-                    }catch (Exception e){
+                //Comprobar si hay caracteres especiales
+                if (user.matches("[a-zA-Z0-9]*")){
+                    Log.v(DEBUG,"cumple");
+                    String pass=Password.getText().toString();
+                    MessageDigest md = null;
+                    try {
+                        md = MessageDigest.getInstance("MD5");
+                    } catch (NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     }
+                    byte[] messageDigest = md.digest(pass.getBytes());
+                    BigInteger number = new BigInteger(1, messageDigest);
+                    String passMD5 = number.toString(16);
+
+                    if (user.isEmpty()) {
+                        Usuario.setHintTextColor(getResources().getColor(R.color.HintError));
+                    } else if (pass.isEmpty()) {
+                        Password.setHintTextColor(getResources().getColor(R.color.HintError));
+                    } else {
+                        //consulta a la db preguntando por la información.
+                        ComprobarUsuario c = new ComprobarUsuario();
+                        c.myFrag_LoginUsuario=myFrag;
+
+                        try{
+                            Uri uri = new Uri.Builder().scheme("http")
+                                    .encodedAuthority("185.137.93.170:8080")
+                                    .path("sql.php")
+                                    .appendQueryParameter("sql", "SELECT ID,Alias,Email, Poblacion FROM `Usuario` WHERE Alias Like '"+user+"' AND passwordMD5 LIKE '"+passMD5+"'")
+                                    .build();
+                            Log.v(DEBUG,uri.toString());
+                            c.execute(uri);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                }else{
+                    Log.v(DEBUG,"No Cumple");
+                    AlertDialog dialog;
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("No se admiten caracteres especiales en el nombre de Usuario.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
