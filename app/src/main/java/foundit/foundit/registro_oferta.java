@@ -31,9 +31,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
@@ -57,7 +63,7 @@ public class registro_oferta extends Fragment {
     DatePickerDialog.OnDateSetListener DateSetListener;
     String elNombre, fechaOf, descr, fotoOf;
 
-
+    FragmentActivity fa;
 
 
     public registro_oferta() {
@@ -82,6 +88,8 @@ public class registro_oferta extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_registro_oferta, container, false);
         nombreOferta = (EditText) view.findViewById(R.id.nombre_oferta);
+
+        fa = getActivity();
 
         fotoOferta = (ImageView) view.findViewById(R.id.oferta_image);
 
@@ -197,31 +205,66 @@ public class registro_oferta extends Fragment {
         }
     }
 
-    public void publicarenDB(String n,String f, String im, String des ){
+    public void publicarenDB(final String n, final String f, final String im, final String des ) {
         String x = "";
-        if(im.length()<=0) im = "null";
-        else im = "'"+im+"'";
+        if (im.length() > 0) {
+            // Subir imagen al servidor
+            Uri uri = new Uri.Builder().scheme("http")
+                    .encodedAuthority("185.137.93.170:8080")
+                    .path("uploadimg.php")
+                    .appendQueryParameter("ImageData", im)
+                    .build();
+            AsyncTask<Uri, String, String> t = new AsyncTask<Uri, String, String>() {
+                @Override
+                protected String doInBackground(Uri... uris) {
+                    try {
+                        URL url = new URL("http://185.137.93.170:8080/uploadimg.php");
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestMethod("POST");
+                        try( DataOutputStream wr = new DataOutputStream( conn.getOutputStream())) {
+                            wr.write( ("ImageData=" + im).getBytes(StandardCharsets.UTF_8) );
+                        }
+                        StringBuilder out = new StringBuilder();
+                        InputStream in = conn.getInputStream();
+                        String line;
+                        BufferedReader dis = new BufferedReader(new InputStreamReader(in));
+                        while ((line = dis.readLine()) != null) {
+                            out.append(line);
+                        }
+                        return out.toString();
+                    } catch (Exception e){}
+                    return "";
+                }
 
+                @Override
+                protected void onPostExecute(String Respuesta) {
+                    publicarenDB2(n, f, Respuesta, des);
+                }
+            };
+            t.execute(uri);
+        } else {
+            publicarenDB2(n, f, "", des);
+        }
+    }
+
+    private void publicarenDB2(String n,String f, String imURL, String des ) {
         if(des.length()<= 0) des = "null";
         else des = "'"+des+"'";
+        String x;
         if(ID.length()<=0) {
-            x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Ofertas(Comercio,%20Nombre,%20fechaValidez,%20imagenOferta,%20Descripcion)" +
-                    "%20VALUES(22,'" + n + "','" + f + "'," + im + "," + des + ")";
+            x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Ofertas(Comercio,Nombre,FechaInicio,fechaValidez,imagenOferta,Descripcion,publicado)" +
+                    "%20VALUES(22,'" + n + "','2017-01-01','" + f + "','" + imURL + "'," + des + ",'1')";
 
 
-        }else {
-            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20INTO%20Ofertas(Comercio,%20Nombre,%20fechaValidez,%20imagenOferta,%20Descripcion)" +
-                    "%20VALUES(22,'" + n + "','" + f + "'," + im + "," + des + ")";
+        } else {
+            x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20INTO%20Ofertas(Comercio,Nombre,FechaInicio,fechaValidez,imagenOferta,Descripcion,publicado)" +
+                    "%20VALUES(22,'" + n + "','2017-01-01','" + f + "','" + imURL + "'," + des + ",'1')";
         }
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
-
             JSONArray respuesta = t.execute(x).get();
-
-            Toast.makeText(getActivity(), "Oferta publicada: "+n, Toast.LENGTH_SHORT).show();
-
-
+            Toast.makeText(fa, "Oferta publicada: "+n, Toast.LENGTH_SHORT).show();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
