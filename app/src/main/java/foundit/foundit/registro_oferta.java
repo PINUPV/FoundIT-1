@@ -118,8 +118,8 @@ public class registro_oferta extends Fragment {
             nombreOferta.setText(elNombre);
             fechaFin.setText(fechaOf);
             descripcion.setText(descr);
-            if(!fotoOf.isEmpty()){
-                byte [] encodeByte=Base64.decode(Util.GetWeb(Uri.parse(fotoOf)), Base64.DEFAULT);
+            if(fotoOf != null && !fotoOf.isEmpty()){
+                byte [] encodeByte=Base64.decode(Util.GetWeb(Uri.parse(fotoOf)),Base64.NO_WRAP | Base64.URL_SAFE);
 
                 InputStream inputStream  = new ByteArrayInputStream(encodeByte);
                 Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
@@ -139,8 +139,11 @@ public class registro_oferta extends Fragment {
                         String fechaini = fechaIni.getText().toString();
                         String image_str = "";
                         if(!hasNullOrEmptyDrawable(fotoOferta)) {
-
-                            //TODO:Implementar subida de imagen a server
+                            Bitmap picture = ((BitmapDrawable) fotoOferta.getDrawable()).getBitmap();
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            picture.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
+                            byte[] byte_arr = stream.toByteArray();
+                            image_str = Base64.encodeToString(byte_arr, Base64.NO_WRAP | Base64.URL_SAFE);
                         }
                         if(publi.isChecked()) publicado=1;
                         String descr = descripcion.getText().toString();
@@ -289,12 +292,12 @@ public class registro_oferta extends Fragment {
         String x;
         if(ID.length()<=0) {
             x = "http://185.137.93.170:8080/sql.php?sql=INSERT%20INTO%20Ofertas(Comercio,Nombre,FechaInicio,fechaValidez,imagenOferta,Descripcion,publicado)" +
-                    "%20VALUES(22,'" + n + "','2017-01-01','" + f + "','" + imURL + "'," + des + ",'1')";
+                    "%20VALUES(22,'" + n + "','"+f1+"','" + f + "','" + imURL + "'," + des + ","+publicado+")";
 
 
         } else {
             x = "http://185.137.93.170:8080/sql.php?sql=UPDATE%20INTO%20Ofertas(Comercio,Nombre,FechaInicio,fechaValidez,imagenOferta,Descripcion,publicado)" +
-                    "%20VALUES(22,'" + n + "','2017-01-01','" + f + "','" + imURL + "'," + des + ",'1')";
+                    "%20VALUES(22,'" + n + "','"+f1+"','" + f + "','" + imURL + "'," + des + ","+publicado+")";
         }
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
@@ -364,7 +367,7 @@ public class registro_oferta extends Fragment {
     }
     public void rellenar(String id) {
 
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,fechaInicio,publicado,%20fechaValidez,%20imagenOferta,%20Descripcion%20FROM%20Ofertas%20WHERE%20ID%20=%20" + id;
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,fechaInicio,publicado,fechaValidez,imagenOferta,Descripcion%20FROM%20Ofertas%20WHERE%20ID=" + id;
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
