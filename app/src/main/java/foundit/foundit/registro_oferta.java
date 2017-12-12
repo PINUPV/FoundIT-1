@@ -33,14 +33,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -94,6 +101,33 @@ public class registro_oferta extends Fragment {
         return fragment;
     }
 
+    private Bitmap getImageBitmap(String url) {
+        try {
+            return new AsyncTask<String, String, Bitmap>() {
+                @Override
+                protected Bitmap doInBackground(String... urls) {
+                    try {
+                        URL aURL = new URL(urls[0]);
+                        URLConnection conn = aURL.openConnection();
+                        conn.connect();
+                        InputStream is = conn.getInputStream();
+                        BufferedInputStream bis = new BufferedInputStream(is);
+                        Bitmap bm = BitmapFactory.decodeStream(bis);
+                        bis.close();
+                        is.close();
+                        return bm;
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error getting bitmap", e);
+                        return Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8);
+                    }
+                }
+            }.execute(url).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
@@ -119,11 +153,8 @@ public class registro_oferta extends Fragment {
             fechaFin.setText(fechaOf);
             descripcion.setText(descr);
             if(fotoOf != null && !fotoOf.isEmpty()){
-                byte [] encodeByte=Base64.decode(Util.GetWeb(Uri.parse(fotoOf)),Base64.NO_WRAP | Base64.URL_SAFE);
-
-                InputStream inputStream  = new ByteArrayInputStream(encodeByte);
-                Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
-                fotoOferta.setImageBitmap(bitmap);
+                //fotoOferta.setImageURI(Uri.parse(fotoOf));
+                fotoOferta.setImageBitmap(getImageBitmap(fotoOf));
             }
         }
 
@@ -143,7 +174,10 @@ public class registro_oferta extends Fragment {
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             picture.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
                             byte[] byte_arr = stream.toByteArray();
-                            image_str = Base64.encodeToString(byte_arr, Base64.NO_WRAP | Base64.URL_SAFE);
+                            image_str = Base64.encodeToString(byte_arr, Base64.NO_WRAP);
+                            try {
+                                image_str = URLEncoder.encode(image_str, "UTF-8");
+                            } catch (UnsupportedEncodingException e) { }
                         }
                         if(publi.isChecked()) publicado=1;
                         String descr = descripcion.getText().toString();
@@ -367,7 +401,7 @@ public class registro_oferta extends Fragment {
     }
     public void rellenar(String id) {
 
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,fechaInicio,publicado,fechaValidez,imagenOferta,Descripcion%20FROM%20Ofertas%20WHERE%20ID=" + id;
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,FechaInicio,publicado,fechaValidez,imagenOferta,Descripcion%20FROM%20Ofertas%20WHERE%20ID=" + id;
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
