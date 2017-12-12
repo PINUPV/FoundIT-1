@@ -13,6 +13,19 @@
         tools:context="foundit.foundit.registro_oferta">
         <!-- TODO: Update blank fragment layout -->
 
+        <EditText
+            android:id="@+id/fechaIni"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/oferta_image"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:editable="false"
+            android:hint=" Inicio de la oferta" />
+
         <TextView
             android:id="@+id/plain_text_oferta"
             android:layout_width="wrap_content"
@@ -42,7 +55,7 @@
             android:layout_height="200dp"
             android:layout_alignEnd="@+id/nombre_oferta"
             android:layout_below="@+id/nombre_oferta"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:src="@drawable/common_google_signin_btn_icon_light_normal_background" />
 
         <Button
@@ -56,33 +69,32 @@
             android:text="Subir Imagen" />
 
         <EditText
-            android:id="@+id/fecha"
+            android:id="@+id/fechaFin"
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/oferta_image"
-            android:layout_below="@+id/oferta_image"
-            android:layout_marginTop="24dp"
+            android:layout_alignBaseline="@+id/fechaIni"
+            android:layout_alignBottom="@+id/fechaIni"
+            android:layout_alignEnd="@+id/subir_imagen"
             android:clickable="true"
             android:editable="false"
-            android:hint="Fecha vencimiento de oferta" />
+            android:hint=" Vencimiento de oferta" />
 
         <Button
-            android:id="@+id/publicar"
+            android:id="@+id/Guardar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/fecha"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="20dp"
-            android:text="Publicar" />
+            android:layout_alignStart="@+id/oferta_image"
+            android:layout_marginBottom="13dp"
+            android:text="Guardar" />
 
         <Button
             android:id="@+id/Eliminar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/publicar"
-            android:layout_alignBottom="@+id/publicar"
+            android:layout_alignBaseline="@+id/Guardar"
+            android:layout_alignBottom="@+id/Guardar"
             android:layout_alignStart="@+id/subir_imagen"
             android:text="Eliminar" />
 
@@ -92,12 +104,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/fecha"
-            android:layout_marginTop="18dp"
+            android:layout_below="@+id/fechaIni"
+            android:layout_marginTop="12dp"
             android:ems="10"
             android:hint="Descripcion"
             android:inputType="textMultiLine"
             android:lines="3" />
+
+        <CheckBox
+            android:id="@+id/publicadoCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Guardar"
+            android:layout_alignStart="@+id/Guardar"
+            android:layout_marginBottom="16dp"
+            android:text="Publicar " />
 
     </RelativeLayout>
 

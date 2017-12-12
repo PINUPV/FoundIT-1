@@ -2,6 +2,7 @@ package foundit.foundit;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,6 +42,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
@@ -57,13 +63,19 @@ public class registro_oferta extends Fragment {
     // TODO: Rename and change types of parameters
     public static final int SELECT_FILE = 1 ;
     private  String ID = "";
-    EditText nombreOferta, fecha,descripcion;
+    EditText nombreOferta,fechaIni, fechaFin, descripcion;
     ImageView fotoOferta;
     Button subir_foto, aceptar, eliminar;
+    CheckBox publi;
     DatePickerDialog.OnDateSetListener DateSetListener;
-    String elNombre, fechaOf, descr, fotoOf, fechaIf, publicado;
-
     FragmentActivity fa;
+
+    DatePickerDialog.OnDateSetListener DateSetListener2;
+    String elNombre, fechaOf, descr, fechaini, fotoOf;
+    int publicado = 0;
+
+    ProgressDialog progressDialog;
+    private Bitmap bitmap;
 
 
     public registro_oferta() {
@@ -93,16 +105,18 @@ public class registro_oferta extends Fragment {
 
         fotoOferta = (ImageView) view.findViewById(R.id.oferta_image);
 
-        aceptar = (Button) view.findViewById(R.id.publicar);
+        aceptar = (Button) view.findViewById(R.id.Guardar);
         eliminar = (Button) view.findViewById(R.id.Eliminar);
         subir_foto = (Button) view.findViewById(R.id.subir_imagen);
-        fecha = (EditText) view.findViewById(R.id.fecha);
+        fechaIni = (EditText) view.findViewById(R.id.fechaIni);
+        fechaFin = (EditText) view.findViewById(R.id.fechaFin);
         descripcion = (EditText) view.findViewById(R.id.descripcion);
+        publi = (CheckBox) view.findViewById(R.id.publicadoCheckBox);
 
         if(getID()){
             rellenar(ID);
             nombreOferta.setText(elNombre);
-            fecha.setText(fechaOf);
+            fechaFin.setText(fechaOf);
             descripcion.setText(descr);
             if(!fotoOf.isEmpty()){
                 byte [] encodeByte=Base64.decode(Util.GetWeb(Uri.parse(fotoOf)), Base64.DEFAULT);
@@ -118,19 +132,19 @@ public class registro_oferta extends Fragment {
             aceptar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (comprobar_nombre_oferta(nombreOferta.getText().toString())&& comprobar_fecha(fecha.getText().toString())) {
+                    if (comprobar_nombre_oferta(nombreOferta.getText().toString())&& comprobar_fecha(fechaFin.getText().toString())
+                            && comprobar_fecha(fechaIni.getText().toString())&& comprobarfechas(fechaIni.getText().toString(),fechaFin.getText().toString())) {
                         String nombre = nombreOferta.getText().toString();
-                        String fechaOf = fecha.getText().toString();
+                        String fechaOf = fechaFin.getText().toString();
+                        String fechaini = fechaIni.getText().toString();
                         String image_str = "";
                         if(!hasNullOrEmptyDrawable(fotoOferta)) {
-                            Bitmap picture = ((BitmapDrawable) fotoOferta.getDrawable()).getBitmap();
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            picture.compress(Bitmap.CompressFormat.PNG, 90, stream); //compress to which format you want.
-                            byte[] byte_arr = stream.toByteArray();
-                            image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);
+
+                            //TODO:Implementar subida de imagen a server
                         }
+                        if(publi.isChecked()) publicado=1;
                         String descr = descripcion.getText().toString();
-                        publicarenDB(nombre, fechaOf, image_str, descr);
+                        publicarenDB(nombre,fechaini, fechaOf, image_str, descr,publicado);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.ContainFoundit, new FragGestion_Comercio()).commit();
                     }
@@ -161,7 +175,7 @@ public class registro_oferta extends Fragment {
                                             }
                                         });
 
-                    fecha.setOnClickListener(new View.OnClickListener() {
+                    fechaFin.setOnClickListener(new View.OnClickListener() {
 
                         @Override
                         public void onClick(View v) {
@@ -174,13 +188,35 @@ public class registro_oferta extends Fragment {
                             dialog.show();
                         }
                     });
+        fechaIni.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                int y = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Dialog, DateSetListener2, y, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        DateSetListener2 = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                month = month + 1;
+                Log.d(TAG, "onDateSet: dd/mm/yyyy" + dayOfMonth + "-" + month + "-" + year);
+                String date = year+ "-" + month + "-" + dayOfMonth;
+                fechaIni.setText(date);
+            }
+        };
             DateSetListener = new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: dd/mm/yyyy" + dayOfMonth + "-" + month + "-" + year);
                     String date = year+ "-" + month + "-" + dayOfMonth;
-                    fecha.setText(date);
+                    fechaFin.setText(date);
                 }
             };
 
@@ -188,7 +224,7 @@ public class registro_oferta extends Fragment {
     }
 
     private void eliminarOferta(String id) {
-    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20Ofertas%20WHERE%20ID%20=%20"+ID;
+    String x = "http://185.137.93.170:8080/sql.php?sql=DELETE%20FROM%20Ofertas%20WHERE%20ID%20=%20'"+ID+"'";
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
@@ -205,7 +241,7 @@ public class registro_oferta extends Fragment {
         }
     }
 
-    public void publicarenDB(final String n, final String f, final String im, final String des ) {
+    public void publicarenDB(final String n, final String f1, final String f, final String im, final String des, final int publicado ) {
         String x = "";
         if (im.length() > 0) {
             // Subir imagen al servidor
@@ -238,16 +274,16 @@ public class registro_oferta extends Fragment {
 
                 @Override
                 protected void onPostExecute(String Respuesta) {
-                    publicarenDB2(n, f, Respuesta, des);
+                    publicarenDB2(n, f1, f, Respuesta, des, publicado);
                 }
             };
             t.execute(uri);
         } else {
-            publicarenDB2(n, f, "", des);
+            publicarenDB2(n, f1, f, "", des, publicado);
         }
     }
 
-    private void publicarenDB2(String n,String f, String imURL, String des ) {
+    private void publicarenDB2(String n, String f1, String f, String imURL, String des, int publicado ) {
         if(des.length()<= 0) des = "null";
         else des = "'"+des+"'";
         String x;
@@ -270,7 +306,21 @@ public class registro_oferta extends Fragment {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
+    }
+    public boolean comprobarfechas(String fecha1, String fecha2)
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try
+        {
+             if(dateFormat.parse(fecha1).before(dateFormat.parse(fecha2))|| fecha1.equals(fecha2))
+                 return true;
+             else {
+                 Toast.makeText(getActivity(), "La fecha Inicio debe ser anterior a la de final", Toast.LENGTH_LONG).show();
+                 return false;
+             }
+             }catch (Exception ex) {
+         return false;
+        }
     }
 
     public boolean comprobar_nombre_oferta(String nombre)
@@ -323,8 +373,8 @@ public class registro_oferta extends Fragment {
                 JSONObject oferta = respuesta.getJSONObject(0);
                 elNombre = oferta.getString("Nombre");
                 fechaOf = oferta.getString("fechaValidez");
-                fechaIf = oferta.getString("FechaInicio");
-                publicado = oferta.getString("publicado");
+                fechaini = oferta.getString("FechaInicio");
+                publicado = oferta.getInt("publicado");
                 fotoOf = oferta.getString("imagenOferta");
                 descr = oferta.getString("Descripcion");
                 if(descr.equals("null")){
