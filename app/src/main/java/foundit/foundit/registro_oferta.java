@@ -61,7 +61,7 @@ public class registro_oferta extends Fragment {
     ImageView fotoOferta;
     Button subir_foto, aceptar, eliminar;
     DatePickerDialog.OnDateSetListener DateSetListener;
-    String elNombre, fechaOf, descr, fotoOf;
+    String elNombre, fechaOf, descr, fotoOf, fechaIf, publicado;
 
     FragmentActivity fa;
 
@@ -105,7 +105,7 @@ public class registro_oferta extends Fragment {
             fecha.setText(fechaOf);
             descripcion.setText(descr);
             if(!fotoOf.isEmpty()){
-                byte [] encodeByte=Base64.decode(fotoOf,Base64.DEFAULT);
+                byte [] encodeByte=Base64.decode(Util.GetWeb(Uri.parse(fotoOf)), Base64.DEFAULT);
 
                 InputStream inputStream  = new ByteArrayInputStream(encodeByte);
                 Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
@@ -314,7 +314,7 @@ public class registro_oferta extends Fragment {
     }
     public void rellenar(String id) {
 
-        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,%20fechaValidez,%20imagenOferta,%20Descripcion%20FROM%20Ofertas%20WHERE%20ID%20=%20" + id;
+        String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20Nombre,fechaInicio,publicado,%20fechaValidez,%20imagenOferta,%20Descripcion%20FROM%20Ofertas%20WHERE%20ID%20=%20" + id;
         RegisterTaskOferta t = new RegisterTaskOferta();
         t.faOf = getActivity();
         try {
@@ -323,6 +323,8 @@ public class registro_oferta extends Fragment {
                 JSONObject oferta = respuesta.getJSONObject(0);
                 elNombre = oferta.getString("Nombre");
                 fechaOf = oferta.getString("fechaValidez");
+                fechaIf = oferta.getString("FechaInicio");
+                publicado = oferta.getString("publicado");
                 fotoOf = oferta.getString("imagenOferta");
                 descr = oferta.getString("Descripcion");
                 if(descr.equals("null")){
