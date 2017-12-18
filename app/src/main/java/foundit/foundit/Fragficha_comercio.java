@@ -53,6 +53,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import Comentario.Comentario;
+import Usuario.Usuario;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,8 +61,7 @@ import Comentario.Comentario;
  */
 public class Fragficha_comercio extends Fragment {
 
-    Button bt_cerrar_ficha;
-    ImageButton bt_like, bt_showComent, bt_sendComent;
+    ImageButton bt_like, bt_showComent, bt_sendComent, bt_cerrar_ficha;
     RatingBar rbarTotal, rbarComercio;
     EditText addComent;
 
@@ -95,6 +95,7 @@ public class Fragficha_comercio extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fragficha_comercio, container, false);
         listRatings = (ListView) view.findViewById(R.id.list_valoraciones);
         listRatings.setVisibility(View.INVISIBLE);
+
         onFichaOpen();
         TextView nomComercio = (TextView) view.findViewById(R.id.text_nombre_comercio);
         nomComercio.setText(nombreComercio);
@@ -155,7 +156,7 @@ public class Fragficha_comercio extends Fragment {
             }
         });
 
-        bt_cerrar_ficha = (Button) view.findViewById(R.id.bt_cerrar_fichaCom);
+        bt_cerrar_ficha = (ImageButton) view.findViewById(R.id.bt_cerrar_fichaCom);
         bt_cerrar_ficha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -255,7 +256,15 @@ public class Fragficha_comercio extends Fragment {
         return view;
     }
 
+    private int getIdUsuario(){
+        try {
+            Usuario userActivo = MainFoundit.getUsuario();
+            return Integer.parseInt(userActivo.getId());
+        }catch(NullPointerException ex){
+            return 0;
+        }
 
+    }
     private void guardarComentario(String s) {
         String x;
 
@@ -309,7 +318,7 @@ public class Fragficha_comercio extends Fragment {
     }
 
     private void onFichaOpen() {
-
+        IDUsuario = getIdUsuario();
         String x = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio;
         String z = "http://185.137.93.170:8080/sql.php?sql=SELECT%20*%20FROM%20Comentarios%20WHERE%20IDComercio%20=%20"+IDComercio+"%20AND%20IDUsuario%20=%20"+IDUsuario;
         RegisterTaskFicha t = new RegisterTaskFicha();

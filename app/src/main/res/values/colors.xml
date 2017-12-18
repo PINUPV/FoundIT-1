@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#3039f9</color>
     <color name="colorAccent">#f40154</color>
     <color name="nuevo">#55303f9f</color>
-    <color name="HintError">#ed3841</color>
+    <color name="HintError">#f40712</color>
     <color name="black">#000000</color>
     <color name="showComent_color">#cc027211</color>
     <color name="background_card">#fff</color>

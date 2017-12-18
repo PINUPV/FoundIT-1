@@ -24,18 +24,33 @@
                 android:layout_height="296dp"
                 android:layout_weight="1">
 
+                <ImageButton
+                    android:id="@+id/bt_cerrar_fichaCom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    android:tint="@color/HintError"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/text_nombre_comercio"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/text_nombre_comercio"
-                    android:layout_width="253dp"
-                    android:layout_height="54dp"
+                    android:layout_width="218dp"
+                    android:layout_height="51dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="4dp"
                     android:layout_weight="1"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/rating_total"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -170,20 +185,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.59" />
-
-            <Button
-                android:id="@+id/bt_cerrar_fichaCom"
-                android:layout_width="83dp"
-                android:layout_height="29dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="48dp"
-                android:text="Cerrar"
-                android:textSize="8sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.923"
-                app:layout_constraintStart_toEndOf="@+id/spinner_ordComent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/addComent_textBox"
